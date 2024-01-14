@@ -1,10 +1,9 @@
 package net.wickedshell.ticketz.adapter.rest.controller;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.adapter.rest.model.RestLoginRequest;
 import net.wickedshell.ticketz.adapter.rest.model.RestSignupRequest;
-import net.wickedshell.ticketz.adapter.rest.security.jwt.JwtRequestFilter;
+import net.wickedshell.ticketz.adapter.rest.security.jwt.JwtAuthenticationRequestFilter;
 import net.wickedshell.ticketz.adapter.rest.security.jwt.JwtService;
 import net.wickedshell.ticketz.service.UserService;
 import net.wickedshell.ticketz.service.model.User;
@@ -31,15 +30,16 @@ public class AuthenticationController {
 
     @PostMapping()
     @RequestMapping("/logins")
-    public ResponseEntity<String> login(@Valid @RequestBody RestLoginRequest loginRequest) {
+    public ResponseEntity<String> login(@RequestBody RestLoginRequest loginRequest) {
         AbstractAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
         SecurityContextHolder.getContext().setAuthentication(authenticationManager.authenticate(authenticationToken));
-        return ResponseEntity.ok(JwtRequestFilter.BEARER_TOKEN_PREFIX + jwtService.createTokenFromEmail(loginRequest.getEmail()));
+        return ResponseEntity.ok(JwtAuthenticationRequestFilter.BEARER_TOKEN_PREFIX + jwtService.createTokenFromEmail(loginRequest.getEmail()));
     }
 
     @PostMapping()
-    public ResponseEntity<Void> signup(@Valid @RequestBody RestSignupRequest signupRequest) {
+    @RequestMapping("/signups")
+    public ResponseEntity<Void> signup(@RequestBody RestSignupRequest signupRequest) {
         User user = mapper.map(signupRequest, User.class);
         userService.create(user, signupRequest.getPassword());
         return ResponseEntity.ok().build();

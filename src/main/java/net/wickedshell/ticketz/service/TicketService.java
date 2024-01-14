@@ -16,19 +16,21 @@ import static net.wickedshell.ticketz.service.model.TicketState.CREATED;
 @Service
 @Transactional
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('ROLE_USER')")
 public class TicketService {
 
     private final TicketPersistence ticketPersistence;
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     public Ticket loadByTicketNumber(String ticketNumber) {
         return ticketPersistence.loadByTicketNumber(ticketNumber);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     public void delete(String ticketNumber) {
         ticketPersistence.delete(ticketNumber);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     public Ticket create(Ticket ticket) {
         ticket.setTicketNumber(UUID.randomUUID().toString().substring(0, 5));
         ticket.setState(CREATED);
@@ -36,6 +38,7 @@ public class TicketService {
         return ticketPersistence.create(ticket);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     public Ticket update(Ticket ticket) {
         Ticket existingTicket = ticketPersistence.loadByTicketNumber(ticket.getTicketNumber());
         if (!existingTicket.getState().checkIsPermittedSuccessor(ticket.getState())) {
@@ -44,6 +47,7 @@ public class TicketService {
         return ticketPersistence.update(ticket);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     public List<Ticket> findAll() {
         return ticketPersistence.findAll();
     }
