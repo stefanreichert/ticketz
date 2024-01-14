@@ -5,7 +5,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,8 +31,7 @@ public class JwtAuthenticationRequestFilter extends OncePerRequestFilter {
     }
 
     private void authenticate(String jwt) {
-        AbstractAuthenticationToken authenticationToken = new JwtAuthenticationToken(jwt);
-        Authentication authentication = authenticationManager.authenticate(authenticationToken);
+        Authentication authentication = authenticationManager.authenticate(new JwtAuthenticationToken(jwt));
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
