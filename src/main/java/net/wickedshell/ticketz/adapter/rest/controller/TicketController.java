@@ -1,4 +1,4 @@
-package net.wickedshell.ticketz.adapter.rest;
+package net.wickedshell.ticketz.adapter.rest.controller;
 
 import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.adapter.rest.model.RestTicket;

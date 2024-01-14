@@ -1,6 +1,7 @@
 package net.wickedshell.ticketz.adapter.jpa;
 
 import jakarta.inject.Inject;
+import net.wickedshell.ticketz.adapter.jpa.persistence.UserJPAPersistenceImpl;
 import net.wickedshell.ticketz.adapter.jpa.repository.UserRepository;
 import net.wickedshell.ticketz.service.model.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,17 +12,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataJpaTest
-class UserJPAImplTest {
+class UserJPAPersistenceImplTest {
 
     @Inject
     private UserRepository userRepository;
 
-    private UserJPAImpl unitUnderTest;
+    private UserJPAPersistenceImpl unitUnderTest;
 
     @BeforeEach
     public void setupTest(){
         // setup unit under test
-        unitUnderTest = new UserJPAImpl(userRepository);
+        unitUnderTest = new UserJPAPersistenceImpl(userRepository);
     }
 
     @Test

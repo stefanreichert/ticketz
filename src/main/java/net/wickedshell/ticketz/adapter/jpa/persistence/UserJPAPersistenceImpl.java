@@ -1,4 +1,4 @@
-package net.wickedshell.ticketz.adapter.jpa;
+package net.wickedshell.ticketz.adapter.jpa.persistence;
 
 import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.adapter.jpa.entity.UserEntity;
@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class UserJPAImpl implements UserPersistence {
+public class UserJPAPersistenceImpl implements UserPersistence {
 
     private final ModelMapper mapper = new ModelMapper();
     private final UserRepository userRepository;

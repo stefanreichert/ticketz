@@ -1,4 +1,4 @@
-package net.wickedshell.ticketz.adapter.rest;
+package net.wickedshell.ticketz.adapter.rest.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

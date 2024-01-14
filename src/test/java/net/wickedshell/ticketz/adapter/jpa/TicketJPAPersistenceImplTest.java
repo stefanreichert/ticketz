@@ -2,6 +2,7 @@ package net.wickedshell.ticketz.adapter.jpa;
 
 import jakarta.inject.Inject;
 import net.wickedshell.ticketz.adapter.jpa.converter.UserToUserEntityConverter;
+import net.wickedshell.ticketz.adapter.jpa.persistence.TicketJPAPersistenceImpl;
 import net.wickedshell.ticketz.adapter.jpa.repository.TicketRepository;
 import net.wickedshell.ticketz.adapter.jpa.repository.UserRepository;
 import net.wickedshell.ticketz.service.model.Ticket;
@@ -14,7 +15,7 @@ import static net.wickedshell.ticketz.service.model.TicketState.CREATED;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-class TicketJPAImplTest {
+class TicketJPAPersistenceImplTest {
 
     @Inject
     private TicketRepository ticketRepository;
@@ -22,13 +23,13 @@ class TicketJPAImplTest {
     @Inject
     private UserRepository userRepository;
 
-    private TicketJPAImpl unitUnderTest;
+    private TicketJPAPersistenceImpl unitUnderTest;
 
     @BeforeEach
     public void setupTest(){
         // setup unit under test
         UserToUserEntityConverter userConverter = new UserToUserEntityConverter(userRepository);
-        unitUnderTest = new TicketJPAImpl(ticketRepository, userConverter);
+        unitUnderTest = new TicketJPAPersistenceImpl(ticketRepository, userConverter);
     }
 
     @Test

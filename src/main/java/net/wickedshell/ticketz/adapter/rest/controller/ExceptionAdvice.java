@@ -1,4 +1,4 @@
-package net.wickedshell.ticketz.adapter.rest;
+package net.wickedshell.ticketz.adapter.rest.controller;
 
 import net.wickedshell.ticketz.port.persistence.exception.ObjectNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;

@@ -1,4 +1,4 @@
-package net.wickedshell.ticketz.adapter.jpa;
+package net.wickedshell.ticketz.adapter.jpa.persistence;
 
 import net.wickedshell.ticketz.adapter.jpa.converter.UserToUserEntityConverter;
 import net.wickedshell.ticketz.adapter.jpa.entity.TicketEntity;
@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.stream.StreamSupport;
 
 @Component
-public class TicketJPAImpl implements TicketPersistence {
+public class TicketJPAPersistenceImpl implements TicketPersistence {
 
     private final ModelMapper mapper;
     private final TicketRepository ticketRepository;
 
-    public TicketJPAImpl(TicketRepository ticketRepository, UserToUserEntityConverter userConverter) {
+    public TicketJPAPersistenceImpl(TicketRepository ticketRepository, UserToUserEntityConverter userConverter) {
         this.ticketRepository = ticketRepository;
         mapper = new ModelMapper();
         mapper.addConverter(userConverter);
