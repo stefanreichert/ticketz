@@ -28,6 +28,7 @@ public class JwtAuthenticationRequestFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         parseJwtFromRequest(request).ifPresent(this::authenticate);
         filterChain.doFilter(request, response);
+        SecurityContextHolder.clearContext();
     }
 
     private void authenticate(String jwt) {
