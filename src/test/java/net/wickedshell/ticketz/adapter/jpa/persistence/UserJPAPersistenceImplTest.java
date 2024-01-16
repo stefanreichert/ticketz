@@ -1,7 +1,6 @@
-package net.wickedshell.ticketz.adapter.jpa;
+package net.wickedshell.ticketz.adapter.jpa.persistence;
 
 import jakarta.inject.Inject;
-import net.wickedshell.ticketz.adapter.jpa.persistence.UserJPAPersistenceImpl;
 import net.wickedshell.ticketz.adapter.jpa.repository.UserRepository;
 import net.wickedshell.ticketz.service.model.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,13 +19,13 @@ class UserJPAPersistenceImplTest {
     private UserJPAPersistenceImpl unitUnderTest;
 
     @BeforeEach
-    public void setupTest(){
+    public void setupTest() {
         // setup unit under test
         unitUnderTest = new UserJPAPersistenceImpl(userRepository);
     }
 
     @Test
-    void testCreateUser_success(){
+    void testCreateUser_success() {
         // given
         User user = new User();
         user.setEmail("test2@us.er");
@@ -45,7 +44,7 @@ class UserJPAPersistenceImplTest {
     }
 
     @Test
-    void testUpdateUser_success(){
+    void testUpdateUser_success() {
         // given
         User user = unitUnderTest.loadByEmail("test@us.er");
         user.setFirstname("Test Update");

@@ -8,6 +8,7 @@ import net.wickedshell.ticketz.adapter.rest.security.jwt.JwtAuthenticationReques
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
@@ -28,6 +29,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RequiredArgsConstructor
+@ComponentScan(basePackageClasses = RestAdapterConfiguration.class)
 @Configuration
 @EnableWebSecurity
 public class RestAdapterConfiguration {

@@ -1,8 +1,7 @@
-package net.wickedshell.ticketz.adapter.jpa;
+package net.wickedshell.ticketz.adapter.jpa.persistence;
 
 import jakarta.inject.Inject;
 import net.wickedshell.ticketz.adapter.jpa.converter.UserToUserEntityConverter;
-import net.wickedshell.ticketz.adapter.jpa.persistence.TicketJPAPersistenceImpl;
 import net.wickedshell.ticketz.adapter.jpa.repository.TicketRepository;
 import net.wickedshell.ticketz.adapter.jpa.repository.UserRepository;
 import net.wickedshell.ticketz.service.model.Ticket;
@@ -12,7 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import static net.wickedshell.ticketz.service.model.TicketState.CREATED;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataJpaTest
 class TicketJPAPersistenceImplTest {
@@ -26,14 +26,14 @@ class TicketJPAPersistenceImplTest {
     private TicketJPAPersistenceImpl unitUnderTest;
 
     @BeforeEach
-    public void setupTest(){
+    public void setupTest() {
         // setup unit under test
         UserToUserEntityConverter userConverter = new UserToUserEntityConverter(userRepository);
         unitUnderTest = new TicketJPAPersistenceImpl(ticketRepository, userConverter);
     }
 
     @Test
-    void testCreateTicket_success(){
+    void testCreateTicket_success() {
         // given
         User author = new User();
         author.setEmail("test@us.er");
@@ -57,7 +57,7 @@ class TicketJPAPersistenceImplTest {
     }
 
     @Test
-    void testUpdateTicket_success(){
+    void testUpdateTicket_success() {
         // given
         User editor = new User();
         editor.setEmail("test@us.er");
