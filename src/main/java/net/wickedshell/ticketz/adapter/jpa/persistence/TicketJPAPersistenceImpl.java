@@ -3,9 +3,9 @@ package net.wickedshell.ticketz.adapter.jpa.persistence;
 import net.wickedshell.ticketz.adapter.jpa.converter.UserToUserEntityConverter;
 import net.wickedshell.ticketz.adapter.jpa.entity.TicketEntity;
 import net.wickedshell.ticketz.adapter.jpa.repository.TicketRepository;
-import net.wickedshell.ticketz.service.model.Ticket;
 import net.wickedshell.ticketz.port.persistence.TicketPersistence;
 import net.wickedshell.ticketz.port.persistence.exception.ObjectNotFoundException;
+import net.wickedshell.ticketz.service.model.Ticket;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 

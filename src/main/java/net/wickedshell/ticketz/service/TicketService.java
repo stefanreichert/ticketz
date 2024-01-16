@@ -2,9 +2,9 @@ package net.wickedshell.ticketz.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import net.wickedshell.ticketz.service.model.Ticket;
 import net.wickedshell.ticketz.port.persistence.TicketPersistence;
 import net.wickedshell.ticketz.service.exception.ServiceException;
+import net.wickedshell.ticketz.service.model.Ticket;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 

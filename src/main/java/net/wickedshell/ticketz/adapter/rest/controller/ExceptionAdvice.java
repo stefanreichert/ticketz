@@ -15,25 +15,25 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Void> handleAccessDeniedException(AccessDeniedException exception) {
-        logger.error(exception.getMessage(), exception);
+        logger.error(exception.getMessage());
         return ResponseEntity.status(HttpStatusCode.valueOf(401)).build();
     }
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Void> handleBadCredentialsException(BadCredentialsException exception) {
-        logger.error(exception.getMessage(), exception);
+        logger.error(exception.getMessage());
         return ResponseEntity.status(HttpStatusCode.valueOf(401)).build();
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Void> handleException(DataIntegrityViolationException exception) {
-        logger.error(exception.getMessage(), exception);
+        logger.error("Constraint Violation");
         return ResponseEntity.status(HttpStatusCode.valueOf(409)).build();
     }
 
     @ExceptionHandler(ObjectNotFoundException.class)
     public ResponseEntity<Void> handleObjectNotFoundException(ObjectNotFoundException exception) {
-        logger.error(exception.getMessage(), exception);
+        logger.error(exception.getMessage());
         return ResponseEntity.status(HttpStatusCode.valueOf(404)).build();
     }
 
