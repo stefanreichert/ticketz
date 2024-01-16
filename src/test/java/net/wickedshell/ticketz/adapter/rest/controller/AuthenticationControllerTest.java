@@ -2,8 +2,8 @@ package net.wickedshell.ticketz.adapter.rest.controller;
 
 import jakarta.inject.Inject;
 import net.wickedshell.ticketz.adapter.rest.RestAdapterConfiguration;
-import net.wickedshell.ticketz.service.TicketService;
-import net.wickedshell.ticketz.service.UserService;
+import net.wickedshell.ticketz.service.port.rest.TicketService;
+import net.wickedshell.ticketz.service.port.rest.UserService;
 import net.wickedshell.ticketz.service.model.User;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;

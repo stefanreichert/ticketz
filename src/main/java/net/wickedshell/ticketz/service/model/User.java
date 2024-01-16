@@ -29,5 +29,4 @@ public class User {
     @NotNull
     private Set<Role> roles = new HashSet<>();
 
-
 }

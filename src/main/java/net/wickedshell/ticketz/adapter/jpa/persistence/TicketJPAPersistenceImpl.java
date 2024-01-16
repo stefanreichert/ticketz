@@ -3,9 +3,9 @@ package net.wickedshell.ticketz.adapter.jpa.persistence;
 import net.wickedshell.ticketz.adapter.jpa.converter.UserToUserEntityConverter;
 import net.wickedshell.ticketz.adapter.jpa.entity.TicketEntity;
 import net.wickedshell.ticketz.adapter.jpa.repository.TicketRepository;
-import net.wickedshell.ticketz.port.persistence.TicketPersistence;
-import net.wickedshell.ticketz.port.persistence.exception.ObjectNotFoundException;
 import net.wickedshell.ticketz.service.model.Ticket;
+import net.wickedshell.ticketz.service.port.persistence.TicketPersistence;
+import net.wickedshell.ticketz.service.port.persistence.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -28,11 +28,6 @@ public class TicketJPAPersistenceImpl implements TicketPersistence {
     public Ticket loadByTicketNumber(String ticketNumber) {
         TicketEntity ticketEntity = ticketRepository.findByTicketNumber(ticketNumber).orElseThrow(ObjectNotFoundException::new);
         return mapper.map(ticketEntity, Ticket.class);
-    }
-
-    @Override
-    public void delete(String ticketNumber) {
-        ticketRepository.findByTicketNumber(ticketNumber).ifPresent(ticketRepository::delete);
     }
 
     @Override

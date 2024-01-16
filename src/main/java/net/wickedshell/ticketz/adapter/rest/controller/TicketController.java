@@ -2,7 +2,7 @@ package net.wickedshell.ticketz.adapter.rest.controller;
 
 import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.adapter.rest.model.RestTicket;
-import net.wickedshell.ticketz.service.TicketService;
+import net.wickedshell.ticketz.service.port.rest.TicketService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

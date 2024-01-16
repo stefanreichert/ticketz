@@ -5,14 +5,13 @@ import net.wickedshell.ticketz.adapter.rest.model.RestLoginRequest;
 import net.wickedshell.ticketz.adapter.rest.model.RestSignupRequest;
 import net.wickedshell.ticketz.adapter.rest.security.jwt.JwtAuthenticationRequestFilter;
 import net.wickedshell.ticketz.adapter.rest.security.jwt.JwtService;
-import net.wickedshell.ticketz.service.UserService;
 import net.wickedshell.ticketz.service.model.User;
+import net.wickedshell.ticketz.service.port.rest.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +32,7 @@ public class AuthenticationController {
     public ResponseEntity<String> login(@RequestBody RestLoginRequest loginRequest) {
         AbstractAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
-        SecurityContextHolder.getContext().setAuthentication(authenticationManager.authenticate(authenticationToken));
+        authenticationManager.authenticate(authenticationToken);
         return ResponseEntity.ok(JwtAuthenticationRequestFilter.BEARER_TOKEN_PREFIX + jwtService.createTokenFromEmail(loginRequest.getEmail()));
     }
 

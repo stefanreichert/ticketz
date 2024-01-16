@@ -1,6 +1,6 @@
 package net.wickedshell.ticketz.adapter.rest.controller;
 
-import net.wickedshell.ticketz.port.persistence.exception.ObjectNotFoundException;
+import net.wickedshell.ticketz.service.port.persistence.exception.ObjectNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +26,7 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<Void> handleException(DataIntegrityViolationException exception) {
+    public ResponseEntity<Void> handleException() {
         logger.error("Constraint Violation");
         return ResponseEntity.status(HttpStatusCode.valueOf(409)).build();
     }
