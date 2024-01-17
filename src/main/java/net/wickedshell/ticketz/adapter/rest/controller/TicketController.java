@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -36,16 +37,16 @@ public class TicketController {
     @PostMapping
     public ResponseEntity<RestTicket> create(@RequestBody RestTicket restTicket) {
         Ticket ticket = ticketService.create(mapper.map(restTicket, Ticket.class));
-        return ResponseEntity.ok(mapper.map(ticket, RestTicket.class));
+        return ResponseEntity.created(URI.create("/api/tickets/" + ticket.getTicketNumber())).build();
     }
 
     @PutMapping(value = "/{ticket-number}")
-    public ResponseEntity<RestTicket> update(@PathVariable("ticket-number") String ticketNumber,
-                                             @RequestBody RestTicket restTicket) {
+    public ResponseEntity<Void> update(@PathVariable("ticket-number") String ticketNumber,
+                                       @RequestBody RestTicket restTicket) {
         if (!ticketNumber.equals(restTicket.getTicketNumber())) {
             return ResponseEntity.badRequest().build();
         }
-        Ticket ticket = ticketService.update(mapper.map(restTicket, Ticket.class));
-        return ResponseEntity.ok(mapper.map(ticket, RestTicket.class));
+        ticketService.update(mapper.map(restTicket, Ticket.class));
+        return ResponseEntity.noContent().build();
     }
 }
