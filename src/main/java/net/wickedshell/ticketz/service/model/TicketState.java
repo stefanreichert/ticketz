@@ -4,9 +4,10 @@ import java.util.stream.IntStream;
 
 public enum TicketState {
 
-    CREATED(new int[]{0}),
-    IN_PROGRESS(new int[]{1, 2}),
-    REJECTED(new int[]{3, 4}),
+    CREATED(new int[]{1}),
+    IN_PROGRESS(new int[]{2, 3}),
+    FIXED(new int[]{4, 5}),
+    REJECTED(new int[]{4, 5}),
     REOPENED(new int[]{1}),
     CLOSED(new int[0]);
 

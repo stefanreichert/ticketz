@@ -2,10 +2,12 @@ package net.wickedshell.ticketz.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import net.wickedshell.ticketz.adapter.rest.security.exception.AuthenticationException;
 import net.wickedshell.ticketz.service.model.User;
 import net.wickedshell.ticketz.service.port.persistence.UserPersistence;
 import net.wickedshell.ticketz.service.port.rest.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -33,5 +35,16 @@ public class UserServiceImpl implements UserService {
         user.getRoles().clear();
         user.getRoles().add(ROLE_USER);
         return userPersistence.create(user);
+    }
+
+    @Override
+    public User getPricipalUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        AuthenticationException authenticationException =
+                new AuthenticationException("Error: Invalid Authentication Details");
+        if (principal instanceof String principalEmail) {
+            return findByEmail(principalEmail).orElseThrow(() -> authenticationException);
+        }
+        throw authenticationException;
     }
 }

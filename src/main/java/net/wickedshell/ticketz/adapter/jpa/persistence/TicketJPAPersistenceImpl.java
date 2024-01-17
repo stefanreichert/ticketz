@@ -1,5 +1,6 @@
 package net.wickedshell.ticketz.adapter.jpa.persistence;
 
+import jakarta.persistence.OptimisticLockException;
 import net.wickedshell.ticketz.adapter.jpa.converter.UserToUserEntityConverter;
 import net.wickedshell.ticketz.adapter.jpa.entity.TicketEntity;
 import net.wickedshell.ticketz.adapter.jpa.repository.TicketRepository;
@@ -39,6 +40,7 @@ public class TicketJPAPersistenceImpl implements TicketPersistence {
     @Override
     public Ticket update(Ticket ticket) {
         TicketEntity ticketEntity = ticketRepository.findByTicketNumber(ticket.getTicketNumber()).orElseThrow(ObjectNotFoundException::new);
+        validateVersion(ticketEntity, ticket);
         mapper.map(ticket, ticketEntity);
         return mapper.map(ticketRepository.save(ticketEntity), Ticket.class);
     }
@@ -48,5 +50,11 @@ public class TicketJPAPersistenceImpl implements TicketPersistence {
         return StreamSupport.stream(ticketRepository.findAll().spliterator(), false)
                 .map(ticketEntity -> mapper.map(ticketEntity, Ticket.class))
                 .toList();
+    }
+
+    private void validateVersion(TicketEntity ticketEntity, Ticket ticket) {
+        if (ticket.getVersion() != ticketEntity.getVersion()) {
+            throw new OptimisticLockException("Staled ticket data for update");
+        }
     }
 }

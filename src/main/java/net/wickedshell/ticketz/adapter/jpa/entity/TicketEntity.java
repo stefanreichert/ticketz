@@ -43,5 +43,5 @@ public class TicketEntity {
     private LocalDateTime dateUpdated;
 
     @Version
-    private Long version;
+    private long version;
 }

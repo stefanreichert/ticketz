@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,8 +28,7 @@ public class AuthenticationController {
     private final JwtService jwtService;
     private final UserService userService;
 
-    @PostMapping()
-    @RequestMapping("/logins")
+    @PostMapping(value = "/logins", produces = MimeTypeUtils.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> login(@RequestBody RestLoginRequest loginRequest) {
         AbstractAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
@@ -36,8 +36,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(JwtAuthenticationRequestFilter.BEARER_TOKEN_PREFIX + jwtService.createTokenFromEmail(loginRequest.getEmail()));
     }
 
-    @PostMapping()
-    @RequestMapping("/signups")
+    @PostMapping(value = "/signups")
     public ResponseEntity<Void> signup(@RequestBody RestSignupRequest signupRequest) {
         User user = mapper.map(signupRequest, User.class);
         userService.create(user, signupRequest.getPassword());

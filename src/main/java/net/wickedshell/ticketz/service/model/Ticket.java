@@ -25,6 +25,6 @@ public class Ticket {
     private TicketState state;
 
     @NotNull
-    private Long version;
+    private long version;
 
 }

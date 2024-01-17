@@ -25,6 +25,6 @@ public class RestTicket {
     private RestTicketState state;
 
     @NotNull
-    private Long version;
+    private long version;
 
 }
