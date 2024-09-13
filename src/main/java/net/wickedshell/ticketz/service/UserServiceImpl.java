@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getPricipalUser() {
+    public User getPrincipalUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         AuthenticationException authenticationException =
                 new AuthenticationException("Error: Invalid Authentication Details");

@@ -5,17 +5,20 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.1</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <version>3.3.0</version>
+        <relativePath/>
     </parent>
     <groupId>net.wickedshell</groupId>
     <artifactId>ticketz</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>ticketz</name>
     <description>A ticket management system for the fun of it.</description>
+
     <properties>
-        <java.version>17</java.version>
+        <maven.compiler.source>22</maven.compiler.source>
+        <maven.compiler.target>22</maven.compiler.target>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

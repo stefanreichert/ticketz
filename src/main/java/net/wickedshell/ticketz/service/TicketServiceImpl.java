@@ -36,7 +36,7 @@ public class TicketServiceImpl implements TicketService {
     public Ticket create(Ticket ticket) {
         ticket.setTicketNumber(UUID.randomUUID().toString().substring(0, 5));
         ticket.setState(CREATED);
-        ticket.setAuthor(userService.getPricipalUser());
+        ticket.setAuthor(userService.getPrincipalUser());
         return ticketPersistence.create(ticket);
     }
 
@@ -58,7 +58,7 @@ public class TicketServiceImpl implements TicketService {
     private void changeEditorIfRequired(Ticket ticket) {
         TicketState newState = ticket.getState();
         if (newState == IN_PROGRESS) {
-            ticket.setEditor(userService.getPricipalUser());
+            ticket.setEditor(userService.getPrincipalUser());
         } else if (newState == CLOSED || newState == REOPENED) {
             ticket.setEditor(null);
         }
@@ -72,7 +72,7 @@ public class TicketServiceImpl implements TicketService {
                             existingTicket.getState(), newState));
         }
         if (newState == CLOSED || newState == REOPENED) {
-            User currentUser = userService.getPricipalUser();
+            User currentUser = userService.getPrincipalUser();
             String authorEmail = existingTicket.getAuthor().getEmail();
             if (!authorEmail.equals(currentUser.getEmail())) {
                 throw new ValidationException(

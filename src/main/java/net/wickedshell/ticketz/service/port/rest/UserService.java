@@ -11,5 +11,5 @@ public interface UserService {
     User create(User user, String password);
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    User getPricipalUser();
+    User getPrincipalUser();
 }
