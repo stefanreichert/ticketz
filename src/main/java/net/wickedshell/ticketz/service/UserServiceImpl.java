@@ -45,6 +45,9 @@ public class UserServiceImpl implements UserService {
         if (principal instanceof String principalEmail) {
             return findByEmail(principalEmail).orElseThrow(() -> authenticationException);
         }
+        if (principal instanceof org.springframework.security.core.userdetails.User principalUser) {
+            return findByEmail(principalUser.getUsername()).orElseThrow(() -> authenticationException);
+        }
         throw authenticationException;
     }
 }

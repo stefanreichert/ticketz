@@ -8,16 +8,16 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-@ControllerAdvice
-public class ExceptionAdvice extends ResponseEntityExceptionHandler {
+@RestControllerAdvice
+public class RestExceptionAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Void> handleAccessDeniedException(AccessDeniedException exception) {
-        logger.error(exception.getMessage());
+        logger.error(exception.getMessage(), exception);
         return ResponseEntity.status(HttpStatusCode.valueOf(401)).build();
     }
 

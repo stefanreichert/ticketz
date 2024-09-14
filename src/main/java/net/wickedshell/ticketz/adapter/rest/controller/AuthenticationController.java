@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/authentication")
+@RequestMapping(RestRessource.RESOURCE_AUTHENTICATION)
 public class AuthenticationController {
 
     private final ModelMapper mapper = new ModelMapper();

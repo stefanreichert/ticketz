@@ -1,9 +1,8 @@
-package net.wickedshell.ticketz.adapter.rest;
+package net.wickedshell.ticketz.adapter.web;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import net.wickedshell.ticketz.adapter.rest.security.jwt.JwtAuthenticationRequestFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -11,33 +10,39 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.*;
 
 import java.io.IOException;
 
 @RequiredArgsConstructor
-@ComponentScan(basePackageClasses = RestAdapterConfiguration.class)
+@ComponentScan(basePackageClasses = WebAdapterConfiguration.class)
 @Configuration
-public class RestAdapterConfiguration {
+public class WebAdapterConfiguration {
 
     @Bean
-    public SecurityFilterChain restFilterChain(HttpSecurity http, JwtAuthenticationRequestFilter jwtAuthenticationRequestFilter) throws Exception {
+    public SecurityFilterChain webFilterChain(HttpSecurity http, SecurityContextRepository securityContextRepository) throws Exception {
         return http
-                .securityMatcher("/api/**")
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(Customizer.withDefaults())
                 .cors(Customizer.withDefaults())
                 .exceptionHandling(handler -> handler.authenticationEntryPoint(new ExceptionEntryPoint()))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .securityContext(securityContext -> securityContext
+                        .securityContextRepository(securityContextRepository))
                 .authorizeHttpRequests(authorization -> authorization
-                        .requestMatchers("/api/authentication/**").permitAll()
-                        .anyRequest().authenticated())
-                .addFilterBefore(jwtAuthenticationRequestFilter, UsernamePasswordAuthenticationFilter.class)
+                        .requestMatchers("/secure/**").authenticated()
+                        .anyRequest().permitAll())
+                .addFilterBefore(new SecurityContextHolderFilter(securityContextRepository), UsernamePasswordAuthenticationFilter.class)
                 .build();
+    }
+
+    @Bean
+    public SecurityContextRepository securityContextRepository() {
+        return new DelegatingSecurityContextRepository(
+                new RequestAttributeSecurityContextRepository(),
+                new HttpSessionSecurityContextRepository());
     }
 
     private static class ExceptionEntryPoint implements AuthenticationEntryPoint {

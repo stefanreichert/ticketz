@@ -13,7 +13,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/tickets")
+@RequestMapping(RestRessource.RESOURCE_TICKETS)
 public class TicketController {
 
     private final TicketService ticketService;
@@ -37,7 +37,7 @@ public class TicketController {
     @PostMapping
     public ResponseEntity<RestTicket> create(@RequestBody RestTicket restTicket) {
         Ticket ticket = ticketService.create(mapper.map(restTicket, Ticket.class));
-        return ResponseEntity.created(URI.create("/api/tickets/" + ticket.getTicketNumber())).build();
+        return ResponseEntity.created(URI.create(RestRessource.RESOURCE_TICKETS + "/" + ticket.getTicketNumber())).build();
     }
 
     @PutMapping(value = "/{ticket-number}")
