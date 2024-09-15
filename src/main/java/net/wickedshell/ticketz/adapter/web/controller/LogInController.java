@@ -41,11 +41,11 @@ public class LogInController {
                 context.setAuthentication(authentication);
                 SecurityContextHolder.setContext(context);
                 securityContextRepository.saveContext(context, request, response);
-                return new ModelAndView(WebView.TICKET_LIST.redirectedRoute());
+                return new ModelAndView("redirect:" + WebAction.ACTION_SHOW_TICKET_LIST);
             }
         } catch (AuthenticationException exception) {
             LOGGER.info(exception.getMessage());
         }
-        return new ModelAndView(WebView.INDEX.route(), "error", "Invalid email or password");
+        return new ModelAndView(WebView.VIEW_INDEX, "error", "Invalid email or password");
     }
 }

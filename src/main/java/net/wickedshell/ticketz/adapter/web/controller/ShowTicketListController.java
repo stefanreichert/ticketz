@@ -22,12 +22,11 @@ public class ShowTicketListController {
 
     @RequestMapping(value = WebAction.ACTION_SHOW_TICKET_LIST)
     public String showTicketList() {
-        return WebView.TICKET_LIST.route();
+        return WebView.VIEW_TICKET_LIST;
     }
 
     @ModelAttribute("user")
     public User populateUser() {
-
         return userService.getPrincipalUser();
     }
 

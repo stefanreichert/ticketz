@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class IndexController {
     @RequestMapping(value = "/index")
     public String index() {
-        return WebView.INDEX.route();
+        return WebView.VIEW_INDEX;
     }
 }
