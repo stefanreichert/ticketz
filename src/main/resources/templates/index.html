@@ -8,26 +8,28 @@
     <title>Ticketz</title>
 </head>
 <body>
-<div class="container-lg">
-    <h3>Ticketz</h3>
-    <p>Login to access your tickets. Not yet on Ticketz? The register for free!</p>
+<div class="container">
+    <div class="mb-2">
+        <h3>Ticketz</h3>
+        <p>Login to access your tickets. Not yet on Ticketz? The register for free!</p>
+    </div>
     <form th:action="@{/login}" th:method="post">
-        <div th:if="${error}"  class="mb-3">
-            <div class="alert alert-danger" role="alert" th:text="${error}"/>
-        </div>
-        <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" id="email" name="email" required class="form-control"/>
-            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-        </div>
-        <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" id="password" name="password" required class="form-control"/>
-        </div>
-        <div>
-            <button type="submit" th:method="post" class="btn btn-primary">Login</button>
-            <a th:href="@{/register}" class="btn btn-secondary">Register</a>
-        </div>
+    <div th:if="${error}"  class="mb-3">
+        <div class="alert alert-danger" role="alert" th:text="${error}"/>
+    </div>
+    <div class="mb-2">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" id="email" name="email" required class="form-control"/>
+        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+    </div>
+    <div class="mb-2">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" id="password" name="password" required class="form-control"/>
+    </div>
+    <div class="mb-2">
+        <button type="submit" th:method="post" class="btn btn-primary">Login</button>
+        <a th:href="@{/register}" class="btn btn-secondary">Register</a>
+    </div>
     </form>
 </div>
 </body>

@@ -9,10 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-@RestControllerAdvice
+@RestControllerAdvice(annotations = RestController.class)
 public class RestExceptionAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(AccessDeniedException.class)
@@ -51,9 +52,9 @@ public class RestExceptionAdvice extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatusCode.valueOf(400)).build();
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Void> handleException(Exception exception) {
-        logger.error(exception.getMessage(), exception);
+    @ExceptionHandler(Throwable.class)
+    public ResponseEntity<Void> handleException(Throwable throwable) {
+        logger.error(throwable.getMessage(), throwable);
         return ResponseEntity.internalServerError().build();
     }
 }

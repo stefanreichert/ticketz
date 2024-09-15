@@ -4,8 +4,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.adapter.rest.security.jwt.JwtAuthenticationRequestFilter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -42,11 +40,8 @@ public class RestAdapterConfiguration {
 
     private static class ExceptionEntryPoint implements AuthenticationEntryPoint {
 
-        private static final Logger LOGGER = LoggerFactory.getLogger(ExceptionEntryPoint.class);
-
         @Override
         public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
-            LOGGER.error(authException.getMessage(), authException);
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: unauthorized");
         }
     }

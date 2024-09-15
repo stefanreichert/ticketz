@@ -1,18 +1,24 @@
 package net.wickedshell.ticketz.adapter.web.controller;
 
-import org.springframework.ui.Model;
+import jakarta.servlet.http.HttpServletRequest;
+import net.wickedshell.ticketz.adapter.web.WebView;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
-@ControllerAdvice
+import java.time.Instant;
+
+@ControllerAdvice(annotations = Controller.class)
 public class ExceptionAdvice {
 
-    @ExceptionHandler(Throwable.class)
-    public ModelAndView exception(final Throwable throwable, final Model model) {
-        final ModelAndView modelAndView = new ModelAndView("error");
-        String errorMessage = (throwable != null ? throwable.getMessage() : "Unknown error");
-        modelAndView.addObject("message", errorMessage);
+    @ExceptionHandler(Exception.class)
+    public ModelAndView exception(final Exception exception, HttpServletRequest request) {
+        final ModelAndView modelAndView = new ModelAndView(WebView.VIEW_ERROR);
+        modelAndView.addObject("url", request.getRequestURL().toString());
+        modelAndView.addObject("timestamp", Instant.now());
+        modelAndView.addObject("message", exception.getMessage());
+        modelAndView.addObject("exception", exception);
         return modelAndView;
     }
 }

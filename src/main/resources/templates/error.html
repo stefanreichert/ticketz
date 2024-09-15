@@ -8,7 +8,33 @@
     <title>Error</title>
 </head>
 <body>
-    <h1>Something went wrong</h1>
-    <p th:text="${message}">Error details</p>
+    <div class="container">
+        <div class="mb-2">
+            <h3>Ticketz</h3>
+            <p>Oops, something went wrong. This is unfortunate and should not have happened.</p>
+            <p>Please contact your Ticketz admin.</p>
+        </div>
+        <div class="mb-2">
+            <p th:if="${url}" id='url'>
+                <b>Page:</b> <span th:text="${url}">Page URL</span>
+            </p>
+            <p th:if="${exception}" id='exception'>
+                <b>Error:</b> <span th:text="${exception}">Message</span>
+            </p>
+            <p th:if="${timestamp}" id='created'>
+                <b>Occurred:</b> <span th:text="${timestamp}">Timestamp</span>
+            </p>
+        </div>
+       <div class="mb-2">
+            <div th:utext="'&lt;!--'" th:remove="tag"></div>
+            <div th:utext="'Failed URL: ' +  ${url}" th:remove="tag">${url}</div>
+            <div th:utext="'Exception: ' + ${exception}" th:remove="tag">${exception}</div>
+            <ul th:remove="tag">
+                <li th:each="ste : ${exception}" th:remove="tag"><span
+                        th:utext="${ste}" th:remove="tag">${ste}</span></li>
+            </ul>
+            <div th:utext="'--&gt;'" th:remove="tag"></div>
+        </div>
+    </div>
 </body>
 </html>

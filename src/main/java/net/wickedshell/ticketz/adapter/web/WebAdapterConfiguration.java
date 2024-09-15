@@ -3,8 +3,6 @@ package net.wickedshell.ticketz.adapter.web;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +26,10 @@ public class WebAdapterConfiguration {
         return http
                 .csrf(Customizer.withDefaults())
                 .cors(Customizer.withDefaults())
+                .formLogin(form -> form
+                        .loginPage(WebAction.ACTION_SHOW_INDEX)
+                        .permitAll()
+                )
                 .exceptionHandling(handler -> handler.authenticationEntryPoint(new ExceptionEntryPoint()))
                 .securityContext(securityContext -> securityContext
                         .securityContextRepository(securityContextRepository))
@@ -47,12 +49,9 @@ public class WebAdapterConfiguration {
 
     private static class ExceptionEntryPoint implements AuthenticationEntryPoint {
 
-        private static final Logger LOGGER = LoggerFactory.getLogger(ExceptionEntryPoint.class);
-
         @Override
         public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
-            LOGGER.error(authException.getMessage(), authException);
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: unauthorized");
+            response.sendRedirect(request.getContextPath() + WebAction.ACTION_SHOW_INDEX);
         }
     }
 }
