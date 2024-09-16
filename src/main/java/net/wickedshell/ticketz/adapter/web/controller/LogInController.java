@@ -31,7 +31,7 @@ public class LogInController {
     private final AuthenticationManager authenticationManager;
     private final SecurityContextRepository securityContextRepository;
 
-    @GetMapping("/index")
+    @GetMapping(WebAction.ACTION_SHOW_INDEX)
     public ModelAndView showIndex() {
         return new ModelAndView("redirect:" + WebAction.ACTION_SHOW_LOGIN);
     }

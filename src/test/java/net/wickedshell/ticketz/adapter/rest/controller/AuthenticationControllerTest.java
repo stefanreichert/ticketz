@@ -1,10 +1,10 @@
 package net.wickedshell.ticketz.adapter.rest.controller;
 
 import jakarta.inject.Inject;
+import net.wickedshell.ticketz.adapter.AuthenticationConfiguration;
 import net.wickedshell.ticketz.adapter.rest.RestAdapterConfiguration;
-import net.wickedshell.ticketz.service.port.rest.TicketService;
-import net.wickedshell.ticketz.service.port.rest.UserService;
 import net.wickedshell.ticketz.service.model.User;
+import net.wickedshell.ticketz.service.port.rest.UserService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,36 +26,28 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(AuthenticationController.class)
-@ContextConfiguration(classes = {RestAdapterConfiguration.class, TestConfiguration.class})
+@ContextConfiguration(classes = {AuthenticationConfiguration.class, RestAdapterConfiguration.class, TestConfiguration.class})
 class AuthenticationControllerTest {
 
-    public static final String LOGIN_ROUTE = "/authentication/logins";
+    public static final String LOGIN_ROUTE = "/api/authentication/logins";
     public static final String LOGIN_REQUEST = "{\"email\":\"%s\",\"password\":\"%s\"}";
 
-    public static final String SIGNUP_ROUTE = "/authentication/signups";
+    public static final String SIGNUP_ROUTE = "/api/authentication/signups";
     public static final String SIGNUP_REQUEST = "{\"email\":\"%s\",\"password\":\"%s\",\"firstname\":\"%s\",\"lastname\":\"%s\"}";
-
+    private static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
     @Inject
     private MockMvc mvc;
-
     @Inject
     private WebApplicationContext context;
-
-    @MockBean
-    private TicketService ticketService;
-
     @MockBean
     private UserService userService;
-
-    private static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     @BeforeEach
     public void setup() {
@@ -76,8 +68,8 @@ class AuthenticationControllerTest {
 
         // when
         ResultActions perform = this.mvc.perform(post(LOGIN_ROUTE)
-                        .content(requestBody)
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(requestBody)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
         );
 
         // then
@@ -95,8 +87,8 @@ class AuthenticationControllerTest {
 
         // when
         ResultActions perform = this.mvc.perform(post(LOGIN_ROUTE)
-                        .content(requestBody)
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(requestBody)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
         );
 
         // then
@@ -114,8 +106,8 @@ class AuthenticationControllerTest {
 
         // when
         ResultActions perform = this.mvc.perform(post(LOGIN_ROUTE)
-                        .content(requestBody)
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(requestBody)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
         );
 
         // then
@@ -129,12 +121,12 @@ class AuthenticationControllerTest {
         User user = createTestUser(password);
         String requestBody = String.format(SIGNUP_REQUEST, user.getEmail(), password, user.getFirstname(), user.getLastname());
 
-        when(userService.create(any(User.class), anyString())).thenReturn(user);
+        when(userService.create(any(User.class), anyString(), anySet())).thenReturn(user);
 
         // when
         ResultActions perform = this.mvc.perform(post(SIGNUP_ROUTE)
-                        .content(requestBody)
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(requestBody)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
         );
 
         // then
@@ -148,12 +140,12 @@ class AuthenticationControllerTest {
         User user = createTestUser(password);
         String requestBody = String.format(SIGNUP_REQUEST, user.getEmail(), password, user.getFirstname(), user.getLastname());
 
-        when(userService.create(any(User.class), anyString())).thenThrow(DataIntegrityViolationException.class);
+        when(userService.create(any(User.class), anyString(), anySet())).thenThrow(DataIntegrityViolationException.class);
 
         // when
         ResultActions perform = this.mvc.perform(post(SIGNUP_ROUTE)
-                        .content(requestBody)
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(requestBody)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
         );
 
         // then
