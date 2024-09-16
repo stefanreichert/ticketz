@@ -27,7 +27,7 @@ public class WebAdapterConfiguration {
                 .csrf(Customizer.withDefaults())
                 .cors(Customizer.withDefaults())
                 .formLogin(form -> form
-                        .loginPage(WebAction.ACTION_SHOW_INDEX)
+                        .loginPage(WebAction.ACTION_SHOW_LOGIN)
                         .permitAll()
                 )
                 .exceptionHandling(handler -> handler.authenticationEntryPoint(new ExceptionEntryPoint()))
@@ -51,7 +51,7 @@ public class WebAdapterConfiguration {
 
         @Override
         public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
-            response.sendRedirect(request.getContextPath() + WebAction.ACTION_SHOW_INDEX);
+            response.sendRedirect(request.getContextPath() + WebAction.ACTION_SHOW_LOGIN);
         }
     }
 }

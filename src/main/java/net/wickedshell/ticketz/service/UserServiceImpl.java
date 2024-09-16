@@ -3,6 +3,7 @@ package net.wickedshell.ticketz.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.adapter.rest.security.exception.AuthenticationException;
+import net.wickedshell.ticketz.service.model.Role;
 import net.wickedshell.ticketz.service.model.User;
 import net.wickedshell.ticketz.service.port.persistence.UserPersistence;
 import net.wickedshell.ticketz.service.port.rest.UserService;
@@ -12,8 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
-import static net.wickedshell.ticketz.service.model.Role.ROLE_USER;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -30,10 +30,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @PreAuthorize("hasRole('ROLE_USER') or isAnonymous()")
-    public User create(User user, String password) {
+    public User create(User user, String password, Set<Role> roles) {
         user.setPasswordHash(passwordEncoder.encode(password));
         user.getRoles().clear();
-        user.getRoles().add(ROLE_USER);
+        user.getRoles().addAll(roles);
         return userPersistence.create(user);
     }
 

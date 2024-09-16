@@ -33,7 +33,7 @@ public class RestAdapterConfiguration {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorization -> authorization
                         .requestMatchers("/api/authentication/**").permitAll()
-                        .anyRequest().authenticated())
+                        .anyRequest().hasRole("API"))
                 .addFilterBefore(jwtAuthenticationRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

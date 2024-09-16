@@ -8,8 +8,8 @@ import net.wickedshell.ticketz.service.model.User;
 import net.wickedshell.ticketz.service.port.rest.TicketService;
 import net.wickedshell.ticketz.service.port.rest.UserService;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class ShowTicketListController {
     private final UserService userService;
     private final TicketService ticketService;
 
-    @RequestMapping(value = WebAction.ACTION_SHOW_TICKET_LIST)
+    @GetMapping(value = WebAction.ACTION_SHOW_TICKET_LIST)
     public String showTicketList() {
         return WebView.VIEW_TICKET_LIST;
     }
