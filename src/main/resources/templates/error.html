@@ -9,23 +9,22 @@
 </head>
 <body>
     <div class="container">
-        <div class="mb-2">
-            <h3>Ticketz</h3>
-            <p>Oops, something went wrong. This is unfortunate and should not have happened.</p>
-            <p>Please contact your Ticketz admin.</p>
+        <div th:replace="~{fragments/header :: header}"></div>
+        <div class="mb-4">
+            <p th:text="#{subheader.error}"/>
         </div>
-        <div class="mb-2">
+        <div class="mb-1">
             <p th:if="${url}" id='url'>
-                <b>Page:</b> <span th:text="${url}">Page URL</span>
+                <b th:text="#{label.page}"></b>: <span th:text="${url}">Page URL</span>
             </p>
             <p th:if="${exception}" id='exception'>
-                <b>Error:</b> <span th:text="${exception}">Message</span>
+                <b th:text="#{label.error}"></b>: <span th:text="${exception}">Message</span>
             </p>
             <p th:if="${timestamp}" id='created'>
-                <b>Occurred:</b> <span th:text="${timestamp}">Timestamp</span>
+                <b th:text="#{label.occurred}"></b>: <span th:text="${timestamp}">Timestamp</span>
             </p>
         </div>
-       <div class="mb-2">
+        <div class="mb-3">
             <div th:utext="'&lt;!--'" th:remove="tag"></div>
             <div th:utext="'Failed URL: ' +  ${url}" th:remove="tag">${url}</div>
             <div th:utext="'Exception: ' + ${exception}" th:remove="tag">${exception}</div>
@@ -35,6 +34,7 @@
             </ul>
             <div th:utext="'--&gt;'" th:remove="tag"></div>
         </div>
+        <div th:replace="~{fragments/footer :: footer}"></div>
     </div>
 </body>
 </html>

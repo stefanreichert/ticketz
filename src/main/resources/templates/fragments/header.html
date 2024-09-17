@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="ISO-8859-1"/>
+  <link th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" rel="stylesheet"/>
+  <link th:href="@{/css/styles.css}" rel="stylesheet"/>
+  <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}" defer></script>
+  <title th:text="#{header.ticketz}"/>
+</head>
+<body th:fragment="header">
+  <div class="pt-5 mb-2">
+    <span class="h3" th:text="#{header.ticketz}"/>&nbsp;-&nbsp;<span class="text-secondary small strong" th:text="#{subheader.ticketz}"/>
+  </div>
+</body>
+</html>

@@ -14,6 +14,6 @@ public class ServiceConfiguration {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(16, new SecureRandom());
+        return new BCryptPasswordEncoder(12, new SecureRandom());
     }
 }
