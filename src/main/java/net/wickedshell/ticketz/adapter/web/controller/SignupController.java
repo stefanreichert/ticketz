@@ -30,7 +30,7 @@ public class SignupController {
 
     private static boolean validationFailed(Signup signup, BindingResult bindingResult) {
         if (!signup.getPassword().equals(signup.getConfirmPassword())) {
-            bindingResult.rejectValue("confirmPassword", "signup.password.mismatch", "Passwords do not match");
+            bindingResult.rejectValue("confirmPassword", "message.password_mismatch");
         }
         return bindingResult.hasErrors();
     }
@@ -46,7 +46,7 @@ public class SignupController {
                                HttpServletRequest request,
                                RedirectAttributes redirectAttributes) {
         if (validationFailed(signup, bindingResult)) {
-            return new ModelAndView(WebView.VIEW_SIGNUP);
+            return new ModelAndView(WebView.VIEW_SIGNUP).addObject("signup", signup);
         }
         User user = new User();
         user.setFirstname(signup.getFirstname());
