@@ -25,7 +25,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(RestRessource.RESOURCE_AUTHENTICATION)
-public class AuthenticationController {
+public class RestAuthenticationController {
 
     private final ModelMapper mapper = new ModelMapper();
     private final AuthenticationManager authenticationManager;

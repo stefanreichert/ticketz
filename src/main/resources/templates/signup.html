@@ -15,23 +15,23 @@
     </div>
     <div th:replace="~{fragments/messages :: messages}"></div>
     <form th:action="@{/signup}" th:method="post" th:object="${signup}">
-        <div class="mb-1">
+        <div class="mb-3">
             <label for="email" class="form-label" th:text="#{label.email}"/>
             <input type="email" id="email" name="email" class="form-control" th:field="*{email}"/>
             <div id="emailHelp" class="form-text" th:text="#{help.email}"/>
             <div class="text-danger small" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
         </div>
-        <div class="mb-1">
+        <div class="mb-3">
             <label for="firstname" class="form-label" th:text="#{label.firstname}"/>
             <input type="text" id="firstname" name="firstname" class="form-control" th:field="*{firstname}"/>
             <div class="text-danger small" th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}"></div>
         </div>
-        <div class="mb-1">
+        <div class="mb-3">
             <label for="lastname" class="form-label" th:text="#{label.lastname}"/>
             <input type="text" id="lastname" name="lastname" class="form-control" th:field="*{lastname}"/>
             <div class="text-danger small" th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"></div>
         </div>
-        <div class="mb-1">
+        <div class="mb-3">
             <label for="password" class="form-label" th:text="#{label.password}"/>
             <input type="password" id="password" name="password" class="form-control" th:field="*{password}"/>
             <div class="text-danger small" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
@@ -41,7 +41,7 @@
             <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" th:field="*{confirmPassword}"/>
             <div class="text-danger small" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></div>
         </div>
-        <div class="mb-3">
+        <div class="mb-5">
             <button type="submit" th:method="post" class="btn btn-primary" th:text="#{button.signup}"/>
             <a th:href="@{/show_login}" class="btn btn-secondary" th:text="#{button.go_to_login}"/>
         </div>

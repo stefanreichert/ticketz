@@ -52,6 +52,11 @@ public class TicketJPAPersistenceImpl implements TicketPersistence {
                 .toList();
     }
 
+    @Override
+    public long getTicketCount() {
+        return ticketRepository.count();
+    }
+
     private void validateVersion(TicketEntity ticketEntity, Ticket ticket) {
         if (ticket.getVersion() != ticketEntity.getVersion()) {
             throw new OptimisticLockException("Staled ticket data for update");

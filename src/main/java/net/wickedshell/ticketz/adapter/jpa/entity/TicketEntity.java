@@ -20,7 +20,7 @@ public class TicketEntity {
     @Column(nullable = false)
     private String ticketNumber;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 80)
     private String title;
 
     private String description;

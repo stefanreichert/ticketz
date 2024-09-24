@@ -13,4 +13,6 @@ public interface TicketPersistence {
     @Valid Ticket update(@Valid Ticket ticket);
 
     List<Ticket> findAll();
+
+    long getTicketCount();
 }

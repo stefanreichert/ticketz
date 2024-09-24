@@ -21,7 +21,9 @@
                 <th th:text="#{table.header.ticket_number}"/>
                 <th th:text="#{table.header.title}"/>
                 <th th:text="#{table.header.author}"/>
+                <th th:text="#{table.header.editor}"/>
                 <th th:text="#{table.header.state}"/>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -29,10 +31,26 @@
                 <td th:text="${ticket.ticketNumber}"></td>
                 <td th:text="${ticket.description}"></td>
                 <td th:text="${ticket.author.email}"></td>
+                <td th:text="${ticket.editor != null ? ticket.editor.email : '---'}"></td>
                 <td th:text="${ticket.state}"></td>
+                <td>
+                    <a th:href="@{/secure/tickets/{ticketNumber}(ticketNumber=${ticket.ticketNumber})}"
+                       class="btn btn-primary btn-sm" th:text="#{button.edit}">
+                        <span class="bi bi-pencil"></span>
+                    </a>
+                    <a th:href="@{/secure/tickets/{ticketNumber}(ticketNumber=${ticket.ticketNumber}):delete}"
+                       class="btn btn-danger btn-sm" th:text="#{button.delete}">
+                        <span class="bi bi-trash"></span>
+                    </a>
+                </td>
             </tr>
             </tbody>
         </table>
+    </div>
+    <div class="mb-5">
+        <a th:href="@{/secure/tickets:new}" class="btn btn-success" th:text="#{button.new_ticket}">
+            <span class="bi bi-trash"></span>
+        </a>
     </div>
     <div th:replace="~{fragments/footer :: footer}"></div>
 </div>

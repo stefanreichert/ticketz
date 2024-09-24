@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -49,5 +50,10 @@ public class UserServiceImpl implements UserService {
             return findByEmail(principalUser.getUsername()).orElseThrow(() -> authenticationException);
         }
         throw authenticationException;
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userPersistence.findAll();
     }
 }

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <link th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/styles.css}" rel="stylesheet"/>
+    <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}" defer></script>
+    <title th:text="#{header.ticketz}"/>
+</head>
+<body>
+<div class="container">
+    <div th:replace="~{fragments/header :: header}"></div>
+    <div class="mb-4">
+        <p th:text="#{subheader.ticket}"/>
+    </div>
+    <div th:replace="~{fragments/messages :: messages}"></div>
+    <form  th:method="post" th:object="${ticket}" th:action="@{/secure/tickets/{ticketNumber}(ticketNumber=*{ticketNumber})}">
+        <div class="mb-3">
+            <label for="span-ticketNumber" class="form-label" th:text="#{label.ticketNumber}"/>
+            <label id="span-ticketNumber" class="form-control bg-light" th:text="*{ticketNumber}"/>
+        </div>
+        <div class="mb-3">
+            <label for="title" class="form-label" th:text="#{label.title}"/>
+            <input type="text" id="title" name="description" class="form-control" th:disabled="${!ticket.canEdit}" th:field="*{title}" th:classappend="${!ticket.canEdit ? 'bg-light' : ''}"/>
+            <div class="text-danger small" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label" th:text="#{label.description}"/>
+            <textarea id="description" name="description" class="form-control" rows="3" th:disabled="${!ticket.canEdit}" th:field="*{description}" th:classappend="${!ticket.canEdit ? 'bg-light' : ''}"></textarea>
+            <div class="text-danger small" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+        </div>
+        <div class="mb-3">
+            <label for="author" class="form-label" th:text="#{label.author}"/>
+            <span id="span-author" class="form-control bg-light" th:text="*{author.email}"></span>
+        </div>
+        <div class="mb-3">
+            <label for="editor" class="form-label" th:text="#{label.editor}"/>
+            <span id="span-editor" class="form-control bg-light" th:text="${ticket.editor != null ? ticket.editor.email : '---'}"></span>
+        </div>
+        <div class="mb-3">
+            <label for="span-state" class="form-label" th:text="#{label.state}"/>
+            <span id="span-state" class="form-control bg-light" th:text="#{${ticket.state}}"></span>
+        </div>
+        <div class="mb-5">
+            <button type="submit" class="btn btn-primary" th:text="#{button.save}" th:name="newState" th:if="*{canEdit}"  th:value="*{state}" />
+            <a th:href="@{/secure/tickets}" class="btn btn-secondary" th:text="#{button.cancel}"/>
+            <button type="submit" class="btn btn-info" th:text="#{button.change_state.to_progress}" th:name="newState" th:if="*{canGoIntoProgress}"  th:value="IN_PROGRESS"/>
+            <button type="submit" class="btn btn-info" th:text="#{button.change_state.to_fixed}" th:name="newState" th:if="*{canGoIntoFixed}" th:value="FIXED"/>
+            <button type="submit" class="btn btn-info" th:text="#{button.change_state.to_rejected}" th:name="newState" th:if="*{canGoIntoRejected}"  th:value="REJECTED"/>
+            <button type="submit" class="btn btn-info" th:text="#{button.change_state.to_reopened}" th:name="newState" th:if="*{canGoIntoReopened}"  th:value="REOPENED"/>
+            <button type="submit" class="btn btn-info" th:text="#{button.change_state.to_closed}" th:name="newState" th:if="*{canGoIntoClosed}"  th:value="CLOSED"/>
+        </div>
+        <input type="hidden" id="ticketNumber" name="ticketNumber" th:field="*{ticketNumber}"/>
+        <input type="hidden" id="author" name="author" th:field="*{author.email}"/>
+        <input type="hidden" id="editor" name="editor" th:if="*{editor}" th:field="*{editor.email}"/>
+        <input type="hidden" id="state" name="state" th:field="*{state}"/>
+        <input type="hidden" id="canEdit" name="canEdit" th:field="*{canEdit}"/>
+        <input type="hidden" id="canGoIntoProgress" name="canGoIntoProgress" th:field="*{canGoIntoProgress}"/>
+        <input type="hidden" id="canGoIntoFixed" name="canGoIntoFixed" th:field="*{canGoIntoFixed}"/>
+        <input type="hidden" id="canGoIntoRejected" name="canGoIntoRejected" th:field="*{canGoIntoRejected}"/>
+        <input type="hidden" id="canGoIntoReopened" name="canGoIntoReopened" th:field="*{canGoIntoReopened}"/>
+        <input type="hidden" id="canGoIntoClosed" name="canGoIntoClosed" th:field="*{canGoIntoClosed}"/>
+    </form>
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</div>
+</body>
+</html>

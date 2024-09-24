@@ -32,9 +32,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(AuthenticationController.class)
+@WebMvcTest(RestAuthenticationController.class)
 @ContextConfiguration(classes = {AuthenticationConfiguration.class, RestAdapterConfiguration.class, TestConfiguration.class})
-class AuthenticationControllerTest {
+class RestAuthenticationControllerTest {
 
     public static final String LOGIN_ROUTE = "/api/authentication/logins";
     public static final String LOGIN_REQUEST = "{\"email\":\"%s\",\"password\":\"%s\"}";

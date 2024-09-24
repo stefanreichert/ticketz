@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(RestRessource.RESOURCE_TICKETS)
-public class TicketController {
+public class RestTicketController {
 
     private final TicketService ticketService;
     private final ModelMapper mapper = new ModelMapper();

@@ -9,7 +9,9 @@ import net.wickedshell.ticketz.service.port.persistence.exception.ObjectNotFound
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 @Component
 @RequiredArgsConstructor
@@ -44,5 +46,10 @@ public class UserJPAPersistenceImpl implements UserPersistence {
         UserEntity userEntityCurrent = userRepository.findByEmail(user.getEmail()).orElseThrow(ObjectNotFoundException::new);
         mapper.map(user, userEntityCurrent);
         return mapper.map(userRepository.save(userEntityCurrent), User.class);
+    }
+
+    @Override
+    public List<User> findAll() {
+        return StreamSupport.stream(userRepository.findAll().spliterator(), false).map(userEntity -> mapper.map(userEntity, User.class)).toList();
     }
 }

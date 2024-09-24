@@ -3,6 +3,7 @@ package net.wickedshell.ticketz.service.port.persistence;
 import jakarta.validation.Valid;
 import net.wickedshell.ticketz.service.model.User;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserPersistence {
@@ -13,4 +14,6 @@ public interface UserPersistence {
     @Valid User update(@Valid User user);
 
     Optional<User> findByEmail(String email);
+
+    List<User> findAll();
 }

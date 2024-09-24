@@ -15,7 +15,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-public class ShowTicketListController {
+public class TicketListController {
 
     private final UserService userService;
     private final TicketService ticketService;

@@ -4,9 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.adapter.web.WebAction;
-import net.wickedshell.ticketz.adapter.web.WebView;
 import net.wickedshell.ticketz.adapter.web.model.Signup;
-import net.wickedshell.ticketz.service.model.Role;
 import net.wickedshell.ticketz.service.model.User;
 import net.wickedshell.ticketz.service.port.rest.UserService;
 import org.springframework.context.MessageSource;
@@ -21,10 +19,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Set;
 
+import static net.wickedshell.ticketz.adapter.web.WebAction.ACTION_SHOW_LOGIN;
+import static net.wickedshell.ticketz.adapter.web.WebAction.redirectTo;
+import static net.wickedshell.ticketz.adapter.web.WebView.VIEW_SIGNUP;
+import static net.wickedshell.ticketz.service.model.Role.ROLE_USER;
+
 @RequiredArgsConstructor
 @Controller
 public class SignupController {
 
+    public static final String ATTRIBUTE_NAME_SIGNUP = "signup";
     private final UserService userService;
     private final MessageSource messageSource;
 
@@ -37,8 +41,8 @@ public class SignupController {
 
     @GetMapping(WebAction.ACTION_SHOW_SIGNUP)
     public String showSignup(Model model) {
-        model.addAttribute("signup", new Signup());
-        return WebView.VIEW_SIGNUP;
+        model.addAttribute(ATTRIBUTE_NAME_SIGNUP, new Signup());
+        return VIEW_SIGNUP;
     }
 
     @PostMapping(WebAction.ACTION_SIGNUP)
@@ -46,15 +50,15 @@ public class SignupController {
                                HttpServletRequest request,
                                RedirectAttributes redirectAttributes) {
         if (validationFailed(signup, bindingResult)) {
-            return new ModelAndView(WebView.VIEW_SIGNUP).addObject("signup", signup);
+            return new ModelAndView(VIEW_SIGNUP).addObject(ATTRIBUTE_NAME_SIGNUP, signup);
         }
         User user = new User();
         user.setFirstname(signup.getFirstname());
         user.setLastname(signup.getLastname());
         user.setEmail(signup.getEmail());
-        userService.create(user, signup.getPassword(), Set.of(Role.ROLE_USER));
+        userService.create(user, signup.getPassword(), Set.of(ROLE_USER));
         String message = messageSource.getMessage("message.signup_succeeded", null, request.getLocale());
         redirectAttributes.addFlashAttribute("message", message);
-        return new ModelAndView("redirect:" + WebAction.ACTION_SHOW_LOGIN);
+        return new ModelAndView(redirectTo(ACTION_SHOW_LOGIN));
     }
 }
