@@ -37,7 +37,8 @@ public class WebAdapterConfiguration {
                 .authorizeHttpRequests(authorization -> authorization
                         .requestMatchers("/secure/**").authenticated()
                         .anyRequest().permitAll())
-                .addFilterBefore(new SecurityContextHolderFilter(securityContextRepository), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new SecurityContextHolderFilter(securityContextRepository),
+                        UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
