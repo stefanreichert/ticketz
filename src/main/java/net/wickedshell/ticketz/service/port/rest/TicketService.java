@@ -8,6 +8,8 @@ import java.util.List;
 public interface TicketService {
     Ticket loadByTicketNumber(String ticketNumber);
 
+    void deleteByTicketNumber(String ticketNumber);
+
     Ticket create(Ticket ticket);
 
     Ticket update(Ticket ticket);
@@ -16,4 +18,5 @@ public interface TicketService {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     boolean evaluateCanBeEdited(Ticket ticket);
+
 }

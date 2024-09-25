@@ -32,6 +32,12 @@ public class TicketJPAPersistenceImpl implements TicketPersistence {
     }
 
     @Override
+    public void deleteByTicketNumber(String ticketNumber) {
+        TicketEntity ticketEntity = ticketRepository.findByTicketNumber(ticketNumber).orElseThrow(ObjectNotFoundException::new);
+        ticketRepository.delete(ticketEntity);
+    }
+
+    @Override
     public Ticket create(Ticket ticket) {
         TicketEntity ticketEntity = mapper.map(ticket, TicketEntity.class);
         return mapper.map(ticketRepository.save(ticketEntity), Ticket.class);

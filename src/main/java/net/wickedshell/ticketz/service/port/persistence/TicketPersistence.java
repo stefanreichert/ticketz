@@ -8,6 +8,8 @@ import java.util.List;
 public interface TicketPersistence {
     Ticket loadByTicketNumber(String ticketNumber);
 
+    void deleteByTicketNumber(String ticketNumber);
+
     Ticket create(Ticket ticket);
 
     @Valid Ticket update(@Valid Ticket ticket);
@@ -15,4 +17,5 @@ public interface TicketPersistence {
     List<Ticket> findAll();
 
     long getTicketCount();
+
 }

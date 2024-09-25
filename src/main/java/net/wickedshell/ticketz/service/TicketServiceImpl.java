@@ -37,6 +37,12 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     @PreAuthorize("hasRole('ROLE_USER')")
+    public void deleteByTicketNumber(String ticketNumber) {
+        ticketPersistence.deleteByTicketNumber(ticketNumber);
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     public Ticket create(@Valid Ticket ticket) {
         long nextTicketNumber = ticketPersistence.getTicketCount() + 1;
         ticket.setTicketNumber(String.format(TICKET_NUMBER_TEMPLATE, nextTicketNumber));

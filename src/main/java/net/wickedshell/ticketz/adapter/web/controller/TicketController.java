@@ -67,8 +67,9 @@ public class TicketController {
 
     @GetMapping(WebAction.ACTION_DELETE_TICKET)
     public String deleteTicket(@PathVariable String ticketNumber, HttpServletRequest request, RedirectAttributes redirectAttributes) {
-        // ticketService.deleteByTicketNumber(ticketNumber);
-        String message = messageSource.getMessage("message.ticket.delete_succeeded", null, request.getLocale());
+        ticketService.deleteByTicketNumber(ticketNumber);
+        String[] arguments = new String[]{ticketNumber};
+        String message = messageSource.getMessage("message.ticket.delete_succeeded", arguments, request.getLocale());
         redirectAttributes.addFlashAttribute(ATTRIBUTE_NAME_MESSAGE, message);
         return redirectTo(ACTION_SHOW_TICKET_LIST);
     }
