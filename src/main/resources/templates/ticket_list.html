@@ -9,11 +9,7 @@
 </head>
 <body>
 <div class="container-lg">
-    <div th:replace="~{fragments/header :: header}"></div>
-    <div class="mb-4">
-        <p th:text="#{subheader.ticket_list}"/>
-    </div>
-    <div th:replace="~{fragments/messages :: messages}"></div>
+    <div th:replace="~{fragments/header :: header(pageheader=#{pageheader.ticket_list})}"></div>
     <div class="mb-3">
         <table class="table table-striped">
             <thead>
@@ -32,14 +28,14 @@
                 <td th:text="${ticket.description}"></td>
                 <td th:text="${ticket.author.email}"></td>
                 <td th:text="${ticket.editor != null ? ticket.editor.email : '---'}"></td>
-                <td th:text="${ticket.state}"></td>
+                <td th:text="#{${ticket.state}}"></td>
                 <td>
                     <a th:href="@{/secure/tickets/{ticketNumber}(ticketNumber=${ticket.ticketNumber})}"
-                       class="btn btn-primary btn-sm" th:text="#{button.edit}">
+                       class="btn btn-outline-primary btn-sm" th:text="#{button.edit}">
                         <span class="bi bi-pencil"></span>
                     </a>
                     <a th:href="@{/secure/tickets/{ticketNumber}(ticketNumber=${ticket.ticketNumber}):delete}"
-                       class="btn btn-danger btn-sm" th:text="#{button.delete}">
+                       class="btn btn-outline-danger btn-sm" th:text="#{button.delete}">
                         <span class="bi bi-trash"></span>
                     </a>
                 </td>
@@ -48,7 +44,7 @@
         </table>
     </div>
     <div class="mb-5">
-        <a th:href="@{/secure/tickets:new}" class="btn btn-success" th:text="#{button.new_ticket}">
+        <a th:href="@{/secure/tickets/new}" class="btn btn-success" th:text="#{button.new_ticket}">
             <span class="bi bi-trash"></span>
         </a>
     </div>

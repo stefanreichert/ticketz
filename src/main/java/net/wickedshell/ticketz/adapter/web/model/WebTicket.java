@@ -1,23 +1,24 @@
 package net.wickedshell.ticketz.adapter.web.model;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
 public class WebTicket {
-    @NotNull
+    @NotBlank
     private String ticketNumber;
-    @NotNull
-    @Size(min = 1, max = 80)
+    @NotBlank
+    @Size(max = 80)
     private String title;
-    @NotNull
-    @Size(min = 1, max = 255)
+    @NotBlank
+    @Size(max = 255)
     private String description;
     @NotNull
     private WebUser author;
     private WebUser editor;
-    @NotNull
+    @NotBlank
     private String state;
 
     private boolean canEdit = false;

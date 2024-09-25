@@ -9,11 +9,7 @@
 </head>
 <body>
 <div class="container">
-    <div th:replace="~{fragments/header :: header}"></div>
-    <div class="mb-4">
-        <p th:text="#{subheader.login}"/>
-    </div>
-    <div th:replace="~{fragments/messages :: messages}"></div>
+    <div th:replace="~{fragments/header :: header(pageheader=#{pageheader.login})}"></div>
     <form th:action="@{/login}" th:method="post" th:object="${login}">
     <div class="mb-3">
         <label for="email" class="form-label" th:text="#{label.email}"/>

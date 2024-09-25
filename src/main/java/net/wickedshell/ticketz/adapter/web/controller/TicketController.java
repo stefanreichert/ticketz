@@ -21,17 +21,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Set;
 
-import static net.wickedshell.ticketz.adapter.web.WebAction.ACTION_SHOW_TICKET_LIST;
-import static net.wickedshell.ticketz.adapter.web.WebAction.redirectTo;
+import static net.wickedshell.ticketz.adapter.web.WebAction.*;
 import static net.wickedshell.ticketz.adapter.web.WebView.VIEW_TICKET;
 import static net.wickedshell.ticketz.service.model.TicketState.*;
 
 @Controller
 public class TicketController {
 
-    public static final String ATTRIBUTE_TICKET = "ticket";
+    public static final String ATTRIBUTE_TICKET = "webTicket";
     public static final String ATTRIBUTE_NAME_MESSAGE = "message";
-    public static final String TICKET_NUMBER_NEW = "New";
 
     private final ModelMapper mapper = new ModelMapper();
 
@@ -50,7 +48,7 @@ public class TicketController {
     public String newTicket(Model model) {
         WebTicket ticket = new WebTicket();
         ticket.setTicketNumber(TICKET_NUMBER_NEW);
-        ticket.setAuthor(mapper.map(userService.getPrincipalUser(), WebUser.class));
+        ticket.setAuthor(mapper.map(userService.getCurrentUser(), WebUser.class));
         ticket.setState(CREATED.name());
         ticket.setCanEdit(true);
         model.addAttribute(ATTRIBUTE_TICKET, ticket);
@@ -59,11 +57,11 @@ public class TicketController {
 
     @GetMapping(WebAction.ACTION_SHOW_TICKET)
     public String showTicket(@PathVariable String ticketNumber, Model model) {
-        Ticket ticket = ticketService.loadByTicketNumber(ticketNumber);
-        WebTicket webTicket = mapper.map(ticket, WebTicket.class);
-        webTicket.setCanEdit(ticketService.evaluateCanBeEdited(ticket));
-        updateWebTicketPossibleTransitions(webTicket, ticket.getPossibleNextStates());
-        model.addAttribute(ATTRIBUTE_TICKET, webTicket);
+        Ticket existingTicket = ticketService.loadByTicketNumber(ticketNumber);
+        WebTicket ticket = mapper.map(existingTicket, WebTicket.class);
+        ticket.setCanEdit(ticketService.evaluateCanBeEdited(existingTicket));
+        updateWebTicketPossibleTransitions(ticket, existingTicket.getPossibleNextStates());
+        model.addAttribute(ATTRIBUTE_TICKET, ticket);
         return VIEW_TICKET;
     }
 
@@ -81,18 +79,21 @@ public class TicketController {
             return new ModelAndView(VIEW_TICKET).addObject(ATTRIBUTE_TICKET, ticket);
         }
         String messageId;
+        String[] arguments;
         if (TICKET_NUMBER_NEW.equals(ticketNumber)) {
-            ticketService.create(mapper.map(ticket, Ticket.class));
+            Ticket newTicket = ticketService.create(mapper.map(ticket, Ticket.class));
             messageId = "message.ticket.create_succeeded";
+            arguments = new String[]{newTicket.getTicketNumber()};
         } else {
             Ticket existingTicket = ticketService.loadByTicketNumber(ticketNumber);
             existingTicket.setState(newState);
             existingTicket.setDescription(ticket.getDescription());
             ticketService.update(existingTicket);
             messageId = "message.ticket.save_succeeded";
+            arguments = new String[]{existingTicket.getTicketNumber()};
         }
         redirectAttributes.addFlashAttribute(ATTRIBUTE_NAME_MESSAGE,
-                messageSource.getMessage(messageId, null, request.getLocale()));
+                messageSource.getMessage(messageId, arguments, request.getLocale()));
         return new ModelAndView(redirectTo(ACTION_SHOW_TICKET_LIST));
     }
 

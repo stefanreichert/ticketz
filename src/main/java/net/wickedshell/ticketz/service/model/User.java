@@ -14,11 +14,11 @@ import java.util.Set;
 public class User {
 
     @NotNull
-    @Size(min = 1, max = 255)
+    @Size(max = 255)
     private String lastname;
 
     @NotNull
-    @Size(min = 1, max = 255)
+    @Size(max = 255)
     private String firstname;
 
     @NotNull
@@ -26,7 +26,7 @@ public class User {
 
     @Email
     @NotNull
-    @Size(min = 1, max = 255)
+    @Size(max = 255)
     private String email;
 
     @NotNull

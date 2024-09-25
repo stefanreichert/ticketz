@@ -1,20 +1,16 @@
 package net.wickedshell.ticketz.adapter.web;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.*;
-
-import java.io.IOException;
 
 @RequiredArgsConstructor
 @ComponentScan(basePackageClasses = WebAdapterConfiguration.class)
@@ -22,15 +18,20 @@ import java.io.IOException;
 public class WebAdapterConfiguration {
 
     @Bean
-    public SecurityFilterChain webFilterChain(HttpSecurity http, SecurityContextRepository securityContextRepository) throws Exception {
+    public SecurityFilterChain webFilterChain(HttpSecurity http, SecurityContextRepository securityContextRepository, AuthenticationSuccessHandler authenticationSuccessHandler) throws Exception {
         return http
                 .csrf(Customizer.withDefaults())
                 .cors(Customizer.withDefaults())
                 .formLogin(form -> form
                         .loginPage(WebAction.ACTION_SHOW_LOGIN)
+                        .successHandler(authenticationSuccessHandler)
                         .permitAll()
                 )
-                .exceptionHandling(handler -> handler.authenticationEntryPoint(new ExceptionEntryPoint()))
+                .logout(logout -> logout
+                        .logoutUrl(WebAction.ACTION_LOGOUT)
+                        .logoutSuccessUrl(WebAction.ACTION_SHOW_LOGIN)
+                        .permitAll()
+                )
                 .securityContext(securityContext -> securityContext
                         .securityContextRepository(securityContextRepository))
                 .authorizeHttpRequests(authorization -> authorization
@@ -41,18 +42,17 @@ public class WebAdapterConfiguration {
     }
 
     @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
+        SavedRequestAwareAuthenticationSuccessHandler handler = new SavedRequestAwareAuthenticationSuccessHandler();
+        handler.setDefaultTargetUrl(WebAction.ACTION_SHOW_TICKET_LIST);
+        return handler;
+    }
+
+    @Bean
     public SecurityContextRepository securityContextRepository() {
         return new DelegatingSecurityContextRepository(
                 new RequestAttributeSecurityContextRepository(),
                 new HttpSessionSecurityContextRepository());
-    }
-
-    private static class ExceptionEntryPoint implements AuthenticationEntryPoint {
-
-        @Override
-        public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
-            response.sendRedirect(request.getContextPath() + WebAction.ACTION_SHOW_LOGIN);
-        }
     }
 }
 

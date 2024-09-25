@@ -1,5 +1,6 @@
 package net.wickedshell.ticketz.service.model;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -11,14 +12,15 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class Ticket {
 
-    @NotNull
+    @NotBlank
     private String title;
 
-    @NotNull
-    @Size(min = 1, max = 80)
+    @NotBlank
+    @Size(max = 80)
     private String ticketNumber;
 
-    @Size(min = 1, max = 255)
+    @NotBlank
+    @Size(max = 255)
     private String description;
 
     @NotNull

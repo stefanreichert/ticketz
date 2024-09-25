@@ -27,7 +27,7 @@ public class TicketListController {
 
     @ModelAttribute("user")
     public User populateUser() {
-        return userService.getPrincipalUser();
+        return userService.getCurrentUser();
     }
 
     @ModelAttribute("tickets")

@@ -14,7 +14,7 @@ public interface UserService {
     User create(User user, String password, Set<Role> roles);
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    User getPrincipalUser();
+    User getCurrentUser();
 
     @PreAuthorize("hasRole('ROLE_USER')")
     List<User> findAll();

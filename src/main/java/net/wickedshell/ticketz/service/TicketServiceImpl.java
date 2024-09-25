@@ -23,7 +23,7 @@ import static net.wickedshell.ticketz.service.model.TicketState.*;
 @RequiredArgsConstructor
 public class TicketServiceImpl implements TicketService {
 
-    private static final String TICKET_NUMBER_TEMPLATE = "TICKETS-%d";
+    private static final String TICKET_NUMBER_TEMPLATE = "TICKETZ-%d";
     private final TicketPersistence ticketPersistence;
     private final UserService userService;
 
@@ -41,7 +41,7 @@ public class TicketServiceImpl implements TicketService {
         long nextTicketNumber = ticketPersistence.getTicketCount() + 1;
         ticket.setTicketNumber(String.format(TICKET_NUMBER_TEMPLATE, nextTicketNumber));
         ticket.setState(CREATED);
-        ticket.setAuthor(userService.getPrincipalUser());
+        ticket.setAuthor(userService.getCurrentUser());
         return ticketPersistence.create(ticket);
     }
 
@@ -82,7 +82,7 @@ public class TicketServiceImpl implements TicketService {
             return false;
         }
         if (ticket.getState() == IN_PROGRESS) {
-            return ticket.getEditor().getEmail().equals(userService.getPrincipalUser().getEmail());
+            return ticket.getEditor().getEmail().equals(userService.getCurrentUser().getEmail());
         }
         return true;
     }
@@ -90,7 +90,7 @@ public class TicketServiceImpl implements TicketService {
     private void changeEditorIfRequired(Ticket ticket) {
         TicketState newState = ticket.getState();
         if (newState == IN_PROGRESS) {
-            ticket.setEditor(userService.getPrincipalUser());
+            ticket.setEditor(userService.getCurrentUser());
         } else if (newState == CLOSED || newState == REOPENED) {
             ticket.setEditor(null);
         }
@@ -102,7 +102,7 @@ public class TicketServiceImpl implements TicketService {
             throw new ValidationException(String.format("Invalid new state: given state transition is not permitted - %s -> %s.", existingTicket.getState(), newState));
         }
         if (newState == CLOSED || newState == REOPENED) {
-            User currentUser = userService.getPrincipalUser();
+            User currentUser = userService.getCurrentUser();
             String authorEmail = existingTicket.getAuthor().getEmail();
             if (!authorEmail.equals(currentUser.getEmail())) {
                 throw new ValidationException("Invalid new state: closing or reopening a ticket is only allowed by the author.");
@@ -114,14 +114,14 @@ public class TicketServiceImpl implements TicketService {
         switch (ticket.getState()) {
             case CREATED -> ticket.setPossibleNextStates(Set.of(IN_PROGRESS));
             case IN_PROGRESS -> {
-                if (ticket.getEditor().getEmail().equals(userService.getPrincipalUser().getEmail())) {
+                if (ticket.getEditor().getEmail().equals(userService.getCurrentUser().getEmail())) {
                     ticket.setPossibleNextStates(Set.of(FIXED, REJECTED));
                 } else {
                     ticket.setPossibleNextStates(Set.of());
                 }
             }
             case FIXED, REJECTED -> {
-                if (ticket.getAuthor().getEmail().equals(userService.getPrincipalUser().getEmail())) {
+                if (ticket.getAuthor().getEmail().equals(userService.getCurrentUser().getEmail())) {
                     ticket.setPossibleNextStates(Set.of(REOPENED, CLOSED));
                 } else {
                     ticket.setPossibleNextStates(Set.of());

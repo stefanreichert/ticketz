@@ -23,6 +23,7 @@ public class TicketEntity {
     @Column(nullable = false, length = 80)
     private String title;
 
+    @Column(nullable = false)
     private String description;
 
     @ManyToOne(optional = false)
