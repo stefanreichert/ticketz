@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="ISO-8859-1"/>
+    <link th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" rel="stylesheet"/>
+    <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}" defer></script>
+</head>
+<body th:fragment="confirm(id, title, message, confirm_url)">
+<div class="modal fade" th:id="${id}" tabindex="-1" role="dialog" th:attr="aria-labelledby=${id + '_title'}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" th:id="${id + '_title'}" th:text="${title}">Title</h5>
+            </div>
+            <div class="modal-body" >
+                <span th:text="${message}"></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{button.cancel}">Cancel</button>
+                <a th:href="${confirm_url}" class="btn btn-primary" th:text="#{button.confirm}">Confirm</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

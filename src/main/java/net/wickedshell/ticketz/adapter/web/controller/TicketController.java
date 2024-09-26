@@ -28,8 +28,8 @@ import static net.wickedshell.ticketz.service.model.TicketState.*;
 @Controller
 public class TicketController {
 
-    public static final String ATTRIBUTE_TICKET = "webTicket";
-    public static final String ATTRIBUTE_NAME_MESSAGE = "message";
+    private static final String ATTRIBUTE_NAME_TICKET = "webTicket";
+    private static final String ATTRIBUTE_NAME_MESSAGE = "message";
 
     private final ModelMapper mapper = new ModelMapper();
 
@@ -44,24 +44,24 @@ public class TicketController {
         this.mapper.addConverter(userConverter);
     }
 
-    @GetMapping(WebAction.ACTION_NEW_TICKET)
+    @GetMapping(ACTION_NEW_TICKET)
     public String newTicket(Model model) {
         WebTicket ticket = new WebTicket();
         ticket.setTicketNumber(TICKET_NUMBER_NEW);
         ticket.setAuthor(mapper.map(userService.getCurrentUser(), WebUser.class));
         ticket.setState(CREATED.name());
         ticket.setCanEdit(true);
-        model.addAttribute(ATTRIBUTE_TICKET, ticket);
+        model.addAttribute(ATTRIBUTE_NAME_TICKET, ticket);
         return VIEW_TICKET;
     }
 
-    @GetMapping(WebAction.ACTION_SHOW_TICKET)
+    @GetMapping(ACTION_SHOW_TICKET)
     public String showTicket(@PathVariable String ticketNumber, Model model) {
         Ticket existingTicket = ticketService.loadByTicketNumber(ticketNumber);
         WebTicket ticket = mapper.map(existingTicket, WebTicket.class);
         ticket.setCanEdit(ticketService.evaluateCanBeEdited(existingTicket));
         updateWebTicketPossibleTransitions(ticket, existingTicket.getPossibleNextStates());
-        model.addAttribute(ATTRIBUTE_TICKET, ticket);
+        model.addAttribute(ATTRIBUTE_NAME_TICKET, ticket);
         return VIEW_TICKET;
     }
 
@@ -77,7 +77,7 @@ public class TicketController {
     @PostMapping(WebAction.ACTION_SAVE_TICKET)
     public ModelAndView saveTicket(@PathVariable String ticketNumber, @RequestParam TicketState newState, @Valid @ModelAttribute WebTicket ticket, BindingResult bindingResult, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            return new ModelAndView(VIEW_TICKET).addObject(ATTRIBUTE_TICKET, ticket);
+            return new ModelAndView(VIEW_TICKET).addObject(ATTRIBUTE_NAME_TICKET, ticket);
         }
         String messageId;
         String[] arguments;

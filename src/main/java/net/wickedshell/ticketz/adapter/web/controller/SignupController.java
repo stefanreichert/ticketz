@@ -19,8 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Set;
 
-import static net.wickedshell.ticketz.adapter.web.WebAction.ACTION_SHOW_LOGIN;
-import static net.wickedshell.ticketz.adapter.web.WebAction.redirectTo;
+import static net.wickedshell.ticketz.adapter.web.WebAction.*;
 import static net.wickedshell.ticketz.adapter.web.WebView.VIEW_SIGNUP;
 import static net.wickedshell.ticketz.service.model.Role.ROLE_USER;
 
@@ -28,7 +27,9 @@ import static net.wickedshell.ticketz.service.model.Role.ROLE_USER;
 @Controller
 public class SignupController {
 
-    public static final String ATTRIBUTE_NAME_SIGNUP = "signup";
+    private static final String ATTRIBUTE_NAME_SIGNUP = "signup";
+    private static final String ATTRIBUTE_NAME_MESSAGE = "message";
+
     private final UserService userService;
     private final MessageSource messageSource;
 
@@ -39,7 +40,7 @@ public class SignupController {
         return bindingResult.hasErrors();
     }
 
-    @GetMapping(WebAction.ACTION_SHOW_SIGNUP)
+    @GetMapping(ACTION_SHOW_SIGNUP)
     public String showSignup(Model model) {
         model.addAttribute(ATTRIBUTE_NAME_SIGNUP, new Signup());
         return VIEW_SIGNUP;
@@ -58,7 +59,7 @@ public class SignupController {
         user.setEmail(signup.getEmail());
         userService.create(user, signup.getPassword(), Set.of(ROLE_USER));
         String message = messageSource.getMessage("message.signup_succeeded", null, request.getLocale());
-        redirectAttributes.addFlashAttribute("message", message);
+        redirectAttributes.addFlashAttribute(ATTRIBUTE_NAME_MESSAGE, message);
         return new ModelAndView(redirectTo(ACTION_SHOW_LOGIN));
     }
 }
