@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -33,6 +34,9 @@ public class Ticket {
 
     @NotNull
     private Set<TicketState> possibleNextStates;
+
+    @NotNull
+    private List<Comment> comments;
 
     @NotNull
     private long version;

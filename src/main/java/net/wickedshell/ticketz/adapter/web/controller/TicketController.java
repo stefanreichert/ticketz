@@ -4,8 +4,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import net.wickedshell.ticketz.adapter.web.WebAction;
 import net.wickedshell.ticketz.adapter.web.converter.WebUserToUserConverter;
+import net.wickedshell.ticketz.adapter.web.model.WebComment;
 import net.wickedshell.ticketz.adapter.web.model.WebTicket;
 import net.wickedshell.ticketz.adapter.web.model.WebUser;
+import net.wickedshell.ticketz.service.model.Comment;
 import net.wickedshell.ticketz.service.model.Ticket;
 import net.wickedshell.ticketz.service.model.TicketState;
 import net.wickedshell.ticketz.service.port.rest.TicketService;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import static net.wickedshell.ticketz.adapter.web.WebAction.*;
@@ -30,6 +33,7 @@ public class TicketController {
 
     private static final String ATTRIBUTE_NAME_TICKET = "webTicket";
     private static final String ATTRIBUTE_NAME_MESSAGE = "message";
+    private static final String ATTRIBUTE_NAME_COMMENTS = "comments";
 
     private final ModelMapper mapper = new ModelMapper();
 
@@ -52,16 +56,19 @@ public class TicketController {
         ticket.setState(CREATED.name());
         ticket.setCanEdit(true);
         model.addAttribute(ATTRIBUTE_NAME_TICKET, ticket);
+        model.addAttribute(ATTRIBUTE_NAME_COMMENTS, new ArrayList<>());
         return VIEW_TICKET;
     }
 
     @GetMapping(ACTION_SHOW_TICKET)
     public String showTicket(@PathVariable String ticketNumber, Model model) {
-        Ticket existingTicket = ticketService.loadByTicketNumber(ticketNumber);
+        Ticket existingTicket = ticketService.loadByTicketNumberWithComments(ticketNumber);
         WebTicket ticket = mapper.map(existingTicket, WebTicket.class);
         ticket.setCanEdit(ticketService.evaluateCanBeEdited(existingTicket));
         updateWebTicketPossibleTransitions(ticket, existingTicket.getPossibleNextStates());
         model.addAttribute(ATTRIBUTE_NAME_TICKET, ticket);
+        model.addAttribute(ATTRIBUTE_NAME_COMMENTS, existingTicket.getComments().stream()
+                .map(comment -> mapper.map(comment, WebComment.class)).toList());
         return VIEW_TICKET;
     }
 
@@ -75,7 +82,7 @@ public class TicketController {
     }
 
     @PostMapping(WebAction.ACTION_SAVE_TICKET)
-    public ModelAndView saveTicket(@PathVariable String ticketNumber, @RequestParam TicketState newState, @Valid @ModelAttribute WebTicket ticket, BindingResult bindingResult, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    public ModelAndView saveTicket(@PathVariable String ticketNumber, @RequestParam TicketState newState, @RequestParam String commentText, @Valid @ModelAttribute WebTicket ticket, BindingResult bindingResult, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return new ModelAndView(VIEW_TICKET).addObject(ATTRIBUTE_NAME_TICKET, ticket);
         }
@@ -88,8 +95,16 @@ public class TicketController {
         } else {
             Ticket existingTicket = ticketService.loadByTicketNumber(ticketNumber);
             existingTicket.setState(newState);
+            existingTicket.setTitle(ticket.getTitle());
             existingTicket.setDescription(ticket.getDescription());
-            ticketService.update(existingTicket);
+            if(!commentText.isBlank()) {
+                Comment comment = new Comment();
+                comment.setText(commentText);
+                ticketService.update(existingTicket, comment);
+            }
+            else{
+                ticketService.update(existingTicket);
+            }
             messageId = "message.ticket.save_succeeded";
             arguments = new String[]{existingTicket.getTicketNumber()};
         }

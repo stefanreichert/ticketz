@@ -31,20 +31,36 @@
         </div>
         <div class="mb-3">
             <span class="form-label" th:text="#{label.editor}"></span>
-            <span id="span-editor" class="form-control bg-light" th:text="${webTicket.editor != null ? ticket.editor.email : '---'}"></span>
+            <span id="span-editor" class="form-control bg-light" th:text="${webTicket.editor != null ? webTicket.editor.email : '---'}"></span>
         </div>
         <div class="mb-3">
             <span class="form-label" th:text="#{label.state}"></span>
             <span id="span-state" class="form-control bg-light" th:text="#{${webTicket.state}}"></span>
         </div>
+        <div class="mb-3" th:if="${webTicket.ticketNumber != 'new'}">
+            <label for="comment" class="form-label" th:text="#{label.comment}"/>
+            <textarea id="comment" name="commentText" class="form-control" rows="3" th:disabled="${!webTicket.canEdit}" th:classappend="${!webTicket.canEdit ? 'bg-light' : ''}"></textarea>
+        </div>
+        <div class="mb-3" th:if="${!comments.isEmpty()}">
+            <button class="btn btn-sm btn-outline-dark" type="button" data-bs-toggle="collapse" data-bs-target="#comments" aria-expanded="false" aria-controls="comments" th:text="#{button.show_comments}">Show Comments</button>
+            <div class="collapse" id="comments">
+                <div class="card card-body">
+                    <p th:each="comment : ${comments}">
+                        <span th:text="${#temporals.format(comment.dateCreated)}"></span>&nbsp;
+                        <span th:text="${comment.author.email}"></span>&nbsp;:&nbsp;
+                        <span th:text="${comment.text}"></span>
+                    </p>
+                </div>
+            </div>
+        </div>
         <div class="mb-5">
             <button type="submit" class="btn btn-primary" th:text="#{button.save}" th:name="newState" th:if="*{canEdit}"  th:value="*{state}" />
-            <a th:href="@{/secure/tickets}" class="btn btn-secondary" th:text="#{button.cancel}"/>
-            <button type="submit" class="btn btn-info" th:text="#{button.change_state.to_progress}" th:name="newState" th:if="*{canGoIntoProgress}"  th:value="IN_PROGRESS"/>
-            <button type="submit" class="btn btn-info" th:text="#{button.change_state.to_fixed}" th:name="newState" th:if="*{canGoIntoFixed}" th:value="FIXED"/>
-            <button type="submit" class="btn btn-info" th:text="#{button.change_state.to_rejected}" th:name="newState" th:if="*{canGoIntoRejected}"  th:value="REJECTED"/>
-            <button type="submit" class="btn btn-info" th:text="#{button.change_state.to_reopened}" th:name="newState" th:if="*{canGoIntoReopened}"  th:value="REOPENED"/>
-            <button type="submit" class="btn btn-info" th:text="#{button.change_state.to_closed}" th:name="newState" th:if="*{canGoIntoClosed}"  th:value="CLOSED"/>
+            <a th:href="@{/secure/tickets}" class="btn btn-outline-secondary" th:text="#{button.cancel}"/>
+            <button type="submit" class="btn btn-outline-primary" th:text="#{button.change_state.to_progress}" th:name="newState" th:if="*{canGoIntoProgress}"  th:value="IN_PROGRESS"/>
+            <button type="submit" class="btn btn-outline-primary" th:text="#{button.change_state.to_fixed}" th:name="newState" th:if="*{canGoIntoFixed}" th:value="FIXED"/>
+            <button type="submit" class="btn btn-outline-primary" th:text="#{button.change_state.to_rejected}" th:name="newState" th:if="*{canGoIntoRejected}"  th:value="REJECTED"/>
+            <button type="submit" class="btn btn-outline-primary" th:text="#{button.change_state.to_reopened}" th:name="newState" th:if="*{canGoIntoReopened}"  th:value="REOPENED"/>
+            <button type="submit" class="btn btn-outline-primary" th:text="#{button.change_state.to_closed}" th:name="newState" th:if="*{canGoIntoClosed}"  th:value="CLOSED"/>
         </div>
         <input type="hidden" id="ticketNumber" name="ticketNumber" th:field="*{ticketNumber}"/>
         <input type="hidden" id="author" name="author" th:field="*{author.email}"/>

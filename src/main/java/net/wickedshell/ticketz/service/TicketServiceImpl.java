@@ -4,9 +4,11 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.service.exception.ValidationException;
+import net.wickedshell.ticketz.service.model.Comment;
 import net.wickedshell.ticketz.service.model.Ticket;
 import net.wickedshell.ticketz.service.model.TicketState;
 import net.wickedshell.ticketz.service.model.User;
+import net.wickedshell.ticketz.service.port.persistence.CommentPersistence;
 import net.wickedshell.ticketz.service.port.persistence.TicketPersistence;
 import net.wickedshell.ticketz.service.port.rest.TicketService;
 import net.wickedshell.ticketz.service.port.rest.UserService;
@@ -26,12 +28,22 @@ public class TicketServiceImpl implements TicketService {
     private static final String TICKET_NUMBER_TEMPLATE = "TICKETZ-%d";
     private final TicketPersistence ticketPersistence;
     private final UserService userService;
+    private final CommentPersistence commentPersistence;
 
     @Override
     @PreAuthorize("hasRole('ROLE_USER')")
     public Ticket loadByTicketNumber(String ticketNumber) {
         Ticket ticket = ticketPersistence.loadByTicketNumber(ticketNumber);
         updatePossibleNextStates(ticket);
+        return ticket;
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public Ticket loadByTicketNumberWithComments(String ticketNumber) {
+        Ticket ticket = loadByTicketNumber(ticketNumber);
+        List<Comment> ticketComments = commentPersistence.loadByTicketNumber(ticketNumber);
+        ticket.setComments(ticketComments);
         return ticket;
     }
 
@@ -53,7 +65,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     @PreAuthorize("hasRole('ROLE_USER')")
-    public Ticket update(@Valid Ticket ticket) {
+    public Ticket update(Ticket ticket) {
         Ticket existingTicket = ticketPersistence.loadByTicketNumber(ticket.getTicketNumber());
         if (!evaluateCanBeEdited(existingTicket)) {
             throw new ValidationException(
@@ -70,7 +82,18 @@ public class TicketServiceImpl implements TicketService {
         ticket.setAuthor(existingTicket.getAuthor());
         Ticket updatedTicket = ticketPersistence.update(ticket);
         updatePossibleNextStates(updatedTicket);
+
         return updatedTicket;
+    }
+
+
+    @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public Ticket update(@Valid Ticket ticket, @Valid Comment comment) {
+        comment.setAuthor(userService.getCurrentUser());
+        commentPersistence.create(comment, ticket);
+        update(ticket);
+        return loadByTicketNumberWithComments(ticket.getTicketNumber());
     }
 
     @Override
