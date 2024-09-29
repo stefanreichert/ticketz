@@ -1,13 +1,13 @@
-package net.wickedshell.ticketz.service.port.persistence;
+package net.wickedshell.ticketz.service.port.access;
 
 import net.wickedshell.ticketz.service.model.Comment;
 import net.wickedshell.ticketz.service.model.Ticket;
 
 import java.util.List;
 
-public interface CommentPersistence {
+public interface CommentService {
 
     List<Comment> findByTicketNumber(String ticketNumber);
 
-    Comment create(Comment comment, Ticket ticket);
+    void create(Comment comment, Ticket ticket);
 }

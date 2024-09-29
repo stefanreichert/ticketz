@@ -10,8 +10,9 @@ import net.wickedshell.ticketz.adapter.web.model.WebUser;
 import net.wickedshell.ticketz.service.model.Comment;
 import net.wickedshell.ticketz.service.model.Ticket;
 import net.wickedshell.ticketz.service.model.TicketState;
-import net.wickedshell.ticketz.service.port.rest.TicketService;
-import net.wickedshell.ticketz.service.port.rest.UserService;
+import net.wickedshell.ticketz.service.port.access.CommentService;
+import net.wickedshell.ticketz.service.port.access.TicketService;
+import net.wickedshell.ticketz.service.port.access.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import static net.wickedshell.ticketz.adapter.web.WebAction.*;
@@ -39,11 +40,13 @@ public class TicketController {
 
     private final UserService userService;
     private final TicketService ticketService;
+    private final CommentService commentService;
     private final MessageSource messageSource;
 
-    public TicketController(UserService userService, TicketService ticketService, MessageSource messageSource, WebUserToUserConverter userConverter) {
+    public TicketController(UserService userService, TicketService ticketService, CommentService commentService, MessageSource messageSource, WebUserToUserConverter userConverter) {
         this.userService = userService;
         this.ticketService = ticketService;
+        this.commentService = commentService;
         this.messageSource = messageSource;
         this.mapper.addConverter(userConverter);
     }
@@ -56,19 +59,21 @@ public class TicketController {
         ticket.setState(CREATED.name());
         ticket.setCanEdit(true);
         model.addAttribute(ATTRIBUTE_NAME_TICKET, ticket);
-        model.addAttribute(ATTRIBUTE_NAME_COMMENTS, new ArrayList<>());
+        model.addAttribute(ATTRIBUTE_NAME_COMMENTS, List.of());
         return VIEW_TICKET;
     }
 
     @GetMapping(ACTION_SHOW_TICKET)
     public String showTicket(@PathVariable String ticketNumber, Model model) {
-        Ticket existingTicket = ticketService.loadByTicketNumberWithComments(ticketNumber);
+        Ticket existingTicket = ticketService.loadByTicketNumber(ticketNumber);
         WebTicket ticket = mapper.map(existingTicket, WebTicket.class);
         ticket.setCanEdit(ticketService.evaluateCanBeEdited(existingTicket));
         updateWebTicketPossibleTransitions(ticket, existingTicket.getPossibleNextStates());
+        List<Comment> comments = commentService.findByTicketNumber(ticketNumber);
         model.addAttribute(ATTRIBUTE_NAME_TICKET, ticket);
-        model.addAttribute(ATTRIBUTE_NAME_COMMENTS, existingTicket.getComments().stream()
-                .map(comment -> mapper.map(comment, WebComment.class)).toList());
+        model.addAttribute(ATTRIBUTE_NAME_COMMENTS, comments.stream()
+                .map(comment -> mapper.map(comment, WebComment.class))
+                .toList());
         return VIEW_TICKET;
     }
 
@@ -84,7 +89,12 @@ public class TicketController {
     @PostMapping(WebAction.ACTION_SAVE_TICKET)
     public ModelAndView saveTicket(@PathVariable String ticketNumber, @RequestParam TicketState newState, @RequestParam(required = false) String commentText, @Valid @ModelAttribute WebTicket ticket, BindingResult bindingResult, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            return new ModelAndView(VIEW_TICKET).addObject(ATTRIBUTE_NAME_TICKET, ticket);
+            List<WebComment> comments = commentService.findByTicketNumber(ticketNumber).stream()
+                    .map(comment -> mapper.map(comment, WebComment.class))
+                    .toList();
+            return new ModelAndView(VIEW_TICKET)
+                    .addObject(ATTRIBUTE_NAME_TICKET, ticket)
+                    .addObject(ATTRIBUTE_NAME_COMMENTS, comments);
         }
         String messageId;
         String[] arguments;
@@ -97,12 +107,11 @@ public class TicketController {
             existingTicket.setState(newState);
             existingTicket.setTitle(ticket.getTitle());
             existingTicket.setDescription(ticket.getDescription());
-            if(!commentText.isBlank()) {
+            if (!commentText.isBlank()) {
                 Comment comment = new Comment();
                 comment.setText(commentText);
                 ticketService.update(existingTicket, comment);
-            }
-            else{
+            } else {
                 ticketService.update(existingTicket);
             }
             messageId = "message.ticket.save_succeeded";

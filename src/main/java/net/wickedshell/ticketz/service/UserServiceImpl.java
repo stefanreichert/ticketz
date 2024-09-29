@@ -6,7 +6,7 @@ import net.wickedshell.ticketz.adapter.rest.security.exception.AuthenticationExc
 import net.wickedshell.ticketz.service.model.Role;
 import net.wickedshell.ticketz.service.model.User;
 import net.wickedshell.ticketz.service.port.persistence.UserPersistence;
-import net.wickedshell.ticketz.service.port.rest.UserService;
+import net.wickedshell.ticketz.service.port.access.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;

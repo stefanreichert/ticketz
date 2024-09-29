@@ -1,4 +1,4 @@
-package net.wickedshell.ticketz.service.port.rest;
+package net.wickedshell.ticketz.service.port.access;
 
 import net.wickedshell.ticketz.service.model.Role;
 import net.wickedshell.ticketz.service.model.User;

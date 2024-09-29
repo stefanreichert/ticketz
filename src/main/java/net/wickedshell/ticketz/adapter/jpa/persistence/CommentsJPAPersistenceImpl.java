@@ -27,7 +27,7 @@ public class CommentsJPAPersistenceImpl implements CommentPersistence {
     }
 
     @Override
-    public List<Comment> loadByTicketNumber(String ticketNumber) {
+    public List<Comment> findByTicketNumber(String ticketNumber) {
         List<CommentEntity> commentEntities = commentRepository.findByTicketNumber(ticketNumber);
         return commentEntities.stream().map(commentEntity -> mapper.map(commentEntity, Comment.class)).toList();
     }

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.adapter.web.model.WebUser;
 import net.wickedshell.ticketz.service.model.User;
 import net.wickedshell.ticketz.service.port.persistence.exception.ObjectNotFoundException;
-import net.wickedshell.ticketz.service.port.rest.UserService;
+import net.wickedshell.ticketz.service.port.access.UserService;
 import org.modelmapper.Converter;
 import org.modelmapper.spi.MappingContext;
 import org.springframework.stereotype.Component;

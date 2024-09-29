@@ -41,7 +41,7 @@
             <label for="comment" class="form-label" th:text="#{label.comment}"/>
             <textarea id="comment" name="commentText" class="form-control" rows="3" th:disabled="${!webTicket.canEdit}" th:classappend="${!webTicket.canEdit ? 'bg-light' : ''}"></textarea>
         </div>
-        <div class="mb-3" th:if="${comments != null && !comments.isEmpty()}">
+        <div class="mb-3" th:if="${!comments.isEmpty()}">
             <button class="btn btn-sm btn-outline-dark" type="button" data-bs-toggle="collapse" data-bs-target="#comments" aria-expanded="false" aria-controls="comments" th:text="#{button.show_comments}">Show Comments</button>
             <div class="collapse" id="comments">
                 <div class="card card-body">

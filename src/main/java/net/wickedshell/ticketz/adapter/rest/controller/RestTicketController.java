@@ -3,7 +3,7 @@ package net.wickedshell.ticketz.adapter.rest.controller;
 import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.adapter.rest.model.RestTicket;
 import net.wickedshell.ticketz.service.model.Ticket;
-import net.wickedshell.ticketz.service.port.rest.TicketService;
+import net.wickedshell.ticketz.service.port.access.TicketService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

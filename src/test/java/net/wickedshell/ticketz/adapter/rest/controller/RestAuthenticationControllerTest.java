@@ -4,7 +4,7 @@ import jakarta.inject.Inject;
 import net.wickedshell.ticketz.adapter.AuthenticationConfiguration;
 import net.wickedshell.ticketz.adapter.rest.RestAdapterConfiguration;
 import net.wickedshell.ticketz.service.model.User;
-import net.wickedshell.ticketz.service.port.rest.UserService;
+import net.wickedshell.ticketz.service.port.access.UserService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

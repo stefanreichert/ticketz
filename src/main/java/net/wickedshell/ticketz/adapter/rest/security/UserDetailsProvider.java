@@ -2,7 +2,7 @@ package net.wickedshell.ticketz.adapter.rest.security;
 
 import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.service.model.Role;
-import net.wickedshell.ticketz.service.port.rest.UserService;
+import net.wickedshell.ticketz.service.port.access.UserService;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;

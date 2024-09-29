@@ -1,4 +1,4 @@
-package net.wickedshell.ticketz.service.port.rest;
+package net.wickedshell.ticketz.service.port.access;
 
 import net.wickedshell.ticketz.service.model.Comment;
 import net.wickedshell.ticketz.service.model.Ticket;
@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface TicketService {
     Ticket loadByTicketNumber(String ticketNumber);
-
-    Ticket loadByTicketNumberWithComments(String ticketNumber);
 
     void deleteByTicketNumber(String ticketNumber);
 

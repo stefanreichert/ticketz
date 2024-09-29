@@ -7,7 +7,7 @@ import net.wickedshell.ticketz.adapter.rest.security.jwt.JwtAuthenticationReques
 import net.wickedshell.ticketz.adapter.rest.security.jwt.JwtService;
 import net.wickedshell.ticketz.service.model.Role;
 import net.wickedshell.ticketz.service.model.User;
-import net.wickedshell.ticketz.service.port.rest.UserService;
+import net.wickedshell.ticketz.service.port.access.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;

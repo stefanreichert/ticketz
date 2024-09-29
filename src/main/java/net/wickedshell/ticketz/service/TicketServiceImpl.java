@@ -8,10 +8,10 @@ import net.wickedshell.ticketz.service.model.Comment;
 import net.wickedshell.ticketz.service.model.Ticket;
 import net.wickedshell.ticketz.service.model.TicketState;
 import net.wickedshell.ticketz.service.model.User;
-import net.wickedshell.ticketz.service.port.persistence.CommentPersistence;
+import net.wickedshell.ticketz.service.port.access.CommentService;
+import net.wickedshell.ticketz.service.port.access.TicketService;
+import net.wickedshell.ticketz.service.port.access.UserService;
 import net.wickedshell.ticketz.service.port.persistence.TicketPersistence;
-import net.wickedshell.ticketz.service.port.rest.TicketService;
-import net.wickedshell.ticketz.service.port.rest.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -28,22 +28,13 @@ public class TicketServiceImpl implements TicketService {
     private static final String TICKET_NUMBER_TEMPLATE = "TICKETZ-%d";
     private final TicketPersistence ticketPersistence;
     private final UserService userService;
-    private final CommentPersistence commentPersistence;
+    private final CommentService commentService;
 
     @Override
     @PreAuthorize("hasRole('ROLE_USER')")
     public Ticket loadByTicketNumber(String ticketNumber) {
         Ticket ticket = ticketPersistence.loadByTicketNumber(ticketNumber);
         updatePossibleNextStates(ticket);
-        return ticket;
-    }
-
-    @Override
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public Ticket loadByTicketNumberWithComments(String ticketNumber) {
-        Ticket ticket = loadByTicketNumber(ticketNumber);
-        List<Comment> ticketComments = commentPersistence.loadByTicketNumber(ticketNumber);
-        ticket.setComments(ticketComments);
         return ticket;
     }
 
@@ -69,8 +60,8 @@ public class TicketServiceImpl implements TicketService {
         Ticket existingTicket = ticketPersistence.loadByTicketNumber(ticket.getTicketNumber());
         if (!evaluateCanBeEdited(existingTicket)) {
             throw new ValidationException(
-                    String.format("Invalid action for state: ticket is closed and cannot be edited: %s.",
-                            existingTicket.getTicketNumber()));
+                    String.format("Invalid action for state: ticket cannot be edited: %s in state %s.",
+                            existingTicket.getTicketNumber(), existingTicket.getState()));
         }
         if (existingTicket.getState() != ticket.getState()) {
             validateStateChange(existingTicket, ticket);
@@ -91,9 +82,8 @@ public class TicketServiceImpl implements TicketService {
     @PreAuthorize("hasRole('ROLE_USER')")
     public Ticket update(@Valid Ticket ticket, @Valid Comment comment) {
         comment.setAuthor(userService.getCurrentUser());
-        commentPersistence.create(comment, ticket);
-        update(ticket);
-        return loadByTicketNumberWithComments(ticket.getTicketNumber());
+        commentService.create(comment, ticket);
+        return update(ticket);
     }
 
     @Override
@@ -110,8 +100,11 @@ public class TicketServiceImpl implements TicketService {
         if (ticket.getState() == CLOSED) {
             return false;
         }
+        if (Set.of(FIXED, REJECTED).contains(ticket.getState())) {
+            return userService.getCurrentUser().getEmail().equals(ticket.getAuthor().getEmail());
+        }
         if (ticket.getState() == IN_PROGRESS) {
-            return ticket.getEditor().getEmail().equals(userService.getCurrentUser().getEmail());
+            return userService.getCurrentUser().getEmail().equals(ticket.getEditor().getEmail());
         }
         return true;
     }

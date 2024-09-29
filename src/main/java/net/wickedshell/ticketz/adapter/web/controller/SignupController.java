@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.adapter.web.WebAction;
 import net.wickedshell.ticketz.adapter.web.model.Signup;
 import net.wickedshell.ticketz.service.model.User;
-import net.wickedshell.ticketz.service.port.rest.UserService;
+import net.wickedshell.ticketz.service.port.access.UserService;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
