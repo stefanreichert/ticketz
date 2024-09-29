@@ -11,7 +11,6 @@
 <div class="container">
     <div th:replace="~{fragments/header :: header(pageheader=#{pageheader.signup})}"></div>
     <form th:action="@{/signup}" th:method="post" th:object="${signup}">
-        <p th:text="${#fields.hasAnyErrors()}"></p>
         <div class="mb-3">
             <label for="email" class="form-label" th:text="#{label.email}"/>
             <input type="email" id="email" name="email" class="form-control" th:field="*{email}"/>
