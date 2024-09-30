@@ -4,9 +4,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import net.wickedshell.ticketz.adapter.web.WebAction;
 import net.wickedshell.ticketz.adapter.web.converter.WebUserToUserConverter;
-import net.wickedshell.ticketz.adapter.web.model.WebComment;
-import net.wickedshell.ticketz.adapter.web.model.WebTicket;
-import net.wickedshell.ticketz.adapter.web.model.WebUser;
+import net.wickedshell.ticketz.adapter.web.model.CommentWeb;
+import net.wickedshell.ticketz.adapter.web.model.TicketWeb;
+import net.wickedshell.ticketz.adapter.web.model.UserWeb;
 import net.wickedshell.ticketz.service.model.Comment;
 import net.wickedshell.ticketz.service.model.Ticket;
 import net.wickedshell.ticketz.service.model.TicketState;
@@ -32,7 +32,7 @@ import static net.wickedshell.ticketz.service.model.TicketState.*;
 @Controller
 public class TicketController {
 
-    private static final String ATTRIBUTE_NAME_TICKET = "webTicket";
+    private static final String ATTRIBUTE_NAME_TICKET = "ticketWeb";
     private static final String ATTRIBUTE_NAME_MESSAGE = "message";
     private static final String ATTRIBUTE_NAME_COMMENTS = "comments";
 
@@ -53,9 +53,9 @@ public class TicketController {
 
     @GetMapping(ACTION_NEW_TICKET)
     public String newTicket(Model model) {
-        WebTicket ticket = new WebTicket();
+        TicketWeb ticket = new TicketWeb();
         ticket.setTicketNumber(TICKET_NUMBER_NEW);
-        ticket.setAuthor(mapper.map(userService.getCurrentUser(), WebUser.class));
+        ticket.setAuthor(mapper.map(userService.getCurrentUser(), UserWeb.class));
         ticket.setState(CREATED.name());
         ticket.setCanEdit(true);
         model.addAttribute(ATTRIBUTE_NAME_TICKET, ticket);
@@ -66,13 +66,13 @@ public class TicketController {
     @GetMapping(ACTION_SHOW_TICKET)
     public String showTicket(@PathVariable String ticketNumber, Model model) {
         Ticket existingTicket = ticketService.loadByTicketNumber(ticketNumber);
-        WebTicket ticket = mapper.map(existingTicket, WebTicket.class);
+        TicketWeb ticket = mapper.map(existingTicket, TicketWeb.class);
         ticket.setCanEdit(ticketService.evaluateCanBeEdited(existingTicket));
         updateWebTicketPossibleTransitions(ticket, existingTicket.getPossibleNextStates());
         List<Comment> comments = commentService.findByTicketNumber(ticketNumber);
         model.addAttribute(ATTRIBUTE_NAME_TICKET, ticket);
         model.addAttribute(ATTRIBUTE_NAME_COMMENTS, comments.stream()
-                .map(comment -> mapper.map(comment, WebComment.class))
+                .map(comment -> mapper.map(comment, CommentWeb.class))
                 .toList());
         return VIEW_TICKET;
     }
@@ -87,10 +87,10 @@ public class TicketController {
     }
 
     @PostMapping(WebAction.ACTION_SAVE_TICKET)
-    public ModelAndView saveTicket(@PathVariable String ticketNumber, @RequestParam TicketState newState, @RequestParam(required = false) String commentText, @Valid @ModelAttribute WebTicket ticket, BindingResult bindingResult, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    public ModelAndView saveTicket(@PathVariable String ticketNumber, @RequestParam TicketState newState, @RequestParam(required = false) String commentText, @Valid @ModelAttribute TicketWeb ticket, BindingResult bindingResult, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            List<WebComment> comments = commentService.findByTicketNumber(ticketNumber).stream()
-                    .map(comment -> mapper.map(comment, WebComment.class))
+            List<CommentWeb> comments = commentService.findByTicketNumber(ticketNumber).stream()
+                    .map(comment -> mapper.map(comment, CommentWeb.class))
                     .toList();
             return new ModelAndView(VIEW_TICKET)
                     .addObject(ATTRIBUTE_NAME_TICKET, ticket)
@@ -122,11 +122,11 @@ public class TicketController {
         return new ModelAndView(redirectTo(ACTION_SHOW_TICKET_LIST));
     }
 
-    private void updateWebTicketPossibleTransitions(WebTicket webTicket, Set<TicketState> possibleNextStates) {
-        webTicket.setCanGoIntoProgress(possibleNextStates.contains(IN_PROGRESS));
-        webTicket.setCanGoIntoFixed(possibleNextStates.contains(FIXED));
-        webTicket.setCanGoIntoRejected(possibleNextStates.contains(REJECTED));
-        webTicket.setCanGoIntoClosed(possibleNextStates.contains(CLOSED));
-        webTicket.setCanGoIntoReopened(possibleNextStates.contains(REOPENED));
+    private void updateWebTicketPossibleTransitions(TicketWeb ticketWeb, Set<TicketState> possibleNextStates) {
+        ticketWeb.setCanGoIntoProgress(possibleNextStates.contains(IN_PROGRESS));
+        ticketWeb.setCanGoIntoFixed(possibleNextStates.contains(FIXED));
+        ticketWeb.setCanGoIntoRejected(possibleNextStates.contains(REJECTED));
+        ticketWeb.setCanGoIntoClosed(possibleNextStates.contains(CLOSED));
+        ticketWeb.setCanGoIntoReopened(possibleNextStates.contains(REOPENED));
     }
 }

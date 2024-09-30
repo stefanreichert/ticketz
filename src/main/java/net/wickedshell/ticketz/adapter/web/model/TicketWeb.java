@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class WebTicket {
+public class TicketWeb {
     @NotBlank
     private String ticketNumber;
     @NotBlank
@@ -16,8 +16,8 @@ public class WebTicket {
     @Size(max = 255)
     private String description;
     @NotNull
-    private WebUser author;
-    private WebUser editor;
+    private UserWeb author;
+    private UserWeb editor;
     @NotBlank
     private String state;
 

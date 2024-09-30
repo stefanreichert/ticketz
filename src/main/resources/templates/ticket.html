@@ -10,19 +10,19 @@
 <body>
 <div class="container">
     <div th:replace="~{fragments/header :: header(pageheader=#{pageheader.ticket})}"></div>
-    <form th:action="@{/secure/tickets/{ticketNumber}(ticketNumber=*{ticketNumber})}" th:method="post" th:object="${webTicket}">
+    <form th:action="@{/secure/tickets/{ticketNumber}(ticketNumber=*{ticketNumber})}" th:method="post" th:object="${ticketWeb}">
         <div class="mb-3">
             <span class="form-label" th:text="#{label.ticketNumber}"></span>
             <span id="span-ticketNumber" class="form-control bg-light" th:text="*{ticketNumber}"></span>
         </div>
         <div class="mb-3">
             <label for="title" class="form-label" th:text="#{label.title}"/>
-            <input type="text" id="title" name="description" class="form-control" th:disabled="${!webTicket.canEdit}" th:field="*{title}" th:classappend="${!webTicket.canEdit ? 'bg-light' : ''}"/>
+            <input type="text" id="title" name="description" class="form-control" th:disabled="${!ticketWeb.canEdit}" th:field="*{title}" th:classappend="${!ticketWeb.canEdit ? 'bg-light' : ''}"/>
             <div class="text-danger small" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
         </div>
         <div class="mb-3">
             <label for="description" class="form-label" th:text="#{label.description}"/>
-            <textarea id="description" name="description" class="form-control" rows="3" th:disabled="${!webTicket.canEdit}" th:field="*{description}" th:classappend="${!webTicket.canEdit ? 'bg-light' : ''}"></textarea>
+            <textarea id="description" name="description" class="form-control" rows="3" th:disabled="${!ticketWeb.canEdit}" th:field="*{description}" th:classappend="${!ticketWeb.canEdit ? 'bg-light' : ''}"></textarea>
             <div class="text-danger small" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
         </div>
         <div class="mb-3">
@@ -31,15 +31,15 @@
         </div>
         <div class="mb-3">
             <span class="form-label" th:text="#{label.editor}"></span>
-            <span id="span-editor" class="form-control bg-light" th:text="${webTicket.editor != null ? webTicket.editor.email : '---'}"></span>
+            <span id="span-editor" class="form-control bg-light" th:text="${ticketWeb.editor != null ? ticketWeb.editor.email : '---'}"></span>
         </div>
         <div class="mb-3">
             <span class="form-label" th:text="#{label.state}"></span>
-            <span id="span-state" class="form-control bg-light" th:text="#{${webTicket.state}}"></span>
+            <span id="span-state" class="form-control bg-light" th:text="#{${ticketWeb.state}}"></span>
         </div>
-        <div class="mb-3" th:if="${webTicket.ticketNumber != 'new'}">
+        <div class="mb-3" th:if="${ticketWeb.ticketNumber != 'new'}">
             <label for="comment" class="form-label" th:text="#{label.comment}"/>
-            <textarea id="comment" name="commentText" class="form-control" rows="3" th:disabled="${!webTicket.canEdit}" th:classappend="${!webTicket.canEdit ? 'bg-light' : ''}"></textarea>
+            <textarea id="comment" name="commentText" class="form-control" rows="3" th:disabled="${!ticketWeb.canEdit}" th:classappend="${!ticketWeb.canEdit ? 'bg-light' : ''}"></textarea>
         </div>
         <div class="mb-3" th:if="${!comments.isEmpty()}">
             <button class="btn btn-sm btn-outline-dark" type="button" data-bs-toggle="collapse" data-bs-target="#comments" aria-expanded="false" aria-controls="comments" th:text="#{button.show_comments}">Show Comments</button>

@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class WebUser {
+public class UserWeb {
 
     @NotBlank
     @Size(max = 255)

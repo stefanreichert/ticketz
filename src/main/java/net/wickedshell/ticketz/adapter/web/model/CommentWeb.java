@@ -7,13 +7,13 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class WebComment {
+public class CommentWeb {
 
     @NotBlank
     private String text;
 
     @NotNull
-    private WebUser author;
+    private UserWeb author;
 
     @NotNull
     private LocalDateTime dateCreated;
