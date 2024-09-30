@@ -1,9 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Ticketz Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-    <module name="ticketz" />
-    <option name="SPRING_BOOT_MAIN_CLASS" value="net.wickedshell.ticketz.TicketzApplication" />
-    <method v="2">
-      <option name="Make" enabled="true" />
-    </method>
-  </configuration>
-</component>
