@@ -13,9 +13,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 @SpringBootApplication
 @EnableMethodSecurity
 @Import({AuthenticationConfiguration.class, WebAdapterConfiguration.class, PersistenceAdapterConfiguration.class, RestAdapterConfiguration.class, ServiceConfiguration.class})
-public class TicketzApplication {
+public class TicketZApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(TicketzApplication.class, args);
+        SpringApplication.run(TicketZApplication.class, args);
     }
 }
