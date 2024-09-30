@@ -14,7 +14,7 @@ public interface TicketService {
 
     Ticket update(Ticket ticket);
 
-    Ticket update(Ticket ticket, Comment comment);
+    Ticket updateWithComment(Ticket ticket, Comment comment);
 
     List<Ticket> findAll();
 

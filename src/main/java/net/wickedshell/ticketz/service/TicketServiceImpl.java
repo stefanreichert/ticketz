@@ -80,7 +80,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     @PreAuthorize("hasRole('ROLE_USER')")
-    public Ticket update(@Valid Ticket ticket, @Valid Comment comment) {
+    public Ticket updateWithComment(@Valid Ticket ticket, @Valid Comment comment) {
         comment.setAuthor(userService.getCurrentUser());
         commentService.create(comment, ticket);
         return update(ticket);

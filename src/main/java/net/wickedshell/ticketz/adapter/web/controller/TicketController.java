@@ -110,7 +110,7 @@ public class TicketController {
             if (!commentText.isBlank()) {
                 Comment comment = new Comment();
                 comment.setText(commentText);
-                ticketService.update(existingTicket, comment);
+                ticketService.updateWithComment(existingTicket, comment);
             } else {
                 ticketService.update(existingTicket);
             }
