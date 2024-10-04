@@ -4,12 +4,12 @@ import jakarta.inject.Inject;
 import net.wickedshell.ticketz.adapter.AuthenticationConfiguration;
 import net.wickedshell.ticketz.adapter.rest.RestAdapterConfiguration;
 import net.wickedshell.ticketz.service.model.User;
+import net.wickedshell.ticketz.service.port.access.TicketService;
 import net.wickedshell.ticketz.service.port.access.UserService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(RestAuthenticationController.class)
-@ContextConfiguration(classes = {AuthenticationConfiguration.class, RestAdapterConfiguration.class, TestConfiguration.class})
+@ContextConfiguration(classes = {AuthenticationConfiguration.class, RestAdapterConfiguration.class, RestAuthenticationControllerTest.TestConfiguration.class})
 class RestAuthenticationControllerTest {
 
     public static final String LOGIN_ROUTE = "/api/authentication/logins";
@@ -42,12 +42,15 @@ class RestAuthenticationControllerTest {
     public static final String SIGNUP_ROUTE = "/api/authentication/signups";
     public static final String SIGNUP_REQUEST = "{\"email\":\"%s\",\"password\":\"%s\",\"firstname\":\"%s\",\"lastname\":\"%s\"}";
     private static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
+
     @Inject
     private MockMvc mvc;
     @Inject
     private WebApplicationContext context;
     @MockBean
     private UserService userService;
+    @MockBean
+    private TicketService ticketService;
 
     @BeforeEach
     public void setup() {

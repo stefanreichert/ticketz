@@ -9,12 +9,15 @@ import net.wickedshell.ticketz.service.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.test.context.ContextConfiguration;
 
 import static net.wickedshell.ticketz.service.model.TicketState.CREATED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataJpaTest
+@ContextConfiguration(classes = {TicketJPAPersistenceImplTest.TestConfig.class})
 class TicketJPAPersistenceImplTest {
 
     @Inject
@@ -76,5 +79,10 @@ class TicketJPAPersistenceImplTest {
         assertEquals(CREATED, ticket_update.getState());
         assertEquals("test@us.er", ticket_update.getAuthor().getEmail());
         assertEquals("test@us.er", ticket_update.getEditor().getEmail());
+    }
+
+    @TestConfiguration
+    static class TestConfig {
+
     }
 }
