@@ -28,8 +28,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 
-import static net.wickedshell.ticketz.adapter.web.WebAction.*;
-import static net.wickedshell.ticketz.adapter.web.WebView.VIEW_LOGIN;
+import static net.wickedshell.ticketz.adapter.web.Action.*;
+import static net.wickedshell.ticketz.adapter.web.View.VIEW_LOGIN;
 
 @Controller
 @RequiredArgsConstructor

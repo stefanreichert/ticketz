@@ -2,7 +2,7 @@ package net.wickedshell.ticketz.adapter.web.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import net.wickedshell.ticketz.adapter.web.WebAction;
+import net.wickedshell.ticketz.adapter.web.Action;
 import net.wickedshell.ticketz.adapter.web.converter.WebUserToUserConverter;
 import net.wickedshell.ticketz.adapter.web.model.CommentWeb;
 import net.wickedshell.ticketz.adapter.web.model.TicketWeb;
@@ -25,8 +25,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 import java.util.Set;
 
-import static net.wickedshell.ticketz.adapter.web.WebAction.*;
-import static net.wickedshell.ticketz.adapter.web.WebView.VIEW_TICKET;
+import static net.wickedshell.ticketz.adapter.web.Action.*;
+import static net.wickedshell.ticketz.adapter.web.View.VIEW_TICKET;
 import static net.wickedshell.ticketz.service.model.TicketState.*;
 
 @Controller
@@ -77,7 +77,7 @@ public class TicketController {
         return VIEW_TICKET;
     }
 
-    @GetMapping(WebAction.ACTION_DELETE_TICKET)
+    @GetMapping(Action.ACTION_DELETE_TICKET)
     public String deleteTicket(@PathVariable String ticketNumber, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         ticketService.deleteByTicketNumber(ticketNumber);
         String[] arguments = new String[]{ticketNumber};
@@ -86,7 +86,7 @@ public class TicketController {
         return redirectTo(ACTION_SHOW_TICKET_LIST);
     }
 
-    @PostMapping(WebAction.ACTION_SAVE_TICKET)
+    @PostMapping(Action.ACTION_SAVE_TICKET)
     public ModelAndView saveTicket(@PathVariable String ticketNumber, @RequestParam TicketState newState, @RequestParam(required = false) String commentText, @Valid @ModelAttribute TicketWeb ticket, BindingResult bindingResult, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             List<CommentWeb> comments = commentService.findByTicketNumber(ticketNumber).stream()

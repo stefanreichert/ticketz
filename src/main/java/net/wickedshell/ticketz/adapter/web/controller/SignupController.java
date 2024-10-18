@@ -3,7 +3,7 @@ package net.wickedshell.ticketz.adapter.web.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import net.wickedshell.ticketz.adapter.web.WebAction;
+import net.wickedshell.ticketz.adapter.web.Action;
 import net.wickedshell.ticketz.adapter.web.model.Signup;
 import net.wickedshell.ticketz.service.model.User;
 import net.wickedshell.ticketz.service.port.access.UserService;
@@ -19,8 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Set;
 
-import static net.wickedshell.ticketz.adapter.web.WebAction.*;
-import static net.wickedshell.ticketz.adapter.web.WebView.VIEW_SIGNUP;
+import static net.wickedshell.ticketz.adapter.web.Action.*;
+import static net.wickedshell.ticketz.adapter.web.View.VIEW_SIGNUP;
 import static net.wickedshell.ticketz.service.model.Role.ROLE_USER;
 
 @RequiredArgsConstructor
@@ -46,7 +46,7 @@ public class SignupController {
         return VIEW_SIGNUP;
     }
 
-    @PostMapping(WebAction.ACTION_SIGNUP)
+    @PostMapping(Action.ACTION_SIGNUP)
     public ModelAndView signup(@Valid @ModelAttribute Signup signup, BindingResult bindingResult,
                                HttpServletRequest request,
                                RedirectAttributes redirectAttributes) {

@@ -1,6 +1,6 @@
 package net.wickedshell.ticketz.adapter.web;
 
-public class WebAction {
+public class Action {
 
     public static final String TICKET_NUMBER_NEW = "new";
 
@@ -16,7 +16,7 @@ public class WebAction {
     public static final String ACTION_SAVE_TICKET = "/secure/tickets/{ticketNumber}";
     public static final String ACTION_LOGOUT = "/secure/logout";
 
-    private WebAction() {
+    private Action() {
         // private constructor to prevent instantiation
     }
 

@@ -1,7 +1,7 @@
 package net.wickedshell.ticketz.adapter.web.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import net.wickedshell.ticketz.adapter.web.WebView;
+import net.wickedshell.ticketz.adapter.web.View;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -18,7 +18,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(Exception.class)
     public ModelAndView exception(final Exception exception, HttpServletRequest request) {
         LOGGER.error(exception.getMessage(), exception);
-        final ModelAndView modelAndView = new ModelAndView(WebView.VIEW_ERROR);
+        final ModelAndView modelAndView = new ModelAndView(View.VIEW_ERROR);
         modelAndView.addObject("url", request.getRequestURL().toString());
         modelAndView.addObject("timestamp", Instant.now());
         modelAndView.addObject("message", exception.getMessage());

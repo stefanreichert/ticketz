@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.List;
 
-import static net.wickedshell.ticketz.adapter.web.WebAction.ACTION_SHOW_TICKET_LIST;
-import static net.wickedshell.ticketz.adapter.web.WebView.VIEW_TICKET_LIST;
+import static net.wickedshell.ticketz.adapter.web.Action.ACTION_SHOW_TICKET_LIST;
+import static net.wickedshell.ticketz.adapter.web.View.VIEW_TICKET_LIST;
 
 @Controller
 @RequiredArgsConstructor

@@ -1,6 +1,6 @@
 package net.wickedshell.ticketz.adapter.web;
 
-public class WebView {
+public class View {
 
     public static final String VIEW_LOGIN = "/login";
     public static final String VIEW_SIGNUP = "/signup";
@@ -8,7 +8,7 @@ public class WebView {
     public static final String VIEW_TICKET_LIST = "/ticket_list";
     public static final String VIEW_TICKET = "/ticket";
 
-    private WebView() {
+    private View() {
         // private constructor to prevent instantiation
     }
 }

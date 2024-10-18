@@ -23,13 +23,13 @@ public class WebAdapterConfiguration {
                 .csrf(Customizer.withDefaults())
                 .cors(Customizer.withDefaults())
                 .formLogin(form -> form
-                        .loginPage(WebAction.ACTION_SHOW_LOGIN)
+                        .loginPage(Action.ACTION_SHOW_LOGIN)
                         .successHandler(authenticationSuccessHandler)
                         .permitAll()
                 )
                 .logout(logout -> logout
-                        .logoutUrl(WebAction.ACTION_LOGOUT)
-                        .logoutSuccessUrl(WebAction.ACTION_SHOW_LOGIN)
+                        .logoutUrl(Action.ACTION_LOGOUT)
+                        .logoutSuccessUrl(Action.ACTION_SHOW_LOGIN)
                         .permitAll()
                 )
                 .securityContext(securityContext -> securityContext
@@ -45,7 +45,7 @@ public class WebAdapterConfiguration {
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
         SavedRequestAwareAuthenticationSuccessHandler handler = new SavedRequestAwareAuthenticationSuccessHandler();
-        handler.setDefaultTargetUrl(WebAction.ACTION_SHOW_TICKET_LIST);
+        handler.setDefaultTargetUrl(Action.ACTION_SHOW_TICKET_LIST);
         return handler;
     }
 
