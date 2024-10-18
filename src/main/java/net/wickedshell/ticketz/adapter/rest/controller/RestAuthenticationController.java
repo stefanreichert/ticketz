@@ -1,8 +1,8 @@
 package net.wickedshell.ticketz.adapter.rest.controller;
 
 import lombok.RequiredArgsConstructor;
-import net.wickedshell.ticketz.adapter.rest.model.RestLoginRequest;
-import net.wickedshell.ticketz.adapter.rest.model.RestSignupRequest;
+import net.wickedshell.ticketz.adapter.rest.model.LoginRequest;
+import net.wickedshell.ticketz.adapter.rest.model.SignupRequest;
 import net.wickedshell.ticketz.adapter.rest.security.jwt.JwtAuthenticationRequestFilter;
 import net.wickedshell.ticketz.adapter.rest.security.jwt.JwtService;
 import net.wickedshell.ticketz.service.model.Role;
@@ -34,7 +34,7 @@ public class RestAuthenticationController {
 
     @PostMapping(value = "/logins", produces = MimeTypeUtils.TEXT_PLAIN_VALUE)
     @PostAuthorize("hasRole('ROLE_API')")
-    public ResponseEntity<String> login(@RequestBody RestLoginRequest loginRequest) {
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
         AbstractAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
         authenticationManager.authenticate(authenticationToken);
@@ -42,7 +42,7 @@ public class RestAuthenticationController {
     }
 
     @PostMapping(value = "/signups")
-    public ResponseEntity<Void> signup(@RequestBody RestSignupRequest signupRequest) {
+    public ResponseEntity<Void> signup(@RequestBody SignupRequest signupRequest) {
         User user = mapper.map(signupRequest, User.class);
         userService.create(user, signupRequest.getPassword(), Set.of(Role.ROLE_USER, Role.ROLE_API));
         return ResponseEntity.ok().build();

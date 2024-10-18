@@ -1,7 +1,7 @@
 package net.wickedshell.ticketz.adapter.rest.controller;
 
 import lombok.RequiredArgsConstructor;
-import net.wickedshell.ticketz.adapter.rest.model.RestTicket;
+import net.wickedshell.ticketz.adapter.rest.model.TicketRest;
 import net.wickedshell.ticketz.service.model.Ticket;
 import net.wickedshell.ticketz.service.port.access.TicketService;
 import org.modelmapper.ModelMapper;
@@ -22,36 +22,36 @@ public class RestTicketController {
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_API')")
-    public ResponseEntity<List<RestTicket>> allTickets() {
-        List<RestTicket> restTickets = ticketService.findAll()
+    public ResponseEntity<List<TicketRest>> allTickets() {
+        List<TicketRest> ticketRests = ticketService.findAll()
                 .stream()
-                .map(ticket -> mapper.map(ticket, RestTicket.class))
+                .map(ticket -> mapper.map(ticket, TicketRest.class))
                 .toList();
-        return ResponseEntity.ok(restTickets);
+        return ResponseEntity.ok(ticketRests);
     }
 
     @GetMapping(value = "/{ticket-number}")
     @PreAuthorize("hasRole('ROLE_API')")
-    public ResponseEntity<RestTicket> oneTicket(@PathVariable("ticket-number") String ticketNumber) {
-        RestTicket restTicket = mapper.map(ticketService.loadByTicketNumber(ticketNumber), RestTicket.class);
-        return ResponseEntity.ok(restTicket);
+    public ResponseEntity<TicketRest> oneTicket(@PathVariable("ticket-number") String ticketNumber) {
+        TicketRest ticketRest = mapper.map(ticketService.loadByTicketNumber(ticketNumber), TicketRest.class);
+        return ResponseEntity.ok(ticketRest);
     }
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_API')")
-    public ResponseEntity<RestTicket> create(@RequestBody RestTicket restTicket) {
-        Ticket ticket = ticketService.create(mapper.map(restTicket, Ticket.class));
-        return ResponseEntity.created(URI.create(RestRessource.RESOURCE_TICKETS + "/" + ticket.getTicketNumber())).build();
+    public ResponseEntity<TicketRest> create(@RequestBody TicketRest ticket) {
+        Ticket newTicket = ticketService.create(mapper.map(ticket, Ticket.class));
+        return ResponseEntity.created(URI.create(RestRessource.RESOURCE_TICKETS + "/" + newTicket.getTicketNumber())).build();
     }
 
     @PutMapping(value = "/{ticket-number}")
     @PreAuthorize("hasRole('ROLE_API')")
     public ResponseEntity<Void> update(@PathVariable("ticket-number") String ticketNumber,
-                                       @RequestBody RestTicket restTicket) {
-        if (!ticketNumber.equals(restTicket.getTicketNumber())) {
+                                       @RequestBody TicketRest ticket) {
+        if (!ticketNumber.equals(ticket.getTicketNumber())) {
             return ResponseEntity.badRequest().build();
         }
-        ticketService.update(mapper.map(restTicket, Ticket.class));
+        ticketService.update(mapper.map(ticket, Ticket.class));
         return ResponseEntity.noContent().build();
     }
 }

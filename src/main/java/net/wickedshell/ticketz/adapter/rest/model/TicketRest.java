@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 @Data
 @RequiredArgsConstructor
-public class RestTicket {
+public class TicketRest {
 
     @NotNull
     private String title;
@@ -17,12 +17,12 @@ public class RestTicket {
     private String description;
 
     @NotNull
-    private RestUser author;
+    private UserRest author;
 
-    private RestUser editor;
+    private UserRest editor;
 
     @NotNull
-    private RestTicketState state;
+    private TicketStateRest state;
 
     @NotNull
     private long version;

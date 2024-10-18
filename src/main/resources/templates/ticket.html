@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="container">
-    <div th:replace="~{fragments/header :: header(pageheader=#{pageheader.ticket})}"></div>
+    <div th:replace="~{/fragments/header :: header(pageheader=#{pageheader.ticket})}"></div>
     <form th:action="@{/secure/tickets/{ticketNumber}(ticketNumber=*{ticketNumber})}" th:method="post" th:object="${ticketWeb}">
         <div class="mb-3">
             <span class="form-label" th:text="#{label.ticketNumber}"></span>
@@ -73,7 +73,7 @@
         <input type="hidden" id="canGoIntoReopened" name="canGoIntoReopened" th:field="*{canGoIntoReopened}"/>
         <input type="hidden" id="canGoIntoClosed" name="canGoIntoClosed" th:field="*{canGoIntoClosed}"/>
     </form>
-    <div th:replace="~{fragments/footer :: footer}"></div>
+    <div th:replace="~{/fragments/footer :: footer}"></div>
 </div>
 </body>
 </html>

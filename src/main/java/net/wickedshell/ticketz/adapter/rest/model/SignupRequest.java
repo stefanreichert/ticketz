@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class RestSignupRequest {
+public class SignupRequest {
 
     @NotNull
     private String lastname;

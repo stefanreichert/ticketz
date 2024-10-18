@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RestLoginRequest {
+public class LoginRequest {
 
     @NotNull
     private String email;

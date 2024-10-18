@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Data
-public class RestUser {
+public class UserRest {
 
     @NotNull
     private String lastname;

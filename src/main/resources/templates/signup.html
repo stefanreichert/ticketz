@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="container">
-    <div th:replace="~{fragments/header :: header(pageheader=#{pageheader.signup})}"></div>
+    <div th:replace="~{/fragments/header :: header(pageheader=#{pageheader.signup})}"></div>
     <form th:action="@{/signup}" th:method="post" th:object="${signup}">
         <div class="mb-3">
             <label for="email" class="form-label" th:text="#{label.email}"/>
@@ -42,7 +42,7 @@
             <a th:href="@{/show_login}" class="btn btn-outline-secondary" th:text="#{button.go_to_login}"/>
         </div>
     </form>
-    <div th:replace="~{fragments/footer :: footer}"></div>
+    <div th:replace="~{/fragments/footer :: footer}"></div>
 </div>
 </body>
 </html>

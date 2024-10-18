@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="container-lg">
-    <div th:replace="~{fragments/header :: header(pageheader=#{pageheader.ticket_list})}"></div>
+    <div th:replace="~{/fragments/header :: header(pageheader=#{pageheader.ticket_list})}"></div>
     <div class="mb-3">
         <table class="table table-striped">
             <thead>
@@ -43,14 +43,14 @@
         </table>
     </div>
     <div th:each="ticket : ${tickets}">
-        <div th:replace="~{fragments/confirm_dialog :: confirm(id=${'confirm_' + ticket.ticketNumber}, title=#{dialog.delete_ticket.title}, message=#{dialog.delete_ticket.message(${ticket.ticketNumber})}, confirm_url=@{/secure/tickets/{ticketNumber}:delete(ticketNumber=${ticket.ticketNumber})})}"></div>
+        <div th:replace="~{/fragments/confirm_dialog :: confirm(id=${'confirm_' + ticket.ticketNumber}, title=#{dialog.delete_ticket.title}, message=#{dialog.delete_ticket.message(${ticket.ticketNumber})}, confirm_url=@{/secure/tickets/{ticketNumber}:delete(ticketNumber=${ticket.ticketNumber})})}"></div>
     </div>
     <div class="mb-5">
         <a th:href="@{/secure/tickets/new}" class="btn btn-success" th:text="#{button.new_ticket}">
             <span class="bi bi-trash"></span>
         </a>
     </div>
-    <div th:replace="~{fragments/footer :: footer}"></div>
+    <div th:replace="~{/fragments/footer :: footer}"></div>
 </div>
 </body>
 </html>
