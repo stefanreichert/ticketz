@@ -1,0 +1,173 @@
+# TicketZ - AI Agent Context
+
+## Project Overview
+
+**TicketZ** is a ticket management system built with Spring Boot, implementing hexagonal architecture (Ports & Adapters pattern). The application provides both a web interface and REST API for managing tickets, users, and comments.
+
+## Technology Stack
+
+- **Framework**: Spring Boot 3.x
+- **Language**: Java 17+
+- **Build Tool**: Maven
+- **Database**: H2 (in-memory/file-based)
+- **ORM**: JPA/Hibernate
+- **Template Engine**: Thymeleaf
+- **Security**: Spring Security (sessions + JWT)
+- **Testing**: JUnit 5, Mockito, Spring Test
+
+## Project Structure
+
+```
+ticketz/
+├── src/main/java/net/wickedshell/ticketz/
+│   ├── adapter/              # Adapters (outer layer)
+│   │   ├── jpa/             # Database persistence adapter
+│   │   ├── rest/            # REST API adapter
+│   │   └── web/             # Web UI adapter
+│   ├── service/             # Application services (core layer)
+│   │   ├── model/           # Domain models
+│   │   └── port/            # Port interfaces
+│   └── TicketzApplication.java
+├── src/main/resources/
+│   ├── templates/           # Thymeleaf templates
+│   ├── static/              # CSS, JS, images
+│   └── application.properties
+├── src/test/java/           # Unit and integration tests
+└── docs/                    # Project documentation
+    ├── architecture.md      # Architecture documentation
+    └── README.md           # Documentation index
+```
+
+## Architecture Principles
+
+### Hexagonal Architecture (Ports & Adapters)
+
+1. **Application Core**: Business logic independent of frameworks
+   - Domain models (User, Ticket, Comment)
+   - Application services (UserServiceImpl, TicketServiceImpl, CommentServiceImpl)
+   - Port interfaces defining contracts
+
+2. **Primary Adapters (Driving)**: Interfaces for external actors
+   - Web adapter: Server-side rendered UI
+   - REST adapter: RESTful API with JWT authentication
+
+3. **Secondary Adapters (Driven)**: Infrastructure implementations
+   - Persistence adapter: JPA repositories and entities
+   - Security adapter: Authentication and authorization
+
+### Key Design Patterns
+
+- **Repository Pattern**: Data access abstraction
+- **Dependency Injection**: IoC via Spring
+- **DTO Pattern**: Separate models for each adapter
+- **Port/Adapter Pattern**: Clean layer separation
+
+## Domain Model
+
+### Business Verticals
+
+1. **User Domain**
+   - User management and authentication
+   - Role-based access control (ROLE_USER, ROLE_ADMIN, ROLE_API)
+   - Dual authentication: sessions (web) + JWT (API)
+
+2. **Ticket Domain**
+   - Ticket lifecycle management
+   - State transitions: CREATED → IN_PROGRESS → FIXED/REJECTED
+   - Version control with optimistic locking
+
+3. **Comment Domain**
+   - Immutable audit trail for tickets
+   - Author tracking and chronological ordering
+
+## Code Style Guidelines
+
+### Java Conventions
+
+- Use Lombok annotations (@Data, @RequiredArgsConstructor, @Getter, @Setter)
+- Follow Spring Boot best practices
+- Package by feature/layer (adapter, service, model)
+- Use meaningful variable and method names
+- Keep methods focused and single-purpose
+
+### Naming Conventions
+
+- **Entities**: `*Entity` (e.g., `TicketEntity`, `UserEntity`)
+- **DTOs**: Context-specific (e.g., `TicketRest`, `TicketWeb`, `LoginRequest`)
+- **Services**: `*ServiceImpl` implementing `*Service` interface
+- **Controllers**: `*Controller` (e.g., `TicketController`, `RestTicketController`)
+- **Repositories**: `*Repository` (Spring Data JPA)
+- **Persistence**: `*JPAPersistenceImpl` implementing `*Persistence` interface
+
+### File Organization
+
+- Controllers in `adapter/{web|rest}/controller/`
+- Services in `service/`
+- Port interfaces in `service/port/`
+- Domain models in `service/model/`
+- JPA entities in `adapter/jpa/entity/`
+- Repositories in `adapter/jpa/repository/`
+
+## Development Guidelines
+
+### Adding New Features
+
+1. **Define Domain Model**: Add/modify entities in `service/model/`
+2. **Create Port Interface**: Define contract in `service/port/`
+3. **Implement Service**: Business logic in `service/*ServiceImpl`
+4. **Add Persistence**: Create entity, repository, and persistence implementation
+5. **Create Adapters**: Add web and/or REST controllers
+6. **Write Tests**: Unit tests for services, integration tests for adapters (use `test{MethodName}_{scenario}` naming)
+
+### Security
+
+- Web: session-based authentication, CSRF protection
+- REST API: JWT token-based authentication
+- Passwords: BCrypt hashing
+- Authorization: @PreAuthorize and @PostAuthorize annotations
+
+## Common Tasks
+
+### Running the Application
+
+```bash
+mvn spring-boot:run    # Run application
+mvn test              # Run tests
+```
+
+### Adding Features
+
+**REST Endpoint**: Create DTO → Update service interface/impl → Add controller method → Write tests
+
+**Web Page**: Create Thymeleaf template → Add controller method → Update navigation in `fragments/header.html`
+
+## Key Design Decisions
+
+- **Dual Authentication**: Web (sessions) + REST API (JWT) for different use cases
+- **Immutable Comments**: Audit trail integrity (no edits/deletes)
+- **Optimistic Locking**: Version field prevents concurrent update conflicts
+- **Email as Username**: Unique email identification
+- **H2 Database**: In-memory with `import.sql` seeding
+
+## Critical Components (Avoid Breaking)
+
+- Security filter chain order
+- JWT token validation logic
+- ModelMapper bean configurations
+
+## Reference Documentation
+
+- **Architecture**: `docs/architecture.md`
+- **Domain Model**: `service/model/` package
+- **Database Schema**: `adapter/jpa/entity/` package
+
+## AI Agent Instructions
+
+When assisting with this project:
+
+1. **Respect Architecture**: Keep business logic in services, adapters at edges
+2. **Maintain Separation**: Don't mix web and REST concerns
+3. **Follow Patterns**: Use existing patterns for new features
+4. **Test Coverage**: Include tests with new code
+5. **Security First**: Consider authentication/authorization implications
+6. **Update Documentation**: Keep docs current with architectural changes
