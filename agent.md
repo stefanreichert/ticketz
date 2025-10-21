@@ -35,7 +35,8 @@ ticketz/
 ├── src/test/java/           # Unit and integration tests
 └── docs/                    # Project documentation
     ├── architecture.md      # Architecture documentation
-    └── README.md           # Documentation index
+    ├── README.md           # Documentation index
+    └── solution-design/    # Solution design documents (temporary)
 ```
 
 ## Architecture Principles
@@ -155,11 +156,42 @@ mvn test              # Run tests
 - JWT token validation logic
 - ModelMapper bean configurations
 
+## Solution Design Documents
+
+### Purpose
+
+Create solution design documents in `docs/solution-design/` before implementing significant features or architectural changes. Use `TEMPLATE.md` as the starting point.
+
+### When to Create
+
+- New features affecting multiple layers
+- Architectural changes or refactorings  
+- API design or database schema changes
+- Security-related modifications
+
+### Quick Reference
+
+- **Template**: `docs/solution-design/TEMPLATE.md` (copy and fill in)
+- **Naming**: `YYYY-MM-DD-feature-name.md`
+- **Lifecycle**: Draft → Under Review → Approved → Implemented
+- **Retention**: Keep all documents (including rejected) for historical context
+
+### AI Agent Behavior
+
+When asked to design a feature:
+
+1. Copy `docs/solution-design/TEMPLATE.md` to `docs/solution-design/YYYY-MM-DD-feature-name.md`
+2. Fill in all sections from the template
+3. Ensure hexagonal architecture compliance
+4. Include security and testing implications
+5. Mark status as "Draft" initially
+
 ## Reference Documentation
 
 - **Architecture**: `docs/architecture.md`
 - **Domain Model**: `service/model/` package
 - **Database Schema**: `adapter/jpa/entity/` package
+- **Solution Design Template**: `docs/solution-design/TEMPLATE.md`
 
 ## AI Agent Instructions
 
