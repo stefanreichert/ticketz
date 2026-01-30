@@ -1,6 +1,6 @@
 package net.wickedshell.ticketz.service;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.adapter.rest.security.exception.AuthenticationException;
 import net.wickedshell.ticketz.service.model.Role;
@@ -25,6 +25,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @PreAuthorize("hasRole('ROLE_USER') or isAnonymous()")
+    @Transactional(readOnly = true)
     public Optional<User> findByEmail(String email) {
         return userPersistence.findByEmail(email);
     }
@@ -39,6 +40,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         AuthenticationException authenticationException =
@@ -53,6 +55,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<User> findAll() {
         return userPersistence.findAll();
     }

@@ -1,6 +1,6 @@
 package net.wickedshell.ticketz.service;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.service.exception.ValidationException;
@@ -51,6 +51,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
     
     @Override
+    @Transactional(readOnly = true)
     public Project loadByCode(String code) {
         if (code == null || code.trim().isEmpty()) {
             throw new IllegalArgumentException("Project code cannot be null or empty");
@@ -59,6 +60,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
     
     @Override
+    @Transactional(readOnly = true)
     public List<Project> listAll() {
         return projectPersistence.findAll();
     }
@@ -66,6 +68,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 
     @Override
+    @Transactional(readOnly = true)
     public void validateProjectCode(String projectCode) {
         if (projectCode == null || projectCode.trim().isEmpty()) {
             throw new ValidationException("Project code is required");

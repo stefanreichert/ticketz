@@ -1,6 +1,6 @@
 package net.wickedshell.ticketz.service;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.service.model.Comment;
 import net.wickedshell.ticketz.service.model.Ticket;
@@ -18,6 +18,7 @@ public class CommentServiceImpl implements CommentService {
     private final CommentPersistence commentPersistence;
 
     @Override
+    @Transactional(readOnly = true)
     public List<Comment> findByTicketNumber(String ticketNumber) {
         return commentPersistence.findByTicketNumber(ticketNumber);
     }

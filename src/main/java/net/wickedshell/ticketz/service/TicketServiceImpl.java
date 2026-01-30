@@ -1,6 +1,6 @@
 package net.wickedshell.ticketz.service;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.service.exception.ValidationException;
@@ -36,6 +36,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     @PreAuthorize("hasRole('ROLE_USER')")
+    @Transactional(readOnly = true)
     public Ticket loadByTicketNumber(String ticketNumber) {
         Ticket ticket = ticketPersistence.loadByTicketNumber(ticketNumber);
         updatePossibleNextStates(ticket);
@@ -100,6 +101,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     @PreAuthorize("hasRole('ROLE_USER')")
+    @Transactional(readOnly = true)
     public List<Ticket> findAll() {
         List<Ticket> tickets = ticketPersistence.findAll();
         tickets.forEach(this::updatePossibleNextStates);
@@ -108,6 +110,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     @PreAuthorize("hasRole('ROLE_USER')")
+    @Transactional(readOnly = true)
     public boolean evaluateCanBeEdited(Ticket ticket) {
         if (ticket.getState() == CLOSED) {
             return false;
