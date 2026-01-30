@@ -1,5 +1,7 @@
 package net.wickedshell.ticketz.service.model;
 
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public enum TicketState {
@@ -19,5 +21,12 @@ public enum TicketState {
 
     public boolean checkIsPermittedSuccessor(TicketState ticketState) {
         return IntStream.of(permittedSucessorOrdinals).anyMatch(x -> x == ticketState.ordinal());
+    }
+
+    public Set<TicketState> getPermittedSuccessors() {
+        TicketState[] allStates = TicketState.values();
+        return IntStream.of(permittedSucessorOrdinals)
+                .mapToObj(ordinal -> allStates[ordinal])
+                .collect(Collectors.toUnmodifiableSet());
     }
 }

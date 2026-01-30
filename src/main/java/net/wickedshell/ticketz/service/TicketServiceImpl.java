@@ -110,7 +110,6 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     @PreAuthorize("hasRole('ROLE_USER')")
-    @Transactional(readOnly = true)
     public boolean evaluateCanBeEdited(Ticket ticket) {
         if (ticket.getState() == CLOSED) {
             return false;
@@ -148,24 +147,25 @@ public class TicketServiceImpl implements TicketService {
     }
 
     private void updatePossibleNextStates(Ticket ticket) {
+        if (ticket == null || ticket.getState() == null) {
+            return;
+        }
         switch (ticket.getState()) {
-            case CREATED -> ticket.setPossibleNextStates(Set.of(IN_PROGRESS));
             case IN_PROGRESS -> {
                 if (ticket.getEditor().getEmail().equals(userService.getCurrentUser().getEmail())) {
-                    ticket.setPossibleNextStates(Set.of(FIXED, REJECTED));
+                    ticket.setPossibleNextStates(ticket.getState().getPermittedSuccessors());
                 } else {
                     ticket.setPossibleNextStates(Set.of());
                 }
             }
             case FIXED, REJECTED -> {
                 if (ticket.getAuthor().getEmail().equals(userService.getCurrentUser().getEmail())) {
-                    ticket.setPossibleNextStates(Set.of(REOPENED, CLOSED));
+                    ticket.setPossibleNextStates(ticket.getState().getPermittedSuccessors());
                 } else {
                     ticket.setPossibleNextStates(Set.of());
                 }
             }
-            case REOPENED -> ticket.setPossibleNextStates(Set.of(IN_PROGRESS));
-            case CLOSED -> ticket.setPossibleNextStates(Set.of());
+            case CREATED, REOPENED, CLOSED -> ticket.setPossibleNextStates(ticket.getState().getPermittedSuccessors());
             default -> throw new IllegalStateException("Unexpected value: " + ticket.getState());
         }
     }
