@@ -35,6 +35,9 @@ public class TicketEntity {
     @Column(nullable = false)
     private TicketState state;
 
+    @ManyToOne(optional = false)
+    private ProjectEntity project;
+
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDateTime dateCreated;

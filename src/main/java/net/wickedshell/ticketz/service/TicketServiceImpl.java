@@ -5,13 +5,16 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.service.exception.ValidationException;
 import net.wickedshell.ticketz.service.model.Comment;
+import net.wickedshell.ticketz.service.model.Project;
 import net.wickedshell.ticketz.service.model.Ticket;
 import net.wickedshell.ticketz.service.model.TicketState;
 import net.wickedshell.ticketz.service.model.User;
 import net.wickedshell.ticketz.service.port.access.CommentService;
+import net.wickedshell.ticketz.service.port.access.ProjectService;
 import net.wickedshell.ticketz.service.port.access.TicketService;
 import net.wickedshell.ticketz.service.port.access.UserService;
 import net.wickedshell.ticketz.service.port.persistence.TicketPersistence;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +32,7 @@ public class TicketServiceImpl implements TicketService {
     private final TicketPersistence ticketPersistence;
     private final UserService userService;
     private final CommentService commentService;
+    private final ProjectService projectService;
 
     @Override
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -41,12 +45,16 @@ public class TicketServiceImpl implements TicketService {
     @Override
     @PreAuthorize("hasRole('ROLE_USER')")
     public void deleteByTicketNumber(String ticketNumber) {
+        Ticket ticket = ticketPersistence.loadByTicketNumber(ticketNumber);
+        validateProject(ticket.getProject());
         ticketPersistence.deleteByTicketNumber(ticketNumber);
     }
 
     @Override
     @PreAuthorize("hasRole('ROLE_USER')")
     public Ticket create(@Valid Ticket ticket) {
+        validateProject(ticket.getProject());
+        
         long nextTicketNumber = ticketPersistence.getTicketCount() + 1;
         ticket.setTicketNumber(String.format(TICKET_NUMBER_TEMPLATE, nextTicketNumber));
         ticket.setState(CREATED);
@@ -58,6 +66,10 @@ public class TicketServiceImpl implements TicketService {
     @PreAuthorize("hasRole('ROLE_USER')")
     public Ticket update(Ticket ticket) {
         Ticket existingTicket = ticketPersistence.loadByTicketNumber(ticket.getTicketNumber());
+        
+        // Validate project is active before allowing updates
+        validateProject(ticket.getProject());
+        
         if (!evaluateCanBeEdited(existingTicket)) {
             throw new ValidationException(
                     String.format("Invalid action for state: ticket cannot be edited: %s in state %s.",
@@ -153,5 +165,12 @@ public class TicketServiceImpl implements TicketService {
             case CLOSED -> ticket.setPossibleNextStates(Set.of());
             default -> throw new IllegalStateException("Unexpected value: " + ticket.getState());
         }
+    }
+
+    private void validateProject(Project project) {
+        if (project == null) {
+            throw new ValidationException("Project is required");
+        }
+        projectService.validateProjectCode(project.getCode());
     }
 }

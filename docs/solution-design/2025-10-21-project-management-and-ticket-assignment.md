@@ -23,7 +23,7 @@ Currently, tickets in the TicketZ application exist independently without any or
 - Maintain hexagonal architecture principles (business service only, no UI/API in this phase)
 - Ensure unique project codes for reliable identification
 - Support active/inactive status for project lifecycle management
-- Prevent modifications to inactive projects
+- Prevent modifications to inactive projects (no new tickets, no editing/deletion of tickets)
 
 ## Non-Goals
 
@@ -33,6 +33,8 @@ Currently, tickets in the TicketZ application exist independently without any or
 - User-to-project assignment or permissions
 - Project dashboards or analytics
 - Ticket reassignment between projects (v1)
+- Multi-project support for tickets (single project per ticket only)
+- Project deletion functionality (projects can only be deactivated)
 
 ---
 
@@ -58,15 +60,29 @@ Currently, tickets in the TicketZ application exist independently without any or
 // New domain model in service/model/
 package net.wickedshell.ticketz.service.model;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
 public class Project {
-    private Long id;
-    private String code;           // Unique identifier (e.g., "PROJ-001", "WEBAPP")
+    // NOTE: No 'id' field - domain models use business identifiers only
+    
+    @NotBlank(message = "Project code is required")
+    @Size(max = 50, message = "Project code must not exceed 50 characters")
+    @Pattern(regexp = "^[A-Za-z0-9_-]+$", message = "Project code must contain only letters, numbers, hyphens, and underscores")
+    private String code;           // Unique business identifier (e.g., "PROJ-001", "WEBAPP")
+    
+    @NotBlank(message = "Project name is required")
+    @Size(max = 255, message = "Project name must not exceed 255 characters")
     private String name;           // Display name (e.g., "Web Application Rewrite")
+    
+    @Size(max = 1000, message = "Project description must not exceed 1000 characters")
     private String description;    // Optional project description
+    
+    private boolean active;        // Active/inactive status (inactive projects cannot be modified)
     private LocalDateTime dateCreated;
     private LocalDateTime dateUpdated;
     private Long version;          // For optimistic locking
@@ -129,10 +145,15 @@ public interface ProjectService {
     List<Project> listAll();
     
     /**
-     * Delete project by ID.
-     * @throws IllegalStateException if project has assigned tickets
+     * Set project as active.
      */
-    void deleteById(Long id);
+    void setActive(Long id);
+    
+    /**
+     * Set project as inactive.
+     * Inactive projects cannot have new tickets or ticket modifications.
+     */
+    void setInactive(Long id);
     
     /**
      * Check if project code is unique.
@@ -198,6 +219,7 @@ CREATE TABLE PROJECT_ENTITY (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     code VARCHAR(50) NOT NULL UNIQUE,
     name VARCHAR(255) NOT NULL,
+    active BOOLEAN NOT NULL DEFAULT TRUE,
     description VARCHAR(1000),
     date_created TIMESTAMP NOT NULL,
     date_updated TIMESTAMP NOT NULL,
@@ -569,25 +591,24 @@ CREATE INDEX idx_ticket_project ON TICKET_ENTITY(project_id);
 
 ## Open Questions
 
-1. **Should projects have an active/inactive status flag?**
-   - Context: Might want to archive old projects without deleting them
-   - Impact: Additional field and lifecycle management
-   - Recommendation: Not for v1, add in future iteration if needed
+1. ~~**Should projects have an active/inactive status flag?**~~ **[RESOLVED]**
+   - **Decision**: YES - Active/inactive status implemented
+   - **Impact**: Projects can be deactivated to prevent modifications
+   - **Rule**: Inactive projects cannot have new tickets or ticket edits/deletions
 
-2. **Should we support project deletion or only archival?**
-   - Context: Deleting projects with ticket history could be problematic
-   - Impact: Hard delete vs soft delete vs archive status
-   - Recommendation: Prevent deletion if tickets exist, support hard delete only for empty projects in v1
+2. ~~**Should we support project deletion or only archival?**~~ **[RESOLVED]**
+   - **Decision**: No deletion support - archival only via inactive status
+   - **Impact**: Projects remain in database for historical reference
+   - **Rule**: Projects can only be deactivated, never deleted
 
 3. **Should project codes be case-sensitive?**
    - Context: "WEBAPP" vs "webapp" - treat as same or different?
    - Impact: Code validation and uniqueness checking
    - Recommendation: Store as entered but enforce case-insensitive uniqueness
 
-4. **Should there be a maximum number of projects?**
-   - Context: Prevent database bloat or UI pagination issues
-   - Impact: Validation logic and user communication
-   - Recommendation: No limit for v1, monitor usage
+4. ~~**Should there be a maximum number of projects?**~~ **[RESOLVED]**
+   - **Decision**: No limit on project count
+   - **Impact**: No validation logic needed for project count
 
 ---
 
@@ -600,6 +621,16 @@ CREATE INDEX idx_ticket_project ON TICKET_ENTITY(project_id);
 | 2025-10-21 | Business service only (no UI/API) | Focused iteration, adapters added in subsequent phases |
 | 2025-10-21 | Create default project for migration | Ensures data integrity for existing tickets |
 | 2025-10-21 | Use optimistic locking (version field) | Consistent with existing Ticket entity pattern |
+| 2025-10-21 | Add active/inactive status to projects | Allows project archival without deletion; prevents modifications to inactive projects |
+| 2025-10-21 | No project deletion functionality | Projects remain for historical reference; deactivation is sufficient |
+| 2025-10-21 | No multi-project support for tickets | Simplifies v1 implementation; single project per ticket only |
+| 2025-10-21 | No project count limit | Monitoring usage instead of enforcing arbitrary limits |
+| 2025-10-22 | Use Bean Validation for domain constraints | Declarative validation consistent with Ticket domain; eliminates programmatic validation code |
+| 2025-10-22 | Timestamp management in persistence layer | Use @CreationTimestamp/@UpdateTimestamp; removes manual timestamp logic from service layer |
+| 2025-10-22 | Streamline ProjectService to single update() method | Consistent with TicketService pattern; all updates go through one method instead of individual field setters |
+| 2025-10-22 | ProjectPersistence in service.port.persistence package | Consistent with TicketPersistence location; follows established port package structure |
+| 2025-10-22 | Use create()/findAll() method names in ProjectPersistence | Consistent with TicketPersistence API naming conventions |
+| 2025-10-22 | Single update() method for all field changes | Consistent with TicketService pattern; removed individual field setters (setActive, setInactive); all updates go through one method |
 
 ---
 
@@ -608,3 +639,4 @@ CREATE INDEX idx_ticket_project ON TICKET_ENTITY(project_id);
 | Date | Status | Notes |
 |------|--------|-------|
 | 2025-10-21 | Draft | Initial design document created |
+| 2025-10-21 | Updated | Added active/inactive status, removed deletion, clarified no multi-project support |

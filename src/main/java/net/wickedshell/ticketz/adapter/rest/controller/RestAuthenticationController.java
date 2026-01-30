@@ -10,7 +10,6 @@ import net.wickedshell.ticketz.service.model.User;
 import net.wickedshell.ticketz.service.port.access.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,7 +32,6 @@ public class RestAuthenticationController {
     private final UserService userService;
 
     @PostMapping(value = "/logins", produces = MimeTypeUtils.TEXT_PLAIN_VALUE)
-    @PostAuthorize("hasRole('ROLE_API')")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
         AbstractAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());

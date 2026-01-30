@@ -4,6 +4,7 @@ import jakarta.inject.Inject;
 import net.wickedshell.ticketz.adapter.AuthenticationConfiguration;
 import net.wickedshell.ticketz.adapter.rest.RestAdapterConfiguration;
 import net.wickedshell.ticketz.service.model.User;
+import net.wickedshell.ticketz.service.port.access.ProjectService;
 import net.wickedshell.ticketz.service.port.access.TicketService;
 import net.wickedshell.ticketz.service.port.access.UserService;
 import org.hamcrest.Matchers;
@@ -11,11 +12,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import net.wickedshell.ticketz.testsupport.TestPasswordEncoderConfig;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.ContextConfiguration;
@@ -33,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(RestAuthenticationController.class)
-@ContextConfiguration(classes = {AuthenticationConfiguration.class, RestAdapterConfiguration.class, RestAuthenticationControllerTest.TestConfiguration.class})
+@ContextConfiguration(classes = {AuthenticationConfiguration.class, RestAdapterConfiguration.class, TestPasswordEncoderConfig.class})
 class RestAuthenticationControllerTest {
 
     public static final String LOGIN_ROUTE = "/api/authentication/logins";
@@ -41,16 +40,19 @@ class RestAuthenticationControllerTest {
 
     public static final String SIGNUP_ROUTE = "/api/authentication/signups";
     public static final String SIGNUP_REQUEST = "{\"email\":\"%s\",\"password\":\"%s\",\"firstname\":\"%s\",\"lastname\":\"%s\"}";
-    private static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     @Inject
     private MockMvc mvc;
     @Inject
     private WebApplicationContext context;
+    @Inject
+    private PasswordEncoder passwordEncoder;
     @MockBean
     private UserService userService;
     @MockBean
     private TicketService ticketService;
+    @MockBean
+    private ProjectService projectService;
 
     @BeforeEach
     public void setup() {
@@ -160,16 +162,7 @@ class RestAuthenticationControllerTest {
         user.setEmail("test@us.er");
         user.setFirstname("Test");
         user.setLastname("User");
-        user.setPasswordHash(PASSWORD_ENCODER.encode(password));
+        user.setPasswordHash(passwordEncoder.encode(password));
         return user;
-    }
-
-    @Configuration
-    public static class TestConfiguration {
-
-        @Bean
-        public PasswordEncoder passwordEncoder() {
-            return PASSWORD_ENCODER;
-        }
     }
 }

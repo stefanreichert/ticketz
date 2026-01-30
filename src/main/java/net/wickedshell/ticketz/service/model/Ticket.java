@@ -35,6 +35,9 @@ public class Ticket {
     private Set<TicketState> possibleNextStates = Set.of();
 
     @NotNull
+    private Project project;
+
+    @NotNull
     private long version;
 
 }

@@ -76,16 +76,38 @@ ticketz/
    - Ticket lifecycle management
    - State transitions: CREATED → IN_PROGRESS → FIXED/REJECTED
    - Version control with optimistic locking
+   - Mandatory project assignment
 
 3. **Comment Domain**
    - Immutable audit trail for tickets
    - Author tracking and chronological ordering
+
+4. **Project Domain**
+   - Project organization for tickets
+   - Unique project codes as business identifiers
+   - Active/inactive status (inactive projects prevent ticket modifications)
+
+### Domain Model Rules
+
+**CRITICAL**: Domain models (`service/model/*`) must NEVER contain database IDs.
+
+- ✅ **Correct**: Domain models use business identifiers (e.g., `ticketNumber`, `email`, `code`)
+- ❌ **Wrong**: Domain models with `id` or `ID` fields (that belongs to entities only)
+- **Rationale**: Database IDs are infrastructure concerns and violate hexagonal architecture principles
+
+**Examples**:
+- `User` uses `email` as identifier (no `id` field)
+- `Ticket` uses `ticketNumber` as identifier (no `id` field)
+- `Project` uses `code` as identifier (no `id` field)
+- `UserEntity`, `TicketEntity`, `ProjectEntity` have `id` fields (persistence layer only)
 
 ## Code Style Guidelines
 
 ### Java Conventions
 
 - Use Lombok annotations (@Data, @RequiredArgsConstructor, @Getter, @Setter)
+- Use Jakarta Bean Validation annotations for domain model validation (@NotBlank, @Size, @Pattern, etc.)
+- Use @Valid annotation on service method parameters to trigger validation
 - Follow Spring Boot best practices
 - Package by feature/layer (adapter, service, model)
 - Use meaningful variable and method names
@@ -113,12 +135,40 @@ ticketz/
 
 ### Adding New Features
 
-1. **Define Domain Model**: Add/modify entities in `service/model/`
-2. **Create Port Interface**: Define contract in `service/port/`
-3. **Implement Service**: Business logic in `service/*ServiceImpl`
+1. **Define Domain Model**: Add/modify entities in `service/model/` with Bean Validation annotations
+2. **Create Port Interface**: Define contract in `service/port/` with @Valid on parameters
+3. **Implement Service**: Business logic in `service/*ServiceImpl` with @Valid on method parameters
 4. **Add Persistence**: Create entity, repository, and persistence implementation
 5. **Create Adapters**: Add web and/or REST controllers
 6. **Write Tests**: Unit tests for services, integration tests for adapters (use `test{MethodName}_{scenario}` naming)
+
+### Validation Strategy
+
+- **Domain Model Validation**: Use Jakarta Bean Validation annotations (@NotBlank, @Size, @Pattern, @Email, etc.)
+- **Business Rule Validation**: Implement in service layer (e.g., uniqueness checks, state transitions)
+- **Trigger Validation**: Use @Valid annotation on service method parameters
+- **Avoid**: Programmatic validation that duplicates Bean Validation constraints
+
+### Timestamp Management
+
+- **Automatic Timestamps**: Use Hibernate annotations for audit fields
+  - `@CreationTimestamp` for creation timestamps (with `updatable = false`)
+  - `@UpdateTimestamp` for last modified timestamps
+- **Layer Responsibility**: Timestamp management belongs to the **persistence layer** (JPA entities)
+- **Service Layer**: Do NOT manually set `dateCreated` or `dateUpdated` in service implementations
+- **Example**:
+  ```java
+  @Entity
+  public class MyEntity {
+      @Column(nullable = false, updatable = false)
+      @CreationTimestamp
+      private LocalDateTime dateCreated;
+      
+      @Column(nullable = false)
+      @UpdateTimestamp
+      private LocalDateTime dateUpdated;
+  }
+  ```
 
 ### Security
 
