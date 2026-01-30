@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.adapter.rest.model.ProjectRest;
 import net.wickedshell.ticketz.service.model.Project;
 import net.wickedshell.ticketz.service.port.access.ProjectService;
-import net.wickedshell.ticketz.service.port.persistence.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

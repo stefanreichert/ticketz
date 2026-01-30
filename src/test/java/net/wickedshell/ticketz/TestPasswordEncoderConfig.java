@@ -1,4 +1,4 @@
-package net.wickedshell.ticketz.testsupport;
+package net.wickedshell.ticketz;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;

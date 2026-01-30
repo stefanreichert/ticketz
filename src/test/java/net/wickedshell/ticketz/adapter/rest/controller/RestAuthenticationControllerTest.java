@@ -1,6 +1,7 @@
 package net.wickedshell.ticketz.adapter.rest.controller;
 
 import jakarta.inject.Inject;
+import net.wickedshell.ticketz.TestPasswordEncoderConfig;
 import net.wickedshell.ticketz.adapter.AuthenticationConfiguration;
 import net.wickedshell.ticketz.adapter.rest.RestAdapterConfiguration;
 import net.wickedshell.ticketz.service.model.User;
@@ -12,7 +13,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import net.wickedshell.ticketz.testsupport.TestPasswordEncoderConfig;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;

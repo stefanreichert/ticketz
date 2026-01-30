@@ -5,7 +5,6 @@ import net.wickedshell.ticketz.service.exception.ValidationException;
 import net.wickedshell.ticketz.service.model.Project;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Port interface for project management operations.

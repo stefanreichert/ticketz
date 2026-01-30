@@ -1,6 +1,7 @@
 package net.wickedshell.ticketz.adapter.rest.controller;
 
 import jakarta.inject.Inject;
+import net.wickedshell.ticketz.TestPasswordEncoderConfig;
 import net.wickedshell.ticketz.adapter.AuthenticationConfiguration;
 import net.wickedshell.ticketz.adapter.rest.RestAdapterConfiguration;
 import net.wickedshell.ticketz.service.model.Project;
@@ -8,7 +9,6 @@ import net.wickedshell.ticketz.service.port.access.ProjectService;
 import net.wickedshell.ticketz.service.port.access.TicketService;
 import net.wickedshell.ticketz.service.port.access.UserService;
 import net.wickedshell.ticketz.service.port.persistence.exception.ObjectNotFoundException;
-import net.wickedshell.ticketz.testsupport.TestPasswordEncoderConfig;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

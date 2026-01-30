@@ -3,7 +3,6 @@ package net.wickedshell.ticketz.service.port.persistence;
 import net.wickedshell.ticketz.service.model.Project;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Port interface for project persistence operations.
