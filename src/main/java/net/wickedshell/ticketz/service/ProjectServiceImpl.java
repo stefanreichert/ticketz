@@ -1,5 +1,6 @@
 package net.wickedshell.ticketz.service;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.service.exception.ValidationException;
@@ -17,6 +18,7 @@ import java.util.List;
  * Contains business logic and validation for project management.
  */
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ProjectServiceImpl implements ProjectService {
     
