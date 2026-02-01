@@ -15,6 +15,7 @@
             <thead>
             <tr>
                 <th th:text="#{table.header.ticket_number}"/>
+                <th th:text="#{table.header.project}"/>
                 <th th:text="#{table.header.title}"/>
                 <th th:text="#{table.header.author}"/>
                 <th th:text="#{table.header.editor}"/>
@@ -25,6 +26,7 @@
             <tbody>
             <tr th:each="ticket : ${tickets}">
                 <td th:text="${ticket.ticketNumber}"></td>
+                <td th:text="${ticket.project.code}"></td>
                 <td th:text="${ticket.description}"></td>
                 <td th:text="${ticket.author.email}"></td>
                 <td th:text="${ticket.editor != null ? ticket.editor.email : '---'}"></td>

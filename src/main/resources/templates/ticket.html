@@ -37,6 +37,18 @@
             <span class="form-label" th:text="#{label.state}"></span>
             <span id="span-state" class="form-control bg-light" th:text="#{${ticketWeb.state}}"></span>
         </div>
+        <div class="mb-3" th:if="${ticketWeb.ticketNumber == 'new'}">
+            <label for="projectCode" class="form-label" th:text="#{label.project}"/>
+            <select id="projectCode" name="projectCode" class="form-select" th:field="*{projectCode}">
+                <option value="" disabled selected>Select a project...</option>
+                <option th:each="project : ${projects}" th:value="${project.code}" th:text="${project.code + ' - ' + project.name}"></option>
+            </select>
+            <div class="text-danger small" th:if="${#fields.hasErrors('projectCode')}" th:errors="*{projectCode}"></div>
+        </div>
+        <div class="mb-3" th:if="${ticketWeb.ticketNumber != 'new'}">
+            <span class="form-label" th:text="#{label.project}"></span>
+            <span id="span-project" class="form-control bg-light" th:text="${ticketWeb.projectCode + ' - ' + ticketWeb.projectName}"></span>
+        </div>
         <div class="mb-3" th:if="${ticketWeb.ticketNumber != 'new'}">
             <label for="comment" class="form-label" th:text="#{label.comment}"/>
             <textarea id="comment" name="commentText" class="form-control" rows="3" th:disabled="${!ticketWeb.canEdit}" th:classappend="${!ticketWeb.canEdit ? 'bg-light' : ''}"></textarea>
@@ -72,6 +84,7 @@
         <input type="hidden" id="canGoIntoRejected" name="canGoIntoRejected" th:field="*{canGoIntoRejected}"/>
         <input type="hidden" id="canGoIntoReopened" name="canGoIntoReopened" th:field="*{canGoIntoReopened}"/>
         <input type="hidden" id="canGoIntoClosed" name="canGoIntoClosed" th:field="*{canGoIntoClosed}"/>
+        <input type="hidden" id="projectCode" name="projectCode" th:if="${ticketWeb.ticketNumber != 'new'}" th:field="*{projectCode}"/>
     </form>
     <div th:replace="~{/fragments/footer :: footer}"></div>
 </div>

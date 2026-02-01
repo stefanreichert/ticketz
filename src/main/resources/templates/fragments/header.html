@@ -9,6 +9,10 @@
   <div class="pt-5 mb-2">
     <a class="h3" th:text="#{header.ticketz}" th:href="@{/secure/tickets}"></a>&nbsp;-&nbsp;<span class="text-secondary small strong" th:text="#{pageheader.ticketz}"/>
   </div>
+  <div class="mb-2" sec:authorize="isAuthenticated()">
+    <a th:href="@{/secure/tickets}" class="btn btn-sm btn-outline-primary" th:text="#{button.tickets}"></a>
+    <a th:href="@{/secure/projects}" class="btn btn-sm btn-outline-primary" th:text="#{button.projects}"></a>
+  </div>
   <div class="mb-4 container">
     <div class="row">
       <div class="col-8">

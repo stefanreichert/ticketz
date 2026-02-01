@@ -3,6 +3,7 @@ package net.wickedshell.ticketz.adapter.web;
 public class Action {
 
     public static final String TICKET_NUMBER_NEW = "new";
+    public static final String PROJECT_CODE_NEW = "new";
 
     public static final String ACTION_SHOW_INDEX = "/index";
     public static final String ACTION_SHOW_LOGIN = "/show_login";
@@ -14,6 +15,10 @@ public class Action {
     public static final String ACTION_SHOW_TICKET = "/secure/tickets/{ticketNumber}";
     public static final String ACTION_DELETE_TICKET = "/secure/tickets/{ticketNumber}:delete";
     public static final String ACTION_SAVE_TICKET = "/secure/tickets/{ticketNumber}";
+    public static final String ACTION_SHOW_PROJECT_LIST = "/secure/projects";
+    public static final String ACTION_NEW_PROJECT = "/secure/projects/" + PROJECT_CODE_NEW;
+    public static final String ACTION_SHOW_PROJECT = "/secure/projects/{code}";
+    public static final String ACTION_SAVE_PROJECT = "/secure/projects/{code}";
     public static final String ACTION_LOGOUT = "/secure/logout";
 
     private Action() {

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <link th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/styles.css}" rel="stylesheet"/>
+    <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}" defer></script>
+    <title th:text="#{header.ticketz}"/>
+</head>
+<body>
+<div class="container">
+    <div th:replace="~{/fragments/header :: header(pageheader=#{pageheader.project})}"></div>
+    <form th:action="@{/secure/projects/{code}(code=${projectWeb.isNew ? 'new' : projectWeb.code})}" th:method="post" th:object="${projectWeb}">
+        <div class="mb-3">
+            <label for="code" class="form-label" th:text="#{label.project.code}"/>
+            <input type="text" id="code" name="code" class="form-control" th:field="*{code}" th:disabled="${!projectWeb.isNew}" th:classappend="${!projectWeb.isNew ? 'bg-light' : ''}"/>
+            <div class="text-danger small" th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></div>
+            <div class="form-text" th:if="${projectWeb.isNew}" th:text="#{label.project.code_hint}"></div>
+        </div>
+        <div class="mb-3">
+            <label for="name" class="form-label" th:text="#{label.project.name}"/>
+            <input type="text" id="name" name="name" class="form-control" th:field="*{name}"/>
+            <div class="text-danger small" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label" th:text="#{label.project.description}"/>
+            <textarea id="description" name="description" class="form-control" rows="3" th:field="*{description}"></textarea>
+            <div class="text-danger small" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+        </div>
+        <div class="mb-3 form-check">
+            <input type="checkbox" id="active" name="active" class="form-check-input" th:field="*{active}"/>
+            <label for="active" class="form-check-label" th:text="#{label.project.active}"/>
+        </div>
+        <div class="mb-5">
+            <button type="submit" class="btn btn-primary" th:text="#{button.save}"/>
+            <a th:href="@{/secure/projects}" class="btn btn-outline-secondary" th:text="#{button.cancel}"/>
+        </div>
+        <input type="hidden" id="version" name="version" th:field="*{version}"/>
+        <input type="hidden" id="isNew" name="isNew" th:field="*{isNew}"/>
+    </form>
+    <div th:replace="~{/fragments/footer :: footer}"></div>
+</div>
+</body>
+</html>
