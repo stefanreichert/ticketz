@@ -1,7 +1,7 @@
 package net.wickedshell.ticketz.adapter.rest.controller;
 
 import jakarta.inject.Inject;
-import net.wickedshell.ticketz.TestPasswordEncoderConfig;
+import net.wickedshell.ticketz.TestConfig;
 import net.wickedshell.ticketz.adapter.AuthenticationConfiguration;
 import net.wickedshell.ticketz.adapter.rest.RestAdapterConfiguration;
 import net.wickedshell.ticketz.service.model.Project;
@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(RestProjectController.class)
-@ContextConfiguration(classes = {AuthenticationConfiguration.class, RestAdapterConfiguration.class, TestPasswordEncoderConfig.class})
+@ContextConfiguration(classes = {AuthenticationConfiguration.class, RestAdapterConfiguration.class, TestConfig.class})
 class RestProjectControllerTest {
 
     private static final String PROJECTS_ROUTE = "/api/projects";
