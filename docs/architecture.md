@@ -194,6 +194,30 @@ graph TB
 3. **Ticket ↔ Comment**: Comments provide detailed history and communication trail for tickets
 4. **Security Integration**: All domains participate in authorization decisions based on user roles
 
+## Testing Concept
+
+### Mandatory Tests
+
+| Layer | Test Type | Requirement |
+|-------|-----------|-------------|
+| **JPA Persistence** | Integration | Mandatory for all persistence implementations |
+| **REST Endpoints** | Integration | Mandatory for all REST controllers |
+
+### Business Logic Unit Tests
+
+Unit tests for service layer business logic are **created selectively** for high-value scenarios only:
+
+- Complex decision logic (e.g., permission checks, state transitions)
+- Business rules with multiple conditions
+- Validation logic with edge cases
+
+Simple delegation methods or straightforward CRUD operations do not require dedicated unit tests as they are covered by the mandatory integration tests.
+
+### Test Naming Convention
+
+- Test classes: `{ClassName}Test`
+- Test methods: `test{MethodName}_{scenario}`
+
 ## Notes
 
 - The component architecture diagram shows technical structure abstracted from business domains
