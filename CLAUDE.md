@@ -108,4 +108,4 @@ Before implementing significant features, create a design document:
 3. **Service Implementation** → `service/*ServiceImpl.java`
 4. **Persistence** → Entity in `adapter/jpa/entity/`, repository, persistence impl
 5. **Adapter** → REST and/or Web controllers with DTOs
-6. **Tests** → Unit tests for services, integration tests for adapters
+6. **Tests** → JPA and REST integration tests (mandatory); service unit tests only for high-value business logic

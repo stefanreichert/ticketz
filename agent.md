@@ -140,7 +140,7 @@ ticketz/
 3. **Implement Service**: Business logic in `service/*ServiceImpl` with @Valid on method parameters
 4. **Add Persistence**: Create entity, repository, and persistence implementation
 5. **Create Adapters**: Add web and/or REST controllers
-6. **Write Tests**: Unit tests for services, integration tests for adapters (use `test{MethodName}_{scenario}` naming)
+6. **Write Tests**: JPA and REST integration tests are mandatory; service unit tests only for high-value business logic (use `test{MethodName}_{scenario}` naming)
 
 ### Validation Strategy
 
