@@ -23,7 +23,7 @@ class ProjectJPAPersistenceImplTest {
 
     @BeforeEach
     public void setupTest() {
-        unitUnderTest = new ProjectJPAPersistenceImpl(projectRepository, new ModelMapper());
+        unitUnderTest = new ProjectJPAPersistenceImpl(projectRepository);
     }
 
     @Test
