@@ -33,7 +33,16 @@
                 <td th:text="${ticket.description}"></td>
                 <td th:text="${ticket.author.email}"></td>
                 <td th:text="${ticket.editor != null ? ticket.editor.email : '---'}"></td>
-                <td th:text="#{${ticket.state}}"></td>
+                <td>
+                    <span th:switch="${ticket.state}">
+                        <span th:case="'CREATED'" class="badge bg-info" th:text="#{CREATED}"></span>
+                        <span th:case="'IN_PROGRESS'" class="badge bg-primary" th:text="#{IN_PROGRESS}"></span>
+                        <span th:case="'FIXED'" class="badge bg-success" th:text="#{FIXED}"></span>
+                        <span th:case="'REJECTED'" class="badge bg-warning text-dark" th:text="#{REJECTED}"></span>
+                        <span th:case="'REOPENED'" class="badge bg-info" th:text="#{REOPENED}"></span>
+                        <span th:case="'CLOSED'" class="badge bg-secondary" th:text="#{CLOSED}"></span>
+                    </span>
+                </td>
                 <td>
                     <a th:href="@{/secure/tickets/{ticketNumber}(ticketNumber=${ticket.ticketNumber})}"
                        class="btn btn-outline-primary btn-sm" th:text="#{button.edit}">

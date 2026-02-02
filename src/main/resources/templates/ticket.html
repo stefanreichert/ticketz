@@ -35,7 +35,16 @@
         </div>
         <div class="mb-3">
             <span class="form-label" th:text="#{label.state}"></span>
-            <span id="span-state" class="form-control bg-light" th:text="#{${ticketWeb.state}}"></span>
+            <div id="span-state" class="form-control bg-light">
+                <span th:switch="${ticketWeb.state}">
+                    <span th:case="'CREATED'" class="badge bg-info" th:text="#{CREATED}"></span>
+                    <span th:case="'IN_PROGRESS'" class="badge bg-primary" th:text="#{IN_PROGRESS}"></span>
+                    <span th:case="'FIXED'" class="badge bg-success" th:text="#{FIXED}"></span>
+                    <span th:case="'REJECTED'" class="badge bg-warning text-dark" th:text="#{REJECTED}"></span>
+                    <span th:case="'REOPENED'" class="badge bg-info" th:text="#{REOPENED}"></span>
+                    <span th:case="'CLOSED'" class="badge bg-secondary" th:text="#{CLOSED}"></span>
+                </span>
+            </div>
         </div>
         <div class="mb-3" th:if="${ticketWeb.ticketNumber == 'new'}">
             <label for="projectCode" class="form-label" th:text="#{label.project}"/>
