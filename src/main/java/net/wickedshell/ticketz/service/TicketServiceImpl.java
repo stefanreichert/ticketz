@@ -28,7 +28,7 @@ import static net.wickedshell.ticketz.service.model.TicketState.*;
 @RequiredArgsConstructor
 public class TicketServiceImpl implements TicketService {
 
-    private static final String TICKET_NUMBER_TEMPLATE = "TICKETZ-%d";
+    private static final String TICKET_NUMBER_TEMPLATE = "%s-%d";
     private final TicketPersistence ticketPersistence;
     private final UserService userService;
     private final CommentService commentService;
@@ -57,7 +57,7 @@ public class TicketServiceImpl implements TicketService {
         validateProject(ticket.getProject());
         
         long nextTicketNumber = ticketPersistence.getTicketCount() + 1;
-        ticket.setTicketNumber(String.format(TICKET_NUMBER_TEMPLATE, nextTicketNumber));
+        ticket.setTicketNumber(String.format(TICKET_NUMBER_TEMPLATE, ticket.getProject().getCode(), nextTicketNumber));
         ticket.setState(CREATED);
         ticket.setAuthor(userService.getCurrentUser());
         return ticketPersistence.create(ticket);

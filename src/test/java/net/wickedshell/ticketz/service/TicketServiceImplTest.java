@@ -393,7 +393,7 @@ class TicketServiceImplTest {
             Ticket result = unitUnderTest.create(newTicket);
 
             // then
-            assertEquals("TICKETZ-6", result.getTicketNumber());
+            assertEquals("TEST-6", result.getTicketNumber());
         }
 
         @Test
