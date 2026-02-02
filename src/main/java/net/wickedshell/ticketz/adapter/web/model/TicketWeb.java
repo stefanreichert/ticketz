@@ -1,6 +1,5 @@
 package net.wickedshell.ticketz.adapter.web.model;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -21,9 +20,10 @@ public class TicketWeb {
     private UserWeb editor;
     @NotBlank
     private String state;
-    @NotNull
-    @Valid
-    private ProjectWeb project;
+    @NotBlank
+    private String projectCode;
+    private String projectName;
+    private boolean projectActive;
 
     private boolean canEdit = false;
     private boolean canGoIntoProgress = false;

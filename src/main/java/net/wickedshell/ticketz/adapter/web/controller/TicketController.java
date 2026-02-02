@@ -63,7 +63,6 @@ public class TicketController {
         ticket.setTicketNumber(TICKET_NUMBER_NEW);
         ticket.setAuthor(mapper.map(userService.getCurrentUser(), UserWeb.class));
         ticket.setState(CREATED.name());
-        ticket.setProject(new ProjectWeb());
         ticket.setCanEdit(true);
         model.addAttribute(ATTRIBUTE_NAME_TICKET, ticket);
         model.addAttribute(ATTRIBUTE_NAME_COMMENTS, List.of());
@@ -75,9 +74,12 @@ public class TicketController {
     public String showTicket(@PathVariable String ticketNumber, Model model) {
         Ticket existingTicket = ticketService.loadByTicketNumber(ticketNumber);
         TicketWeb ticket = mapper.map(existingTicket, TicketWeb.class);
-        ticket.setProject(mapper.map(existingTicket.getProject(), ProjectWeb.class));                                                                                                               
-        updateWebTicketPossibleTransitions(ticket, existingTicket.getPossibleNextStates());  
-        boolean projectActive = existingTicket.getProject().isActive();
+        Project project = existingTicket.getProject();
+        ticket.setProjectCode(project.getCode());
+        ticket.setProjectName(project.getName());
+        ticket.setProjectActive(project.isActive());
+        updateWebTicketPossibleTransitions(ticket, existingTicket.getPossibleNextStates());
+        boolean projectActive = project.isActive();
         ticket.setCanEdit(ticketService.evaluateCanBeEdited(existingTicket) && projectActive);
         if (projectActive) {
             updateWebTicketPossibleTransitions(ticket, existingTicket.getPossibleNextStates());
@@ -117,7 +119,7 @@ public class TicketController {
         String[] arguments;
         if (TICKET_NUMBER_NEW.equals(ticketNumber)) {
             Ticket newTicket = mapper.map(ticket, Ticket.class);
-            Project project = projectService.loadByCode(ticket.getProject().getCode());
+            Project project = projectService.loadByCode(ticket.getProjectCode());
             newTicket.setProject(project);
             Ticket createdTicket = ticketService.create(newTicket);
             messageId = "message.ticket.create_succeeded";
