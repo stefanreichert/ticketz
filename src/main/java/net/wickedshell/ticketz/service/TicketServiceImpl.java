@@ -110,7 +110,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     @PreAuthorize("hasRole('ROLE_USER')")
-    public boolean evaluateCanBeEdited(Ticket ticket) {
+    public boolean evaluateCanBeEdited(@Valid Ticket ticket) {
         if (!ticket.getProject().isActive()) {
             return false;
         }
