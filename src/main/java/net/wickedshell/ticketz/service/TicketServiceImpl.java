@@ -111,6 +111,9 @@ public class TicketServiceImpl implements TicketService {
     @Override
     @PreAuthorize("hasRole('ROLE_USER')")
     public boolean evaluateCanBeEdited(Ticket ticket) {
+        if (!ticket.getProject().isActive()) {
+            return false;
+        }
         if (ticket.getState() == CLOSED) {
             return false;
         }
@@ -148,6 +151,10 @@ public class TicketServiceImpl implements TicketService {
 
     private void updatePossibleNextStates(Ticket ticket) {
         if (ticket == null || ticket.getState() == null) {
+            return;
+        }
+        if (!ticket.getProject().isActive()) {
+            ticket.setPossibleNextStates(Set.of());
             return;
         }
         switch (ticket.getState()) {

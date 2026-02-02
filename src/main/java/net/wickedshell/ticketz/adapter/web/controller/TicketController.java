@@ -80,12 +80,8 @@ public class TicketController {
         ticket.setProjectCode(project.getCode());
         ticket.setProjectName(project.getName());
         ticket.setProjectActive(project.isActive());
+        ticket.setCanEdit(ticketService.evaluateCanBeEdited(existingTicket));
         updateWebTicketPossibleTransitions(ticket, existingTicket.getPossibleNextStates());
-        boolean projectActive = project.isActive();
-        ticket.setCanEdit(ticketService.evaluateCanBeEdited(existingTicket) && projectActive);
-        if (projectActive) {
-            updateWebTicketPossibleTransitions(ticket, existingTicket.getPossibleNextStates());
-        }
         List<Comment> comments = commentService.findByTicketNumber(ticketNumber);
         model.addAttribute(ATTRIBUTE_NAME_TICKET, ticket);
         model.addAttribute(ATTRIBUTE_NAME_COMMENTS, comments.stream()

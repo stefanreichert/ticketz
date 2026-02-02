@@ -51,6 +51,19 @@ class TicketServiceImplTest {
     class EvaluateCanBeEdited {
 
         @Test
+        void testInactiveProject_noOneCanEdit() {
+            // given
+            Ticket ticket = createTicket(CREATED, author, null);
+            ticket.getProject().setActive(false);
+
+            // when
+            boolean canEdit = unitUnderTest.evaluateCanBeEdited(ticket);
+
+            // then
+            assertFalse(canEdit);
+        }
+
+        @Test
         void testClosed_noOneCanEdit() {
             // given
             Ticket ticket = createTicket(CLOSED, author, editor);
@@ -176,8 +189,8 @@ class TicketServiceImplTest {
             // given
             when(userService.getCurrentUser()).thenReturn(author);
 
-            Ticket existingTicket = createTicketWithProject(CREATED, author, null);
-            Ticket updatedTicket = createTicketWithProject(IN_PROGRESS, author, null);
+            Ticket existingTicket = createTicket(CREATED, author, null);
+            Ticket updatedTicket = createTicket(IN_PROGRESS, author, null);
 
             when(ticketPersistence.loadByTicketNumber("TICKETZ-1")).thenReturn(existingTicket);
             when(ticketPersistence.update(any(Ticket.class))).thenReturn(updatedTicket);
@@ -189,8 +202,8 @@ class TicketServiceImplTest {
         @Test
         void testInvalidTransition_createdToFixed_throwsException() {
             // given
-            Ticket existingTicket = createTicketWithProject(CREATED, author, null);
-            Ticket updatedTicket = createTicketWithProject(FIXED, author, null);
+            Ticket existingTicket = createTicket(CREATED, author, null);
+            Ticket updatedTicket = createTicket(FIXED, author, null);
 
             when(ticketPersistence.loadByTicketNumber("TICKETZ-1")).thenReturn(existingTicket);
             // Note: getCurrentUser() not called - evaluateCanBeEdited returns true for CREATED,
@@ -205,8 +218,8 @@ class TicketServiceImplTest {
         @Test
         void testInvalidTransition_createdToClosed_throwsException() {
             // given
-            Ticket existingTicket = createTicketWithProject(CREATED, author, null);
-            Ticket updatedTicket = createTicketWithProject(CLOSED, author, null);
+            Ticket existingTicket = createTicket(CREATED, author, null);
+            Ticket updatedTicket = createTicket(CLOSED, author, null);
 
             when(ticketPersistence.loadByTicketNumber("TICKETZ-1")).thenReturn(existingTicket);
             // Note: getCurrentUser() not called - evaluateCanBeEdited returns true for CREATED,
@@ -223,8 +236,8 @@ class TicketServiceImplTest {
             // given
             when(userService.getCurrentUser()).thenReturn(author);
 
-            Ticket existingTicket = createTicketWithProject(IN_PROGRESS, author, author);
-            Ticket updatedTicket = createTicketWithProject(FIXED, author, author);
+            Ticket existingTicket = createTicket(IN_PROGRESS, author, author);
+            Ticket updatedTicket = createTicket(FIXED, author, author);
 
             when(ticketPersistence.loadByTicketNumber("TICKETZ-1")).thenReturn(existingTicket);
             when(ticketPersistence.update(any(Ticket.class))).thenReturn(updatedTicket);
@@ -238,8 +251,8 @@ class TicketServiceImplTest {
             // given
             when(userService.getCurrentUser()).thenReturn(author);
 
-            Ticket existingTicket = createTicketWithProject(IN_PROGRESS, author, author);
-            Ticket updatedTicket = createTicketWithProject(REJECTED, author, author);
+            Ticket existingTicket = createTicket(IN_PROGRESS, author, author);
+            Ticket updatedTicket = createTicket(REJECTED, author, author);
 
             when(ticketPersistence.loadByTicketNumber("TICKETZ-1")).thenReturn(existingTicket);
             when(ticketPersistence.update(any(Ticket.class))).thenReturn(updatedTicket);
@@ -257,8 +270,8 @@ class TicketServiceImplTest {
             // given
             when(userService.getCurrentUser()).thenReturn(author);
 
-            Ticket existingTicket = createTicketWithProject(FIXED, author, editor);
-            Ticket updatedTicket = createTicketWithProject(CLOSED, author, editor);
+            Ticket existingTicket = createTicket(FIXED, author, editor);
+            Ticket updatedTicket = createTicket(CLOSED, author, editor);
 
             when(ticketPersistence.loadByTicketNumber("TICKETZ-1")).thenReturn(existingTicket);
             when(ticketPersistence.update(any(Ticket.class))).thenReturn(updatedTicket);
@@ -272,8 +285,8 @@ class TicketServiceImplTest {
             // given
             when(userService.getCurrentUser()).thenReturn(otherUser);
 
-            Ticket existingTicket = createTicketWithProject(FIXED, author, editor);
-            Ticket updatedTicket = createTicketWithProject(CLOSED, author, editor);
+            Ticket existingTicket = createTicket(FIXED, author, editor);
+            Ticket updatedTicket = createTicket(CLOSED, author, editor);
 
             when(ticketPersistence.loadByTicketNumber("TICKETZ-1")).thenReturn(existingTicket);
 
@@ -289,8 +302,8 @@ class TicketServiceImplTest {
             // given
             when(userService.getCurrentUser()).thenReturn(author);
 
-            Ticket existingTicket = createTicketWithProject(REJECTED, author, editor);
-            Ticket updatedTicket = createTicketWithProject(REOPENED, author, null);
+            Ticket existingTicket = createTicket(REJECTED, author, editor);
+            Ticket updatedTicket = createTicket(REOPENED, author, null);
 
             when(ticketPersistence.loadByTicketNumber("TICKETZ-1")).thenReturn(existingTicket);
             when(ticketPersistence.update(any(Ticket.class))).thenReturn(updatedTicket);
@@ -304,8 +317,8 @@ class TicketServiceImplTest {
             // given
             when(userService.getCurrentUser()).thenReturn(otherUser);
 
-            Ticket existingTicket = createTicketWithProject(REJECTED, author, editor);
-            Ticket updatedTicket = createTicketWithProject(REOPENED, author, null);
+            Ticket existingTicket = createTicket(REJECTED, author, editor);
+            Ticket updatedTicket = createTicket(REOPENED, author, null);
 
             when(ticketPersistence.loadByTicketNumber("TICKETZ-1")).thenReturn(existingTicket);
 
@@ -325,8 +338,8 @@ class TicketServiceImplTest {
             // given
             when(userService.getCurrentUser()).thenReturn(otherUser);
 
-            Ticket existingTicket = createTicketWithProject(CREATED, author, null);
-            Ticket updatedTicket = createTicketWithProject(IN_PROGRESS, author, null);
+            Ticket existingTicket = createTicket(CREATED, author, null);
+            Ticket updatedTicket = createTicket(IN_PROGRESS, author, null);
 
             when(ticketPersistence.loadByTicketNumber("TICKETZ-1")).thenReturn(existingTicket);
             when(ticketPersistence.update(any(Ticket.class))).thenAnswer(invocation -> invocation.getArgument(0));
@@ -343,8 +356,8 @@ class TicketServiceImplTest {
             // given
             when(userService.getCurrentUser()).thenReturn(author);
 
-            Ticket existingTicket = createTicketWithProject(FIXED, author, editor);
-            Ticket updatedTicket = createTicketWithProject(CLOSED, author, editor);
+            Ticket existingTicket = createTicket(FIXED, author, editor);
+            Ticket updatedTicket = createTicket(CLOSED, author, editor);
 
             when(ticketPersistence.loadByTicketNumber("TICKETZ-1")).thenReturn(existingTicket);
             when(ticketPersistence.update(any(Ticket.class))).thenAnswer(invocation -> invocation.getArgument(0));
@@ -361,8 +374,8 @@ class TicketServiceImplTest {
             // given
             when(userService.getCurrentUser()).thenReturn(author);
 
-            Ticket existingTicket = createTicketWithProject(FIXED, author, editor);
-            Ticket updatedTicket = createTicketWithProject(REOPENED, author, editor);
+            Ticket existingTicket = createTicket(FIXED, author, editor);
+            Ticket updatedTicket = createTicket(REOPENED, author, editor);
 
             when(ticketPersistence.loadByTicketNumber("TICKETZ-1")).thenReturn(existingTicket);
             when(ticketPersistence.update(any(Ticket.class))).thenAnswer(invocation -> invocation.getArgument(0));
@@ -486,11 +499,6 @@ class TicketServiceImplTest {
         ticket.setAuthor(author);
         ticket.setEditor(editor);
         ticket.setVersion(0L);
-        return ticket;
-    }
-
-    private Ticket createTicketWithProject(TicketState state, User author, User editor) {
-        Ticket ticket = createTicket(state, author, editor);
         ticket.setProject(createProject());
         return ticket;
     }
