@@ -34,7 +34,7 @@
                 <td th:text="${ticket.author.email}"></td>
                 <td th:text="${ticket.editor != null ? ticket.editor.email : '---'}"></td>
                 <td>
-                    <span th:switch="${ticket.state}">
+                    <span th:switch="${ticket.state.name()}">
                         <span th:case="'CREATED'" class="badge bg-info" th:text="#{CREATED}"></span>
                         <span th:case="'IN_PROGRESS'" class="badge bg-primary" th:text="#{IN_PROGRESS}"></span>
                         <span th:case="'FIXED'" class="badge bg-success" th:text="#{FIXED}"></span>
