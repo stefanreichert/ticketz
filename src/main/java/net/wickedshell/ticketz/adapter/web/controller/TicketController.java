@@ -75,7 +75,8 @@ public class TicketController {
     public String showTicket(@PathVariable String ticketNumber, Model model) {
         Ticket existingTicket = ticketService.loadByTicketNumber(ticketNumber);
         TicketWeb ticket = mapper.map(existingTicket, TicketWeb.class);
-        ticket.setProject(mapper.map(existingTicket.getProject(), ProjectWeb.class));
+        ticket.setProject(mapper.map(existingTicket.getProject(), ProjectWeb.class));                                                                                                               
+        updateWebTicketPossibleTransitions(ticket, existingTicket.getPossibleNextStates());  
         boolean projectActive = existingTicket.getProject().isActive();
         ticket.setCanEdit(ticketService.evaluateCanBeEdited(existingTicket) && projectActive);
         if (projectActive) {
