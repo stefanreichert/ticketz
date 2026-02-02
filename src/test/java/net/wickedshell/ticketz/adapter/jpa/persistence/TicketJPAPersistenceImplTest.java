@@ -1,9 +1,12 @@
 package net.wickedshell.ticketz.adapter.jpa.persistence;
 
 import jakarta.inject.Inject;
+import net.wickedshell.ticketz.adapter.jpa.converter.ProjectToProjectEntityConverter;
 import net.wickedshell.ticketz.adapter.jpa.converter.UserToUserEntityConverter;
+import net.wickedshell.ticketz.adapter.jpa.repository.ProjectRepository;
 import net.wickedshell.ticketz.adapter.jpa.repository.TicketRepository;
 import net.wickedshell.ticketz.adapter.jpa.repository.UserRepository;
+import net.wickedshell.ticketz.service.model.Project;
 import net.wickedshell.ticketz.service.model.Ticket;
 import net.wickedshell.ticketz.service.model.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,13 +29,17 @@ class TicketJPAPersistenceImplTest {
     @Inject
     private UserRepository userRepository;
 
+    @Inject
+    private ProjectRepository projectRepository;
+
     private TicketJPAPersistenceImpl unitUnderTest;
 
     @BeforeEach
     public void setupTest() {
         // setup unit under test
         UserToUserEntityConverter userConverter = new UserToUserEntityConverter(userRepository);
-        unitUnderTest = new TicketJPAPersistenceImpl(ticketRepository, userConverter);
+        ProjectToProjectEntityConverter projectConverter = new ProjectToProjectEntityConverter(projectRepository);
+        unitUnderTest = new TicketJPAPersistenceImpl(ticketRepository, userConverter, projectConverter);
     }
 
     @Test
@@ -41,11 +48,15 @@ class TicketJPAPersistenceImplTest {
         User author = new User();
         author.setEmail("test@us.er");
 
+        Project project = new Project();
+        project.setCode("DEFAULT");
+
         Ticket ticket = new Ticket();
         ticket.setTicketNumber("test create");
         ticket.setTitle("Test Ticket Title");
         ticket.setState(CREATED);
         ticket.setAuthor(author);
+        ticket.setProject(project);
 
         // when
         Ticket ticket_created = unitUnderTest.create(ticket);
@@ -57,6 +68,7 @@ class TicketJPAPersistenceImplTest {
         assertEquals("Test Ticket Title", ticket_created.getTitle());
         assertEquals(CREATED, ticket_created.getState());
         assertEquals("test@us.er", ticket_created.getAuthor().getEmail());
+        assertEquals("DEFAULT", ticket_created.getProject().getCode());
     }
 
     @Test

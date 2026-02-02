@@ -1,6 +1,7 @@
 package net.wickedshell.ticketz.adapter.jpa.persistence;
 
 import jakarta.persistence.OptimisticLockException;
+import net.wickedshell.ticketz.adapter.jpa.converter.ProjectToProjectEntityConverter;
 import net.wickedshell.ticketz.adapter.jpa.converter.UserToUserEntityConverter;
 import net.wickedshell.ticketz.adapter.jpa.entity.TicketEntity;
 import net.wickedshell.ticketz.adapter.jpa.repository.TicketRepository;
@@ -19,10 +20,11 @@ public class TicketJPAPersistenceImpl implements TicketPersistence {
     private final ModelMapper mapper;
     private final TicketRepository ticketRepository;
 
-    public TicketJPAPersistenceImpl(TicketRepository ticketRepository, UserToUserEntityConverter userConverter) {
+    public TicketJPAPersistenceImpl(TicketRepository ticketRepository, UserToUserEntityConverter userConverter, ProjectToProjectEntityConverter projectConverter) {
         this.ticketRepository = ticketRepository;
         mapper = new ModelMapper();
         mapper.addConverter(userConverter);
+        mapper.addConverter(projectConverter);
     }
 
     @Override

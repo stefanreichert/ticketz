@@ -38,7 +38,7 @@ public class ProjectController {
     @GetMapping(ACTION_NEW_PROJECT)
     public String newProject(Model model) {
         ProjectWeb project = new ProjectWeb();
-        project.setNew(true);
+        project.setNewProject(true);
         project.setActive(true);
         model.addAttribute(ATTRIBUTE_NAME_PROJECT, project);
         return VIEW_PROJECT;
@@ -48,7 +48,7 @@ public class ProjectController {
     public String showProject(@PathVariable String code, Model model) {
         Project existingProject = projectService.loadByCode(code);
         ProjectWeb project = mapper.map(existingProject, ProjectWeb.class);
-        project.setNew(false);
+        project.setNewProject(false);
         model.addAttribute(ATTRIBUTE_NAME_PROJECT, project);
         return VIEW_PROJECT;
     }

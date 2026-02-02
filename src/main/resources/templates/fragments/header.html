@@ -5,31 +5,37 @@
   <link th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" rel="stylesheet"/>
   <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}" defer></script>
 </head>
-<body th:fragment="header (pageheader)">
-  <div class="pt-5 mb-2">
-    <a class="h3" th:text="#{header.ticketz}" th:href="@{/secure/tickets}"></a>&nbsp;-&nbsp;<span class="text-secondary small strong" th:text="#{pageheader.ticketz}"/>
-  </div>
-  <div class="mb-2" sec:authorize="isAuthenticated()">
-    <a th:href="@{/secure/tickets}" class="btn btn-sm btn-outline-primary" th:text="#{button.tickets}"></a>
-    <a th:href="@{/secure/projects}" class="btn btn-sm btn-outline-primary" th:text="#{button.projects}"></a>
-  </div>
-  <div class="mb-4 container">
-    <div class="row">
-      <div class="col-8">
-        <p th:text="${pageheader}"></p>
-      </div>
-      <div class="col-4 text-end" sec:authorize="isAuthenticated()">
-        <form th:action="@{/secure/logout}" method="post">
-          <p class="small text-muted"><i><span th:text="#{label.logged_in}"></span>&nbsp;<span sec:authentication="principal.username"></span>&nbsp;<button type="submit" class="btn btn-sm btn-light" th:text="#{button.logout}"></button></i></p>
+<body th:fragment="header (pageheader, activeNav)">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4" sec:authorize="isAuthenticated()">
+    <div class="container">
+      <a class="navbar-brand" th:href="@{/secure/tickets}" th:text="#{header.ticketz}"></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" th:classappend="${activeNav == 'tickets' ? 'active' : ''}" th:href="@{/secure/tickets}" th:text="#{button.tickets}"></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:classappend="${activeNav == 'projects' ? 'active' : ''}" th:href="@{/secure/projects}" th:text="#{button.projects}"></a>
+          </li>
+        </ul>
+        <form class="d-flex align-items-center" th:action="@{/secure/logout}" method="post">
+          <span class="text-muted me-3 small" sec:authentication="principal.username"></span>
+          <button type="submit" class="btn btn-outline-secondary btn-sm" th:text="#{button.logout}"></button>
         </form>
       </div>
     </div>
+  </nav>
+  <div class="mb-4">
+    <p class="text-muted" th:text="${pageheader}"></p>
   </div>
-  <div th:if="${error}" class="mb-3">
-    <span class="text-danger small strong" th:text="${error}"></span>
+  <div th:if="${error}" class="alert alert-danger" role="alert">
+    <span th:text="${error}"></span>
   </div>
-  <div th:if="${message}" class="mb-3">
-    <span class="text-success small strong" th:text="${message}"></span>
+  <div th:if="${message}" class="alert alert-success" role="alert">
+    <span th:text="${message}"></span>
   </div>
 </body>
 </html>

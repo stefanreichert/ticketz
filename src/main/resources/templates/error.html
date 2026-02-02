@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="container">
-        <div th:replace="~{/fragments/header :: header(pageheader=#{pageheader.error})}"></div>
+        <div th:replace="~{/fragments/header :: header(pageheader=#{pageheader.error}, activeNav='')}"></div>
         <div class="mb-1">
             <p th:if="${url}" id='url'>
                 <b th:text="#{label.page}"></b>: <span th:text="${url}">Page URL</span>

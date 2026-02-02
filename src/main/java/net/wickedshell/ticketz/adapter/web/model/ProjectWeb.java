@@ -24,5 +24,5 @@ public class ProjectWeb {
 
     private long version;
 
-    private boolean isNew;
+    private boolean newProject;
 }

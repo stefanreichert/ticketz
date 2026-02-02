@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="container">
-    <div th:replace="~{/fragments/header :: header(pageheader=#{pageheader.ticket})}"></div>
+    <div th:replace="~{/fragments/header :: header(pageheader=#{pageheader.ticket}, activeNav='tickets')}"></div>
     <form th:action="@{/secure/tickets/{ticketNumber}(ticketNumber=*{ticketNumber})}" th:method="post" th:object="${ticketWeb}">
         <div class="mb-3">
             <span class="form-label" th:text="#{label.ticketNumber}"></span>

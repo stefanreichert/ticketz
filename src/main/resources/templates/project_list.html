@@ -9,10 +9,9 @@
 </head>
 <body>
 <div class="container">
-    <div th:replace="~{/fragments/header :: header(pageheader=#{pageheader.projects})}"></div>
+    <div th:replace="~{/fragments/header :: header(pageheader=#{pageheader.projects}, activeNav='projects')}"></div>
     <div class="mb-3">
         <a th:href="@{/secure/projects/new}" class="btn btn-primary" th:text="#{button.new_project}"></a>
-        <a th:href="@{/secure/tickets}" class="btn btn-outline-secondary" th:text="#{button.back_to_tickets}"></a>
     </div>
     <table class="table table-striped">
         <thead>

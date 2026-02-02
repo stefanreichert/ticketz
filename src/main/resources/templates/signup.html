@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="container">
-    <div th:replace="~{/fragments/header :: header(pageheader=#{pageheader.signup})}"></div>
+    <div th:replace="~{/fragments/header :: header(pageheader=#{pageheader.signup}, activeNav='')}"></div>
     <form th:action="@{/signup}" th:method="post" th:object="${signup}">
         <div class="mb-3">
             <label for="email" class="form-label" th:text="#{label.email}"/>

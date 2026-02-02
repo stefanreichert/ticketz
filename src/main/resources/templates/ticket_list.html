@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="container-lg">
-    <div th:replace="~{/fragments/header :: header(pageheader=#{pageheader.ticket_list})}"></div>
+    <div th:replace="~{/fragments/header :: header(pageheader=#{pageheader.ticket_list}, activeNav='tickets')}"></div>
     <div class="mb-3">
         <table class="table table-striped">
             <thead>
