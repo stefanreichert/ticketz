@@ -52,33 +52,52 @@ No domain model changes required. The `Project.isActive()` field already exists.
 
 **Web Layer Changes:**
 
-1. **TicketWeb DTO** - Add field to track project active status:
+1. **TicketWeb DTO** - Replace separate project fields with ProjectWeb reference:
 ```java
 public class TicketWeb {
     // ... existing fields ...
-    private boolean projectActive;  // NEW: indicates if the ticket's project is active
+
+    // REMOVE these fields:
+    // private String projectCode;
+    // private String projectName;
+
+    // ADD single ProjectWeb reference:
+    @NotNull
+    private ProjectWeb project;
 }
 ```
 
-2. **TicketController** - Populate the new field:
+This consolidates `projectCode`, `projectName`, and provides access to `active` status via `project.isActive()`.
+
+2. **TicketController** - Update to use ProjectWeb:
 ```java
 // In showTicket():
-ticket.setProjectActive(existingTicket.getProject().isActive());
+ProjectWeb projectWeb = mapper.map(existingTicket.getProject(), ProjectWeb.class);
+ticket.setProject(projectWeb);
+
+// In newTicket(): set project to null or empty ProjectWeb for new tickets
+
+// In saveTicket(): get project code from ticket.getProject().getCode()
 
 // Modify canEdit logic to consider project status:
 ticket.setCanEdit(ticketService.evaluateCanBeEdited(existingTicket)
     && existingTicket.getProject().isActive());
 ```
 
-3. **ticket.html** - Show inactive project warning and disable controls:
+3. **ticket.html** - Update project references and add inactive warning:
 ```html
 <!-- Warning banner when project is inactive -->
-<div th:if="${!ticketWeb.projectActive}" class="alert alert-warning">
-    This ticket belongs to an inactive project and cannot be modified.
+<div th:if="${ticketWeb.project != null and !ticketWeb.project.active}" class="alert alert-warning">
+    <span th:text="#{message.ticket.project_inactive}"></span>
 </div>
 
-<!-- Disable delete button when project is inactive -->
-<button th:disabled="${!ticketWeb.projectActive}" ...>Delete</button>
+<!-- Project display for existing tickets -->
+<span th:text="${ticketWeb.project.code + ' - ' + ticketWeb.project.name}"></span>
+
+<!-- Project dropdown for new tickets (unchanged - still uses active projects list) -->
+
+<!-- Hidden field update -->
+<input type="hidden" name="project.code" th:field="*{project.code}"/>
 ```
 
 4. **ticket_list.html** - Visual indication and disabled buttons:
@@ -101,18 +120,23 @@ message.ticket.project_inactive=This ticket belongs to an inactive project and c
 
 ### Implementation Approach
 
-1. **Phase 1**: Update TicketWeb and TicketController
-   - Add `projectActive` field to TicketWeb
-   - Update TicketController.showTicket() to populate the field
+1. **Phase 1**: Refactor TicketWeb to use ProjectWeb
+   - Remove `projectCode` and `projectName` fields from TicketWeb
+   - Add `ProjectWeb project` field to TicketWeb
+   - Update TicketController.showTicket() to map and set ProjectWeb
+   - Update TicketController.newTicket() to handle project for new tickets
+   - Update TicketController.saveTicket() to read project code from ProjectWeb
    - Update canEdit logic to consider project active status
 
 2. **Phase 2**: Update ticket detail page (ticket.html)
+   - Update all `ticketWeb.projectCode`/`projectName` references to `ticketWeb.project.code`/`name`
    - Add warning banner for inactive projects
    - Ensure all action buttons respect the inactive state
    - State transition buttons should also be hidden/disabled
+   - Update hidden field for project
 
 3. **Phase 3**: Update ticket list page (ticket_list.html)
-   - Add visual indicator for tickets in inactive projects
+   - Add visual indicator (badge) for tickets in inactive projects
    - Disable edit/delete buttons for those tickets
 
 4. **Phase 4**: Add i18n message and test
@@ -159,7 +183,7 @@ message.ticket.project_inactive=This ticket belongs to an inactive project and c
 - No new service-layer tests needed (backend unchanged)
 
 ### Integration Tests
-- Test TicketController sets projectActive correctly
+- Test TicketController correctly maps ProjectWeb
 - Test canEdit is false when project is inactive
 
 ### Manual Testing
