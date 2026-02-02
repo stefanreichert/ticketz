@@ -2,8 +2,8 @@ package net.wickedshell.ticketz.adapter.web.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.adapter.web.Action;
-import net.wickedshell.ticketz.adapter.web.converter.WebUserToUserConverter;
 import net.wickedshell.ticketz.adapter.web.model.CommentWeb;
 import net.wickedshell.ticketz.adapter.web.model.TicketWeb;
 import net.wickedshell.ticketz.adapter.web.model.UserWeb;
@@ -17,6 +17,7 @@ import net.wickedshell.ticketz.service.port.access.ProjectService;
 import net.wickedshell.ticketz.service.port.access.TicketService;
 import net.wickedshell.ticketz.service.port.access.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,6 +34,7 @@ import static net.wickedshell.ticketz.adapter.web.View.VIEW_TICKET;
 import static net.wickedshell.ticketz.service.model.TicketState.*;
 
 @Controller
+@RequiredArgsConstructor
 public class TicketController {
 
     private static final String ATTRIBUTE_NAME_TICKET = "ticketWeb";
@@ -40,22 +42,13 @@ public class TicketController {
     private static final String ATTRIBUTE_NAME_COMMENTS = "comments";
     private static final String ATTRIBUTE_NAME_PROJECTS = "projects";
 
-    private final ModelMapper mapper = new ModelMapper();
-
+    @Qualifier("webModelMapper")
+    private final ModelMapper mapper;
     private final UserService userService;
     private final TicketService ticketService;
     private final CommentService commentService;
     private final ProjectService projectService;
     private final MessageSource messageSource;
-
-    public TicketController(UserService userService, TicketService ticketService, CommentService commentService, ProjectService projectService, MessageSource messageSource, WebUserToUserConverter userConverter) {
-        this.userService = userService;
-        this.ticketService = ticketService;
-        this.commentService = commentService;
-        this.projectService = projectService;
-        this.messageSource = messageSource;
-        this.mapper.addConverter(userConverter);
-    }
 
     @GetMapping(ACTION_NEW_TICKET)
     public String newTicket(Model model) {

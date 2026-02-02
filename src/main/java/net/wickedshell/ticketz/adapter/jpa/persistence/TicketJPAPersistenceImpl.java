@@ -1,31 +1,26 @@
 package net.wickedshell.ticketz.adapter.jpa.persistence;
 
 import jakarta.persistence.OptimisticLockException;
-import net.wickedshell.ticketz.adapter.jpa.converter.ProjectToProjectEntityConverter;
-import net.wickedshell.ticketz.adapter.jpa.converter.UserToUserEntityConverter;
+import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.adapter.jpa.entity.TicketEntity;
 import net.wickedshell.ticketz.adapter.jpa.repository.TicketRepository;
 import net.wickedshell.ticketz.service.model.Ticket;
 import net.wickedshell.ticketz.service.port.persistence.TicketPersistence;
 import net.wickedshell.ticketz.service.port.persistence.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.StreamSupport;
 
 @Component
+@RequiredArgsConstructor
 public class TicketJPAPersistenceImpl implements TicketPersistence {
 
+    @Qualifier("jpaModelMapper")
     private final ModelMapper mapper;
     private final TicketRepository ticketRepository;
-
-    public TicketJPAPersistenceImpl(TicketRepository ticketRepository, UserToUserEntityConverter userConverter, ProjectToProjectEntityConverter projectConverter) {
-        this.ticketRepository = ticketRepository;
-        mapper = new ModelMapper();
-        mapper.addConverter(userConverter);
-        mapper.addConverter(projectConverter);
-    }
 
     @Override
     public Ticket loadByTicketNumber(String ticketNumber) {

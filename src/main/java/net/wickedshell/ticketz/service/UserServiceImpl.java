@@ -2,7 +2,7 @@ package net.wickedshell.ticketz.service;
 
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
-import net.wickedshell.ticketz.adapter.rest.security.exception.AuthenticationException;
+import net.wickedshell.ticketz.service.exception.AuthenticationException;
 import net.wickedshell.ticketz.service.model.Role;
 import net.wickedshell.ticketz.service.model.User;
 import net.wickedshell.ticketz.service.port.persistence.UserPersistence;

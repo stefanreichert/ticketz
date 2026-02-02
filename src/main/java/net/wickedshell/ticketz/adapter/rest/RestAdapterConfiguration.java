@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.adapter.rest.security.jwt.JwtAuthenticationRequestFilter;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -44,6 +45,11 @@ public class RestAdapterConfiguration {
         public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: unauthorized");
         }
+    }
+
+    @Bean
+    public ModelMapper restModelMapper() {
+        return new ModelMapper();
     }
 }
 

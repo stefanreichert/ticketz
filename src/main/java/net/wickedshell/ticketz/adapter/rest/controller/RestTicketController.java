@@ -1,10 +1,12 @@
 package net.wickedshell.ticketz.adapter.rest.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.adapter.rest.model.TicketRest;
 import net.wickedshell.ticketz.service.model.Ticket;
 import net.wickedshell.ticketz.service.port.access.TicketService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +20,8 @@ import java.util.List;
 public class RestTicketController {
 
     private final TicketService ticketService;
-    private final ModelMapper mapper = new ModelMapper();
+    @Qualifier("restModelMapper")
+    private final ModelMapper mapper;
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_API')")
@@ -39,7 +42,7 @@ public class RestTicketController {
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_API')")
-    public ResponseEntity<TicketRest> create(@RequestBody TicketRest ticket) {
+    public ResponseEntity<TicketRest> create(@Valid @RequestBody TicketRest ticket) {
         Ticket newTicket = ticketService.create(mapper.map(ticket, Ticket.class));
         return ResponseEntity.created(URI.create(RestRessource.RESOURCE_TICKETS + "/" + newTicket.getTicketNumber())).build();
     }
@@ -47,7 +50,7 @@ public class RestTicketController {
     @PutMapping(value = "/{ticket-number}")
     @PreAuthorize("hasRole('ROLE_API')")
     public ResponseEntity<Void> update(@PathVariable("ticket-number") String ticketNumber,
-                                       @RequestBody TicketRest ticket) {
+                                       @Valid @RequestBody TicketRest ticket) {
         if (!ticketNumber.equals(ticket.getTicketNumber())) {
             return ResponseEntity.badRequest().build();
         }

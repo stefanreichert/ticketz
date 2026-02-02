@@ -1,6 +1,6 @@
 package net.wickedshell.ticketz.adapter.jpa.persistence;
 
-import net.wickedshell.ticketz.adapter.jpa.converter.UserToUserEntityConverter;
+import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.adapter.jpa.entity.CommentEntity;
 import net.wickedshell.ticketz.adapter.jpa.repository.CommentRepository;
 import net.wickedshell.ticketz.adapter.jpa.repository.TicketRepository;
@@ -9,22 +9,19 @@ import net.wickedshell.ticketz.service.model.Ticket;
 import net.wickedshell.ticketz.service.port.persistence.CommentPersistence;
 import net.wickedshell.ticketz.service.port.persistence.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class CommentsJPAPersistenceImpl implements CommentPersistence {
+
     private final CommentRepository commentRepository;
     private final TicketRepository ticketRepository;
-    private final ModelMapper mapper = new ModelMapper();
-
-
-    public CommentsJPAPersistenceImpl(CommentRepository commentRepository, TicketRepository ticketRepository, UserToUserEntityConverter userConverter) {
-        this.commentRepository = commentRepository;
-        this.ticketRepository = ticketRepository;
-        this.mapper.addConverter(userConverter);
-    }
+    @Qualifier("jpaModelMapper")
+    private final ModelMapper mapper;
 
     @Override
     public List<Comment> findByTicketNumber(String ticketNumber) {

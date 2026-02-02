@@ -1,6 +1,8 @@
 package net.wickedshell.ticketz.adapter.web;
 
 import lombok.RequiredArgsConstructor;
+import net.wickedshell.ticketz.adapter.web.converter.WebUserToUserConverter;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -54,6 +56,13 @@ public class WebAdapterConfiguration {
         return new DelegatingSecurityContextRepository(
                 new RequestAttributeSecurityContextRepository(),
                 new HttpSessionSecurityContextRepository());
+    }
+
+    @Bean
+    public ModelMapper webModelMapper(WebUserToUserConverter webUserToUserConverter) {
+        ModelMapper mapper = new ModelMapper();
+        mapper.addConverter(webUserToUserConverter);
+        return mapper;
     }
 }
 

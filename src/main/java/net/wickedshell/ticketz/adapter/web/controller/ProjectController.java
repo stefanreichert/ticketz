@@ -2,10 +2,12 @@ package net.wickedshell.ticketz.adapter.web.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.adapter.web.model.ProjectWeb;
 import net.wickedshell.ticketz.service.model.Project;
 import net.wickedshell.ticketz.service.port.access.ProjectService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,19 +23,16 @@ import static net.wickedshell.ticketz.adapter.web.Action.*;
 import static net.wickedshell.ticketz.adapter.web.View.VIEW_PROJECT;
 
 @Controller
+@RequiredArgsConstructor
 public class ProjectController {
 
     private static final String ATTRIBUTE_NAME_PROJECT = "projectWeb";
     private static final String ATTRIBUTE_NAME_MESSAGE = "message";
 
-    private final ModelMapper mapper = new ModelMapper();
+    @Qualifier("webModelMapper")
+    private final ModelMapper mapper;
     private final ProjectService projectService;
     private final MessageSource messageSource;
-
-    public ProjectController(ProjectService projectService, MessageSource messageSource) {
-        this.projectService = projectService;
-        this.messageSource = messageSource;
-    }
 
     @GetMapping(ACTION_NEW_PROJECT)
     public String newProject(Model model) {

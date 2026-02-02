@@ -1,10 +1,12 @@
 package net.wickedshell.ticketz.adapter.rest.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.adapter.rest.model.ProjectRest;
 import net.wickedshell.ticketz.service.model.Project;
 import net.wickedshell.ticketz.service.port.access.ProjectService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +24,8 @@ import java.util.List;
 public class RestProjectController {
 
     private final ProjectService projectService;
-    private final ModelMapper mapper = new ModelMapper();
+    @Qualifier("restModelMapper")
+    private final ModelMapper mapper;
 
     /**
      * List all projects.
@@ -60,7 +63,7 @@ public class RestProjectController {
      */
     @PostMapping
     @PreAuthorize("hasRole('ROLE_API')")
-    public ResponseEntity<ProjectRest> create(@RequestBody ProjectRest projectRest) {
+    public ResponseEntity<ProjectRest> create(@Valid @RequestBody ProjectRest projectRest) {
         Project newProject = projectService.create(mapper.map(projectRest, Project.class));
         return ResponseEntity
                 .created(URI.create(RestRessource.RESOURCE_PROJECTS + "/" + newProject.getCode()))
@@ -77,7 +80,7 @@ public class RestProjectController {
     @PutMapping("/{code}")
     @PreAuthorize("hasRole('ROLE_API')")
     public ResponseEntity<Void> update(@PathVariable("code") String code,
-                                       @RequestBody ProjectRest projectRest) {
+                                       @Valid @RequestBody ProjectRest projectRest) {
         if (!code.equals(projectRest.getCode())) {
             return ResponseEntity.badRequest().build();
         }

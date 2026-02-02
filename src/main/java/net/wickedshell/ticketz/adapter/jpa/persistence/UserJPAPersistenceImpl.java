@@ -7,6 +7,7 @@ import net.wickedshell.ticketz.service.model.User;
 import net.wickedshell.ticketz.service.port.persistence.UserPersistence;
 import net.wickedshell.ticketz.service.port.persistence.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -17,7 +18,8 @@ import java.util.stream.StreamSupport;
 @RequiredArgsConstructor
 public class UserJPAPersistenceImpl implements UserPersistence {
 
-    private final ModelMapper mapper = new ModelMapper();
+    @Qualifier("jpaModelMapper")
+    private final ModelMapper mapper;
     private final UserRepository userRepository;
 
     @Override

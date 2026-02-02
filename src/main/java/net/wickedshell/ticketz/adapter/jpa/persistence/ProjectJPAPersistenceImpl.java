@@ -1,11 +1,13 @@
 package net.wickedshell.ticketz.adapter.jpa.persistence;
 
+import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.adapter.jpa.entity.ProjectEntity;
 import net.wickedshell.ticketz.adapter.jpa.repository.ProjectRepository;
 import net.wickedshell.ticketz.service.model.Project;
 import net.wickedshell.ticketz.service.port.persistence.ProjectPersistence;
 import net.wickedshell.ticketz.service.port.persistence.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -16,15 +18,12 @@ import java.util.stream.Collectors;
  * Handles persistence operations for projects using Spring Data JPA.
  */
 @Component
+@RequiredArgsConstructor
 public class ProjectJPAPersistenceImpl implements ProjectPersistence {
-    
-    private final ProjectRepository projectRepository;
-    private final ModelMapper mapper;
 
-    public ProjectJPAPersistenceImpl(ProjectRepository projectRepository) {
-        mapper = new ModelMapper();
-        this.projectRepository = projectRepository;
-    }
+    private final ProjectRepository projectRepository;
+    @Qualifier("jpaModelMapper")
+    private final ModelMapper mapper;
     
     @Override
     public Project create(Project project) {

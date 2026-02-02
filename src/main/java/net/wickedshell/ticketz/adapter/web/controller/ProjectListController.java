@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.adapter.web.model.ProjectWeb;
 import net.wickedshell.ticketz.service.port.access.ProjectService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,7 +21,8 @@ public class ProjectListController {
     private static final String ATTRIBUTE_NAME_PROJECTS = "projects";
 
     private final ProjectService projectService;
-    private final ModelMapper mapper = new ModelMapper();
+    @Qualifier("webModelMapper")
+    private final ModelMapper mapper;
 
     @GetMapping(value = ACTION_SHOW_PROJECT_LIST)
     public String showProjectList() {

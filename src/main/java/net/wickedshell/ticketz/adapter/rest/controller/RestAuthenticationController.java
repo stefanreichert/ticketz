@@ -1,5 +1,6 @@
 package net.wickedshell.ticketz.adapter.rest.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.adapter.rest.model.LoginRequest;
 import net.wickedshell.ticketz.adapter.rest.model.SignupRequest;
@@ -9,6 +10,7 @@ import net.wickedshell.ticketz.service.model.Role;
 import net.wickedshell.ticketz.service.model.User;
 import net.wickedshell.ticketz.service.port.access.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,13 +28,14 @@ import java.util.Set;
 @RequestMapping(RestRessource.RESOURCE_AUTHENTICATION)
 public class RestAuthenticationController {
 
-    private final ModelMapper mapper = new ModelMapper();
+    @Qualifier("restModelMapper")
+    private final ModelMapper mapper;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final UserService userService;
 
     @PostMapping(value = "/logins", produces = MimeTypeUtils.TEXT_PLAIN_VALUE)
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<String> login(@Valid @RequestBody LoginRequest loginRequest) {
         AbstractAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
         authenticationManager.authenticate(authenticationToken);
@@ -40,7 +43,7 @@ public class RestAuthenticationController {
     }
 
     @PostMapping(value = "/signups")
-    public ResponseEntity<Void> signup(@RequestBody SignupRequest signupRequest) {
+    public ResponseEntity<Void> signup(@Valid @RequestBody SignupRequest signupRequest) {
         User user = mapper.map(signupRequest, User.class);
         userService.create(user, signupRequest.getPassword(), Set.of(Role.ROLE_USER, Role.ROLE_API));
         return ResponseEntity.ok().build();
