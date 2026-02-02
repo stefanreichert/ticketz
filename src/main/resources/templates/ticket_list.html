@@ -34,8 +34,8 @@
                     <span th:unless="${ticket.project.active}" class="badge bg-secondary ms-1" th:text="#{label.project.inactive}"></span>
                 </td>
                 <td th:text="${ticket.description}"></td>
-                <td th:text="${ticket.author.email}"></td>
-                <td th:text="${ticket.editor != null ? ticket.editor.email : '---'}"></td>
+                <td th:text="${ticket.author.firstname + ' ' + ticket.author.lastname}"></td>
+                <td th:text="${ticket.editor != null ? ticket.editor.firstname + ' ' + ticket.editor.lastname : '---'}"></td>
                 <td>
                     <span th:switch="${ticket.state.name()}">
                         <span th:case="'CREATED'" class="badge bg-info" th:text="#{CREATED}"></span>
@@ -60,7 +60,7 @@
         </table>
     </div>
     <div th:each="ticket : ${tickets}">
-        <div th:replace="~{/fragments/confirm_dialog :: confirm(id=${'confirm_' + ticket.ticketNumber}, title=#{dialog.delete_ticket.title}, message=#{dialog.delete_ticket.message(${ticket.ticketNumber})}, confirm_url=@{/secure/tickets/{ticketNumber}:delete(ticketNumber=${ticket.ticketNumber})})}"></div>
+        <div th:replace="~{/fragments/confirm_dialog :: confirm(id=${'confirm_' + ticket.ticketNumber}, title=#{dialog.delete_ticket.title}, message=#{dialog.delete_ticket.message(${ticket.ticketNumber})}, confirm_url=@{/secure/tickets/{ticketNumber}:delete(ticketNumber=${ticket.ticketNumber})}, confirm_label=#{button.delete})}"></div>
     </div>
     <div th:replace="~{/fragments/footer :: footer}"></div>
 </div>
