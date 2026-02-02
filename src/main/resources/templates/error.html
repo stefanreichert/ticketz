@@ -21,16 +21,13 @@
                 <b th:text="#{label.occurred}"></b>: <span th:text="${timestamp}">Timestamp</span>
             </p>
         </div>
-        <div class="mb-3">
-            <div th:utext="'&lt;!--'" th:remove="tag"></div>
-            <div th:utext="'Failed URL: ' +  ${url}" th:remove="tag">${url}</div>
-            <div th:utext="'Exception: ' + ${exception}" th:remove="tag">${exception}</div>
-            <ul th:remove="tag">
-                <li th:each="ste : ${exception}" th:remove="tag"><span
-                        th:utext="${ste}" th:remove="tag">${ste}</span></li>
-            </ul>
-            <div th:utext="'--&gt;'" th:remove="tag"></div>
-        </div>
+        <!-- Debug info in HTML comments -->
+        <!--/*@thymesVar id="url" type="java.lang.String"*/-->
+        <!--/*@thymesVar id="exception" type="java.lang.String"*/-->
+        <th:block th:if="${false}">
+            <div th:text="${'Failed URL: ' + url}"></div>
+            <div th:text="${'Exception: ' + exception}"></div>
+        </th:block>
         <div th:replace="~{/fragments/footer :: footer}"></div>
     </div>
 </body>

@@ -22,7 +22,7 @@
           </li>
         </ul>
         <form class="d-flex align-items-center" th:action="@{/secure/logout}" method="post">
-          <span class="text-muted me-3 small" sec:authentication="principal.username"></span>
+          <span class="text-muted me-3 small" sec:authorize="isAuthenticated()" sec:authentication="principal.username"></span>
           <button type="submit" class="btn btn-outline-secondary btn-sm" th:text="#{button.logout}"></button>
         </form>
       </div>
