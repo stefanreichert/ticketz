@@ -52,7 +52,7 @@
         <div class="mb-3" th:if="${ticketWeb.ticketNumber == 'new'}">
             <label for="project.code" class="form-label" th:text="#{label.project}"/>
             <select id="project.code" name="project.code" class="form-select" th:field="*{project.code}">
-                <option value="" disabled selected>Select a project...</option>
+                <option value="">Select a project...</option>
                 <option th:each="proj : ${projects}" th:value="${proj.code}" th:text="${proj.code + ' - ' + proj.name}"></option>
             </select>
             <div class="text-danger small" th:if="${#fields.hasErrors('project.code')}" th:errors="*{project.code}"></div>
