@@ -20,9 +20,8 @@ public class TicketWeb {
     private UserWeb editor;
     @NotBlank
     private String state;
-    @NotBlank
-    private String projectCode;
-    private String projectName;
+    @NotNull
+    private ProjectWeb project;
 
     private boolean canEdit = false;
     private boolean canGoIntoProgress = false;
