@@ -10,10 +10,10 @@
 <body>
 <div class="container">
     <div th:replace="~{/fragments/header :: header(pageheader=#{pageheader.ticket}, activeNav='tickets')}"></div>
-    <div th:if="${ticketWeb.ticketNumber != 'new' and !ticketWeb.projectActive}" class="alert alert-warning mb-3">
+    <div th:if="${!ticketWeb.newTicket and !ticketWeb.projectActive}" class="alert alert-warning mb-3">
         <span th:text="#{message.ticket.project_inactive}"></span>
     </div>
-    <form th:action="@{/secure/tickets/{ticketNumber}(ticketNumber=*{ticketNumber})}" th:method="post" th:object="${ticketWeb}">
+    <form th:action="@{/secure/tickets/{ticketNumber}(ticketNumber=${ticketWeb.newTicket ? 'new' : ticketWeb.ticketNumber})}" th:method="post" th:object="${ticketWeb}">
         <div class="mb-3">
             <span class="form-label" th:text="#{label.ticketNumber}"></span>
             <span id="span-ticketNumber" class="form-control bg-light" th:text="*{ticketNumber}"></span>
@@ -49,7 +49,7 @@
                 </span>
             </div>
         </div>
-        <div class="mb-3" th:if="${ticketWeb.ticketNumber == 'new'}">
+        <div class="mb-3" th:if="${ticketWeb.newTicket}">
             <label for="projectCode" class="form-label" th:text="#{label.project}"/>
             <select id="projectCode" name="projectCode" class="form-select" th:field="*{projectCode}">
                 <option value="">Select a project...</option>
@@ -57,14 +57,14 @@
             </select>
             <div class="text-danger small" th:if="${#fields.hasErrors('projectCode')}" th:errors="*{projectCode}"></div>
         </div>
-        <div class="mb-3" th:if="${ticketWeb.ticketNumber != 'new'}">
+        <div class="mb-3" th:if="${!ticketWeb.newTicket}">
             <span class="form-label" th:text="#{label.project}"></span>
             <div class="form-control bg-light">
                 <span th:text="${ticketWeb.projectCode + ' - ' + ticketWeb.projectName}"></span>
                 <span th:unless="${ticketWeb.projectActive}" class="badge bg-secondary ms-1" th:text="#{label.project.inactive}"></span>
             </div>
         </div>
-        <div class="mb-3" th:if="${ticketWeb.ticketNumber != 'new'}">
+        <div class="mb-3" th:if="${!ticketWeb.newTicket}">
             <label for="comment" class="form-label" th:text="#{label.comment}"/>
             <textarea id="comment" name="commentText" class="form-control" rows="3" th:disabled="${!ticketWeb.canEdit}" th:classappend="${!ticketWeb.canEdit ? 'bg-light' : ''}"></textarea>
         </div>
@@ -99,7 +99,8 @@
         <input type="hidden" id="canGoIntoRejected" name="canGoIntoRejected" th:field="*{canGoIntoRejected}"/>
         <input type="hidden" id="canGoIntoReopened" name="canGoIntoReopened" th:field="*{canGoIntoReopened}"/>
         <input type="hidden" id="canGoIntoClosed" name="canGoIntoClosed" th:field="*{canGoIntoClosed}"/>
-        <input type="hidden" id="projectCode" name="projectCode" th:if="${ticketWeb.ticketNumber != 'new'}" th:field="*{projectCode}"/>
+        <input type="hidden" id="newTicket" name="newTicket" th:field="*{newTicket}"/>
+        <input type="hidden" id="projectCode" name="projectCode" th:if="${!ticketWeb.newTicket}" th:field="*{projectCode}"/>
     </form>
     <div th:replace="~{/fragments/footer :: footer}"></div>
 </div>

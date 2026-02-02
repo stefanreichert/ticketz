@@ -25,6 +25,7 @@ public class TicketWeb {
     private String projectName;
     private boolean projectActive;
 
+    private boolean newTicket;
     private boolean canEdit = false;
     private boolean canGoIntoProgress = false;
     private boolean canGoIntoFixed = false;

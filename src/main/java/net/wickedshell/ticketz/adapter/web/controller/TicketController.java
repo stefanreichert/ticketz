@@ -61,6 +61,7 @@ public class TicketController {
     public String newTicket(Model model) {
         TicketWeb ticket = new TicketWeb();
         ticket.setTicketNumber(TICKET_NUMBER_NEW);
+        ticket.setNewTicket(true);
         ticket.setAuthor(mapper.map(userService.getCurrentUser(), UserWeb.class));
         ticket.setState(CREATED.name());
         ticket.setCanEdit(true);
@@ -74,6 +75,7 @@ public class TicketController {
     public String showTicket(@PathVariable String ticketNumber, Model model) {
         Ticket existingTicket = ticketService.loadByTicketNumber(ticketNumber);
         TicketWeb ticket = mapper.map(existingTicket, TicketWeb.class);
+        ticket.setNewTicket(false);
         Project project = existingTicket.getProject();
         ticket.setProjectCode(project.getCode());
         ticket.setProjectName(project.getName());
@@ -110,14 +112,14 @@ public class TicketController {
             ModelAndView modelAndView = new ModelAndView(VIEW_TICKET)
                     .addObject(ATTRIBUTE_NAME_TICKET, ticket)
                     .addObject(ATTRIBUTE_NAME_COMMENTS, comments);
-            if (TICKET_NUMBER_NEW.equals(ticketNumber)) {
+            if (ticket.isNewTicket()) {
                 modelAndView.addObject(ATTRIBUTE_NAME_PROJECTS, getActiveProjects());
             }
             return modelAndView;
         }
         String messageId;
         String[] arguments;
-        if (TICKET_NUMBER_NEW.equals(ticketNumber)) {
+        if (ticket.isNewTicket()) {
             Ticket newTicket = mapper.map(ticket, Ticket.class);
             Project project = projectService.loadByCode(ticket.getProjectCode());
             newTicket.setProject(project);
