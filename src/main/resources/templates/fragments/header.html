@@ -9,20 +9,20 @@
   <div class="pt-4 mb-2">
     <span class="h3" th:text="#{header.ticketz}"></span>&nbsp;-&nbsp;<span class="text-secondary small" th:text="#{pageheader.ticketz}"></span>
   </div>
-  <div class="d-flex justify-content-between align-items-center mb-4" sec:authorize="isAuthenticated()">
+  <nav class="d-flex justify-content-between align-items-center bg-light rounded px-3 py-2 mb-4" sec:authorize="isAuthenticated()">
     <ul class="nav">
       <li class="nav-item">
-        <a class="nav-link ps-0" th:classappend="${activeNav == 'tickets' ? 'text-primary fw-bold' : 'text-secondary'}" th:aria-current="${activeNav == 'tickets' ? 'page' : ''}" th:href="@{/secure/tickets}" th:text="#{button.tickets}"></a>
+        <a class="nav-link" th:classappend="${activeNav == 'tickets' ? 'text-primary fw-bold' : 'text-secondary'}" th:aria-current="${activeNav == 'tickets' ? 'page' : ''}" th:href="@{/secure/tickets}" th:text="#{button.tickets}"></a>
       </li>
       <li class="nav-item">
         <a class="nav-link" th:classappend="${activeNav == 'projects' ? 'text-primary fw-bold' : 'text-secondary'}" th:aria-current="${activeNav == 'projects' ? 'page' : ''}" th:href="@{/secure/projects}" th:text="#{button.projects}"></a>
       </li>
     </ul>
     <form class="d-flex align-items-center" th:action="@{/secure/logout}" method="post">
-      <span class="text-muted me-3 small" sec:authentication="principal.username"></span>
+      <span class="text-muted me-3 small" sec:authorize="isAuthenticated()" sec:authentication="principal.username"></span>
       <button type="submit" class="btn btn-outline-secondary btn-sm" th:text="#{button.logout}"></button>
     </form>
-  </div>
+  </nav>
   <div class="mb-4">
     <p class="text-muted" th:text="${pageheader}"></p>
   </div>
