@@ -254,9 +254,15 @@ None required.
 
 ## Open Questions
 
-1. **Should we show a different icon/style for inactive project tickets in the list?**
-   - Current proposal: Badge next to project code
-   - Alternative: Row styling (e.g., muted/gray text)
+None.
+
+---
+
+## Decision Log
+
+| Date | Decision | Rationale |
+|------|----------|-----------|
+| 2025-02-02 | Use badge next to project code for inactive indicator | Clear, consistent with project list styling |
 
 ---
 
