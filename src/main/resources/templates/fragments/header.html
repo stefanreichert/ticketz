@@ -6,6 +6,9 @@
   <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}" defer></script>
 </head>
 <body th:fragment="header (pageheader, activeNav)">
+  <div class="pt-4 mb-4" sec:authorize="!isAuthenticated()">
+    <span class="h3" th:text="#{header.ticketz}"></span>&nbsp;-&nbsp;<span class="text-secondary small" th:text="#{pageheader.ticketz}"></span>
+  </div>
   <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4" sec:authorize="isAuthenticated()">
     <div class="container">
       <a class="navbar-brand" th:href="@{/secure/tickets}" th:text="#{header.ticketz}"></a>
