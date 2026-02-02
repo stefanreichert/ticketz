@@ -31,11 +31,11 @@
   <div class="mb-4">
     <p class="text-muted" th:text="${pageheader}"></p>
   </div>
-  <div th:if="${error}" class="alert alert-danger" role="alert">
-    <span th:text="${error}"></span>
+  <div th:if="${error}" class="mb-3">
+    <span class="text-danger small strong" th:text="${error}"></span>
   </div>
-  <div th:if="${message}" class="alert alert-success" role="alert">
-    <span th:text="${message}"></span>
+  <div th:if="${message}" class="mb-3">
+    <span class="text-success small strong" th:text="${message}"></span>
   </div>
 </body>
 </html>
