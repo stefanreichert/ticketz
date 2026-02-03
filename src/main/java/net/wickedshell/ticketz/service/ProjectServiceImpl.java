@@ -10,6 +10,7 @@ import net.wickedshell.ticketz.service.port.driven.persistence.ProjectPersistenc
 import net.wickedshell.ticketz.service.port.driven.persistence.exception.ObjectNotFoundException;
 
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ import java.util.List;
  * Contains business logic and validation for project management.
  */
 @Service
+@Validated
 @Transactional
 @RequiredArgsConstructor
 public class ProjectServiceImpl implements ProjectService {

@@ -10,10 +10,12 @@ import net.wickedshell.ticketz.service.port.access.CommentService;
 import net.wickedshell.ticketz.service.port.driven.persistence.CommentPersistence;
 
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
 @Service
+@Validated
 @Transactional
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {

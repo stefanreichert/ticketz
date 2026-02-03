@@ -17,6 +17,7 @@ import net.wickedshell.ticketz.service.port.driven.persistence.TicketPersistence
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Set;
@@ -24,6 +25,7 @@ import java.util.Set;
 import static net.wickedshell.ticketz.service.model.TicketState.*;
 
 @Service
+@Validated
 @Transactional
 @RequiredArgsConstructor
 public class TicketServiceImpl implements TicketService {
