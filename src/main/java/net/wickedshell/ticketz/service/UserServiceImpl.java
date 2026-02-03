@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.service.exception.AuthenticationException;
+import net.wickedshell.ticketz.service.exception.ValidationException;
 import net.wickedshell.ticketz.service.model.Role;
 import net.wickedshell.ticketz.service.model.User;
 import net.wickedshell.ticketz.service.port.driven.persistence.UserPersistence;
@@ -66,6 +67,16 @@ public class UserServiceImpl implements UserService {
         User existingUser = userPersistence.loadByEmail(user.getEmail());
         existingUser.setFirstname(user.getFirstname());
         existingUser.setLastname(user.getLastname());
+        return userPersistence.update(existingUser);
+    }
+
+    @Override
+    public User updatePassword(String email, String currentPassword, String newPassword) {
+        User existingUser = userPersistence.loadByEmail(email);
+        if (!passwordEncoder.matches(currentPassword, existingUser.getPasswordHash())) {
+            throw new ValidationException("Current password is incorrect");
+        }
+        existingUser.setPasswordHash(passwordEncoder.encode(newPassword));
         return userPersistence.update(existingUser);
     }
 }

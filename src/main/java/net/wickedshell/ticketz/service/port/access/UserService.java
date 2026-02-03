@@ -22,4 +22,7 @@ public interface UserService {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     User updateName(@Valid User user);
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    User updatePassword(String email, String currentPassword, String newPassword);
 }
