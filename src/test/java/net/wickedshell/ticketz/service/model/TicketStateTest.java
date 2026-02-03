@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TicketStateTest {
 
     @Test
-    void getPermittedSuccessors_returnsExpectedMapping() {
+    void testGetPermittedSuccessors_returnsExpectedMapping() {
         // given
         TicketState created = TicketState.CREATED;
         TicketState inProgress = TicketState.IN_PROGRESS;
@@ -36,7 +36,7 @@ class TicketStateTest {
     }
 
     @Test
-    void checkIsPermittedSuccessor_isConsistentWithGetPermittedSuccessors() {
+    void testCheckIsPermittedSuccessor_isConsistentWithGetPermittedSuccessors() {
         // given
         TicketState[] allStates = TicketState.values();
 
@@ -54,7 +54,7 @@ class TicketStateTest {
     }
 
     @Test
-    void getPermittedSuccessors_returnsUnmodifiableSet() {
+    void testGetPermittedSuccessors_returnsUnmodifiableSet() {
         // given
         TicketState state = TicketState.CREATED;
 

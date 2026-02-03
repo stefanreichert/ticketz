@@ -25,7 +25,7 @@ import java.util.Set;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(RestRessource.RESSOURCE_AUTHENTICATION)
+@RequestMapping(RestResource.RESOURCE_AUTHENTICATION)
 public class RestAuthenticationController {
 
     @Qualifier("restModelMapper")
