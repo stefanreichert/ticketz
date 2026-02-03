@@ -30,7 +30,7 @@ Describe the problem or requirement that needs to be addressed. What is the curr
 
 **Affected Components:**
 - Which adapters: [ ] Web [ ] REST [ ] Persistence
-- Which services: [ ] TicketService [ ] UserService [ ] CommentService
+- Which services: [ ] TicketService [ ] UserService [ ] CommentService [ ] ProjectService
 - New components: [ ] Yes [ ] No
 
 **Hexagonal Architecture Compliance:**
