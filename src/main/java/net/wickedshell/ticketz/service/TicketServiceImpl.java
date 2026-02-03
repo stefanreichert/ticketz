@@ -13,7 +13,7 @@ import net.wickedshell.ticketz.service.port.access.CommentService;
 import net.wickedshell.ticketz.service.port.access.ProjectService;
 import net.wickedshell.ticketz.service.port.access.TicketService;
 import net.wickedshell.ticketz.service.port.access.UserService;
-import net.wickedshell.ticketz.service.port.persistence.TicketPersistence;
+import net.wickedshell.ticketz.service.port.driven.persistence.TicketPersistence;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;

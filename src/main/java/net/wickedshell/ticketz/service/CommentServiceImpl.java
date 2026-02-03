@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.service.model.Comment;
 import net.wickedshell.ticketz.service.model.Ticket;
 import net.wickedshell.ticketz.service.port.access.CommentService;
-import net.wickedshell.ticketz.service.port.persistence.CommentPersistence;
+import net.wickedshell.ticketz.service.port.driven.persistence.CommentPersistence;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

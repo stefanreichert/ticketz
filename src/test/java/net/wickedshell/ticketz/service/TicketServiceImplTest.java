@@ -8,7 +8,7 @@ import net.wickedshell.ticketz.service.model.User;
 import net.wickedshell.ticketz.service.port.access.CommentService;
 import net.wickedshell.ticketz.service.port.access.ProjectService;
 import net.wickedshell.ticketz.service.port.access.UserService;
-import net.wickedshell.ticketz.service.port.persistence.TicketPersistence;
+import net.wickedshell.ticketz.service.port.driven.persistence.TicketPersistence;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

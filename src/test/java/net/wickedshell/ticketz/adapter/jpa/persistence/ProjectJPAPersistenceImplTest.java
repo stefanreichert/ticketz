@@ -3,7 +3,7 @@ package net.wickedshell.ticketz.adapter.jpa.persistence;
 import jakarta.inject.Inject;
 import net.wickedshell.ticketz.adapter.jpa.repository.ProjectRepository;
 import net.wickedshell.ticketz.service.model.Project;
-import net.wickedshell.ticketz.service.port.persistence.exception.ObjectNotFoundException;
+import net.wickedshell.ticketz.service.port.driven.persistence.exception.ObjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;

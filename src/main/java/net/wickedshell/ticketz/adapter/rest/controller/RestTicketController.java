@@ -16,7 +16,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(RestRessource.RESOURCE_TICKETS)
+@RequestMapping(RestRessource.RESSOURCE_TICKETS)
 public class RestTicketController {
 
     private final TicketService ticketService;
@@ -44,7 +44,7 @@ public class RestTicketController {
     @PreAuthorize("hasRole('ROLE_API')")
     public ResponseEntity<TicketRest> create(@Valid @RequestBody TicketRest ticket) {
         Ticket newTicket = ticketService.create(mapper.map(ticket, Ticket.class));
-        return ResponseEntity.created(URI.create(RestRessource.RESOURCE_TICKETS + "/" + newTicket.getTicketNumber())).build();
+        return ResponseEntity.created(URI.create(RestRessource.RESSOURCE_TICKETS + "/" + newTicket.getTicketNumber())).build();
     }
 
     @PutMapping(value = "/{ticket-number}")

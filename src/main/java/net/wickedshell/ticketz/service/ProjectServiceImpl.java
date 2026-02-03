@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.service.exception.ValidationException;
 import net.wickedshell.ticketz.service.model.Project;
 import net.wickedshell.ticketz.service.port.access.ProjectService;
-import net.wickedshell.ticketz.service.port.persistence.ProjectPersistence;
-import net.wickedshell.ticketz.service.port.persistence.exception.ObjectNotFoundException;
+import net.wickedshell.ticketz.service.port.driven.persistence.ProjectPersistence;
+import net.wickedshell.ticketz.service.port.driven.persistence.exception.ObjectNotFoundException;
 
 import org.springframework.stereotype.Service;
 

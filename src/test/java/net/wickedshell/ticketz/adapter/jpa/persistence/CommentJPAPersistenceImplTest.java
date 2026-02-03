@@ -17,7 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-class CommentsJPAPersistenceImplTest {
+class CommentJPAPersistenceImplTest {
 
     @Inject
     private CommentRepository commentRepository;
@@ -28,12 +28,12 @@ class CommentsJPAPersistenceImplTest {
     @Inject
     private UserRepository userRepository;
 
-    private CommentsJPAPersistenceImpl unitUnderTest;
+    private CommentJPAPersistenceImpl unitUnderTest;
 
     @BeforeEach
     public void setupTest() {
         UserToUserEntityConverter userConverter = new UserToUserEntityConverter(userRepository);
-        unitUnderTest = new CommentsJPAPersistenceImpl(commentRepository, ticketRepository, userConverter);
+        unitUnderTest = new CommentJPAPersistenceImpl(commentRepository, ticketRepository, userConverter);
     }
 
     @Test

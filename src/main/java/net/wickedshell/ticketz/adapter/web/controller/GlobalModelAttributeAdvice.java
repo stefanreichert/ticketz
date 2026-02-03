@@ -1,8 +1,12 @@
 package net.wickedshell.ticketz.adapter.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import net.wickedshell.ticketz.adapter.web.model.UserWeb;
 import net.wickedshell.ticketz.service.model.User;
 import net.wickedshell.ticketz.service.port.access.UserService;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -17,12 +21,15 @@ public class GlobalModelAttributeAdvice {
 
     private final UserService userService;
 
+    @Qualifier("webModelMapper")
+    private final ModelMapper mapper;
+
     @ModelAttribute(ATTRIBUTE_NAME_CURRENT_USER)
-    public User populateCurrentUser() {
+    public UserWeb populateCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()
                 && !"anonymousUser".equals(authentication.getPrincipal())) {
-            return userService.getCurrentUser();
+            return mapper.map(userService.getCurrentUser(), UserWeb.class);
         }
         return null;
     }

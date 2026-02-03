@@ -1,8 +1,11 @@
 package net.wickedshell.ticketz.adapter.web.controller;
 
 import lombok.RequiredArgsConstructor;
-import net.wickedshell.ticketz.service.model.Ticket;
+import net.wickedshell.ticketz.adapter.web.model.TicketWeb;
 import net.wickedshell.ticketz.service.port.access.TicketService;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,13 +23,19 @@ public class TicketListController {
 
     private final TicketService ticketService;
 
+    @Qualifier("webModelMapper")
+    private final ModelMapper mapper;
+
     @GetMapping(value = ACTION_SHOW_TICKET_LIST)
     public String showTicketList() {
         return VIEW_TICKET_LIST;
     }
 
     @ModelAttribute(ATTRIBUTE_NAME_TICKETS)
-    public List<Ticket> populateTickets() {
-        return ticketService.findAll();
+    public List<TicketWeb
+    > populateTickets() {
+        return ticketService.findAll().stream()
+                .map(ticket -> mapper.map(ticket, TicketWeb.class))
+                .toList();
     }
 }

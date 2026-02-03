@@ -3,7 +3,7 @@ package net.wickedshell.ticketz.adapter.web.converter;
 import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.adapter.web.model.UserWeb;
 import net.wickedshell.ticketz.service.model.User;
-import net.wickedshell.ticketz.service.port.persistence.exception.ObjectNotFoundException;
+import net.wickedshell.ticketz.service.port.driven.persistence.exception.ObjectNotFoundException;
 import net.wickedshell.ticketz.service.port.access.UserService;
 import org.modelmapper.Converter;
 import org.modelmapper.spi.MappingContext;

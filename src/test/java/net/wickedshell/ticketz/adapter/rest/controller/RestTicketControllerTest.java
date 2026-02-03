@@ -10,7 +10,7 @@ import net.wickedshell.ticketz.service.model.User;
 import net.wickedshell.ticketz.service.port.access.ProjectService;
 import net.wickedshell.ticketz.service.port.access.TicketService;
 import net.wickedshell.ticketz.service.port.access.UserService;
-import net.wickedshell.ticketz.service.port.persistence.exception.ObjectNotFoundException;
+import net.wickedshell.ticketz.service.port.driven.persistence.exception.ObjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

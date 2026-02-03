@@ -6,8 +6,8 @@ import net.wickedshell.ticketz.adapter.jpa.repository.CommentRepository;
 import net.wickedshell.ticketz.adapter.jpa.repository.TicketRepository;
 import net.wickedshell.ticketz.service.model.Comment;
 import net.wickedshell.ticketz.service.model.Ticket;
-import net.wickedshell.ticketz.service.port.persistence.CommentPersistence;
-import net.wickedshell.ticketz.service.port.persistence.exception.ObjectNotFoundException;
+import net.wickedshell.ticketz.service.port.driven.persistence.CommentPersistence;
+import net.wickedshell.ticketz.service.port.driven.persistence.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class CommentsJPAPersistenceImpl implements CommentPersistence {
+public class CommentJPAPersistenceImpl implements CommentPersistence {
 
     private final CommentRepository commentRepository;
     private final TicketRepository ticketRepository;

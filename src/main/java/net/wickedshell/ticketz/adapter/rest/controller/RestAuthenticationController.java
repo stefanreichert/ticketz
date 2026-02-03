@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
 import java.util.Set;
 
 @RequiredArgsConstructor
@@ -46,6 +47,6 @@ public class RestAuthenticationController {
     public ResponseEntity<Void> signup(@Valid @RequestBody SignupRequest signupRequest) {
         User user = mapper.map(signupRequest, User.class);
         userService.create(user, signupRequest.getPassword(), Set.of(Role.ROLE_USER, Role.ROLE_API));
-        return ResponseEntity.ok().build();
+        return ResponseEntity.accepted().build();
     }
 }
