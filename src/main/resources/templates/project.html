@@ -35,6 +35,7 @@
             <button type="submit" class="btn btn-primary" th:text="#{button.save}"/>
             <a th:href="@{/secure/projects}" class="btn btn-outline-secondary" th:text="#{button.cancel}"/>
         </div>
+        <input type="hidden" th:if="${!projectWeb.newProject}" name="code" th:field="*{code}"/>
         <input type="hidden" id="version" name="version" th:field="*{version}"/>
         <input type="hidden" id="newProject" name="newProject" th:field="*{newProject}"/>
     </form>

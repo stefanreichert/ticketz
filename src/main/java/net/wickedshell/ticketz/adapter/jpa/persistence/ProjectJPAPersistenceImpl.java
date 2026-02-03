@@ -27,24 +27,18 @@ public class ProjectJPAPersistenceImpl implements ProjectPersistence {
     
     @Override
     public Project create(Project project) {
-        ProjectEntity entity = mapper.map(project, ProjectEntity.class);
+        ProjectEntity entity = new ProjectEntity();
+        mapper.map(project, entity);
         ProjectEntity savedEntity = projectRepository.save(entity);
         return mapper.map(savedEntity, Project.class);
     }
-    
+
     @Override
     public Project update(Project project) {
-        // Extract code from project and find existing entity
-        String code = project.getCode();
-        ProjectEntity existingEntity = projectRepository.findByCode(code)
-                .orElseThrow(() -> new IllegalStateException("Project not found with code: " + code));
-        
-        // Map updated project to entity, preserving the ID
-        ProjectEntity updatedEntity = mapper.map(project, ProjectEntity.class);
-        updatedEntity.setId(existingEntity.getId());
-        updatedEntity.setVersion(existingEntity.getVersion());
-        
-        ProjectEntity savedEntity = projectRepository.save(updatedEntity);
+        ProjectEntity existingEntity = projectRepository.findByCode(project.getCode())
+                .orElseThrow(ObjectNotFoundException::new);
+        mapper.map(project, existingEntity);
+        ProjectEntity savedEntity = projectRepository.save(existingEntity);
         return mapper.map(savedEntity, Project.class);
     }
     

@@ -30,14 +30,14 @@
             <tr th:each="ticket : ${tickets}">
                 <td th:text="${ticket.ticketNumber}"></td>
                 <td>
-                    <span th:text="${ticket.project.code}"></span>
-                    <span th:unless="${ticket.project.active}" class="badge bg-secondary ms-1" th:text="#{label.project.inactive}"></span>
+                    <span th:text="${ticket.projectCode}"></span>
+                    <span th:unless="${ticket.projectActive}" class="badge bg-secondary ms-1" th:text="#{label.project.inactive}"></span>
                 </td>
-                <td th:text="${ticket.description}"></td>
+                <td th:text="${ticket.title}"></td>
                 <td th:text="${ticket.author.firstname + ' ' + ticket.author.lastname}"></td>
                 <td th:text="${ticket.editor != null ? ticket.editor.firstname + ' ' + ticket.editor.lastname : '---'}"></td>
                 <td>
-                    <span th:switch="${ticket.state.name()}">
+                    <span th:switch="${ticket.state}">
                         <span th:case="'CREATED'" class="badge bg-info" th:text="#{CREATED}"></span>
                         <span th:case="'IN_PROGRESS'" class="badge bg-primary" th:text="#{IN_PROGRESS}"></span>
                         <span th:case="'FIXED'" class="badge bg-success" th:text="#{FIXED}"></span>
@@ -48,10 +48,10 @@
                 </td>
                 <td>
                     <a th:href="@{/secure/tickets/{ticketNumber}(ticketNumber=${ticket.ticketNumber})}"
-                       class="btn btn-outline-primary btn-sm" th:classappend="${!ticket.project.active ? 'disabled' : ''}" th:text="#{button.edit}">
+                       class="btn btn-outline-primary btn-sm" th:classappend="${!ticket.projectActive ? 'disabled' : ''}" th:text="#{button.edit}">
                     </a>
                     <button class="btn btn-outline-danger btn-sm" th:text="#{button.delete}"
-                       th:disabled="${!ticket.project.active}"
+                       th:disabled="${!ticket.projectActive}"
                        data-bs-toggle="modal" th:attr="data-bs-target=${'#confirm_' + ticket.ticketNumber}">
                     </button>
                 </td>

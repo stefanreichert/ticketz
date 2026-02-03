@@ -36,7 +36,8 @@ public class TicketJPAPersistenceImpl implements TicketPersistence {
 
     @Override
     public Ticket create(Ticket ticket) {
-        TicketEntity ticketEntity = mapper.map(ticket, TicketEntity.class);
+        TicketEntity ticketEntity = new TicketEntity();
+        mapper.map(ticket, ticketEntity);
         return mapper.map(ticketRepository.save(ticketEntity), Ticket.class);
     }
 

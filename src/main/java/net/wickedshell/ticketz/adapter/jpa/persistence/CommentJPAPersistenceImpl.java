@@ -31,7 +31,8 @@ public class CommentJPAPersistenceImpl implements CommentPersistence {
 
     @Override
     public Comment create(Comment comment, Ticket ticket) {
-        CommentEntity commentEntity = mapper.map(comment, CommentEntity.class);
+        CommentEntity commentEntity = new CommentEntity();
+        mapper.map(comment, commentEntity);
         commentEntity.setTicket(ticketRepository.findByTicketNumber(ticket.getTicketNumber()).orElseThrow(ObjectNotFoundException::new));
         return mapper.map(commentRepository.save(commentEntity), Comment.class);
     }

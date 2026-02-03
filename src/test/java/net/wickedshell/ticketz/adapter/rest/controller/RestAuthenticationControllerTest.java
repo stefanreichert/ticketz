@@ -135,7 +135,7 @@ class RestAuthenticationControllerTest {
         );
 
         // then
-        perform.andExpect(status().isOk());
+        perform.andExpect(status().isAccepted());
     }
 
     @Test

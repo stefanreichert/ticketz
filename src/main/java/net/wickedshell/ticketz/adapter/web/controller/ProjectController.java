@@ -65,7 +65,7 @@ public class ProjectController {
         String messageId;
         String[] arguments;
 
-        if (PROJECT_CODE_NEW.equals(code)) {
+        if (projectWeb.isNewProject()) {
             Project newProject = projectService.create(mapper.map(projectWeb, Project.class));
             messageId = "message.project.create_succeeded";
             arguments = new String[]{newProject.getCode()};

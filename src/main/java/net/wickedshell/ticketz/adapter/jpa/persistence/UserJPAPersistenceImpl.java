@@ -39,7 +39,8 @@ public class UserJPAPersistenceImpl implements UserPersistence {
 
     @Override
     public User create(User user) {
-        UserEntity userEntity = mapper.map(user, UserEntity.class);
+        UserEntity userEntity = new UserEntity();
+        mapper.map(user, userEntity);
         return mapper.map(userRepository.save(userEntity), User.class);
     }
 
