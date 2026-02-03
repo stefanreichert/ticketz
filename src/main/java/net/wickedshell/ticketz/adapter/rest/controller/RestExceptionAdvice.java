@@ -3,8 +3,9 @@ package net.wickedshell.ticketz.adapter.rest.controller;
 import jakarta.persistence.OptimisticLockException;
 import net.wickedshell.ticketz.service.exception.ValidationException;
 import net.wickedshell.ticketz.service.port.driven.persistence.exception.ObjectNotFoundException;
+
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatusCode;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -19,37 +20,37 @@ public class RestExceptionAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Void> handleAccessDeniedException(AccessDeniedException exception) {
         logger.error(exception.getMessage(), exception);
-        return ResponseEntity.status(HttpStatusCode.valueOf(401)).build();
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Void> handleBadCredentialsException(BadCredentialsException exception) {
         logger.error(exception.getMessage());
-        return ResponseEntity.status(HttpStatusCode.valueOf(401)).build();
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Void> handleDataIntegrityViolationException() {
         logger.error("Constraint Violation");
-        return ResponseEntity.status(HttpStatusCode.valueOf(409)).build();
+        return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 
     @ExceptionHandler(OptimisticLockException.class)
     public ResponseEntity<Void> handleOptimisticLockException() {
         logger.error("Optimistic Lock");
-        return ResponseEntity.status(HttpStatusCode.valueOf(409)).build();
+        return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 
     @ExceptionHandler(ObjectNotFoundException.class)
     public ResponseEntity<Void> handleObjectNotFoundException(ObjectNotFoundException exception) {
         logger.error(exception.getMessage());
-        return ResponseEntity.status(HttpStatusCode.valueOf(404)).build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<Void> handleValidationException(ValidationException exception) {
         logger.error(exception.getMessage());
-        return ResponseEntity.status(HttpStatusCode.valueOf(400)).build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     @ExceptionHandler(Throwable.class)
