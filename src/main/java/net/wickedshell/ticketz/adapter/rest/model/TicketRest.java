@@ -1,6 +1,8 @@
 package net.wickedshell.ticketz.adapter.rest.model;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -8,12 +10,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TicketRest {
 
-    @NotNull
+    @NotBlank
+    @Size(max = 80)
     private String title;
 
-    @NotNull
+    @NotBlank
+    @Size(max = 80)
     private String ticketNumber;
 
+    @Size(max = 255)
     private String description;
 
     @NotNull
@@ -24,7 +29,6 @@ public class TicketRest {
     @NotNull
     private TicketStateRest state;
 
-    @NotNull
     private long version;
 
 }
