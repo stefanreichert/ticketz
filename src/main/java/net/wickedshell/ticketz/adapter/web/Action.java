@@ -19,6 +19,9 @@ public class Action {
     public static final String ACTION_NEW_PROJECT = "/secure/projects/" + PROJECT_CODE_NEW;
     public static final String ACTION_SHOW_PROJECT = "/secure/projects/{code}";
     public static final String ACTION_SAVE_PROJECT = "/secure/projects/{code}";
+    public static final String ACTION_SHOW_PREFERENCES = "/secure/preferences/{email}";
+    public static final String ACTION_SAVE_PREFERENCES_NAME = "/secure/preferences/{email}/name";
+    public static final String ACTION_SAVE_PREFERENCES_PASSWORD = "/secure/preferences/{email}/password";
     public static final String ACTION_LOGOUT = "/secure/logout";
 
     private Action() {

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <link th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/styles.css}" rel="stylesheet"/>
+    <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}" defer></script>
+    <title th:text="#{header.ticketz}"/>
+</head>
+<body>
+<div class="container">
+    <div th:replace="~{/fragments/header :: header(pageheader=#{pageheader.preferences}, activeNav='preferences')}"></div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header" th:text="#{label.preferences.name_section}"></div>
+                <div class="card-body">
+                    <form th:action="@{/secure/preferences/{email}/name(email=${preferencesWeb.email})}" th:method="post" th:object="${preferencesWeb}">
+                        <div class="mb-3">
+                            <label for="email" class="form-label" th:text="#{label.email}"/>
+                            <input type="email" id="email" class="form-control bg-light" th:field="*{email}" disabled="disabled"/>
+                            <input type="hidden" name="email" th:field="*{email}"/>
+                        </div>
+                        <div class="mb-3">
+                            <label for="firstname" class="form-label" th:text="#{label.firstname}"/>
+                            <input type="text" id="firstname" name="firstname" class="form-control" th:field="*{firstname}"/>
+                            <div class="text-danger small" th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="lastname" class="form-label" th:text="#{label.lastname}"/>
+                            <input type="text" id="lastname" name="lastname" class="form-control" th:field="*{lastname}"/>
+                            <div class="text-danger small" th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"></div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" th:text="#{button.save}"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header" th:text="#{label.preferences.password_section}"></div>
+                <div class="card-body">
+                    <form th:action="@{/secure/preferences/{email}/password(email=${preferencesWeb.email})}" th:method="post" th:object="${passwordChangeWeb}">
+                        <div class="mb-3">
+                            <label for="currentPassword" class="form-label" th:text="#{label.preferences.current_password}"/>
+                            <input type="password" id="currentPassword" name="currentPassword" class="form-control" th:field="*{currentPassword}"/>
+                            <div class="text-danger small" th:if="${#fields.hasErrors('currentPassword')}" th:errors="*{currentPassword}"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newPassword" class="form-label" th:text="#{label.preferences.new_password}"/>
+                            <input type="password" id="newPassword" name="newPassword" class="form-control" th:field="*{newPassword}"/>
+                            <div class="text-danger small" th:if="${#fields.hasErrors('newPassword')}" th:errors="*{newPassword}"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label" th:text="#{label.preferences.confirm_password}"/>
+                            <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" th:field="*{confirmPassword}"/>
+                            <div class="text-danger small" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" th:text="#{button.preferences.change_password}"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="~{/fragments/footer :: footer}"></div>
+</div>
+</body>
+</html>

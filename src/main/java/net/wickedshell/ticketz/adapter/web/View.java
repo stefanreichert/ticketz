@@ -9,6 +9,7 @@ public class View {
     public static final String VIEW_TICKET = "/ticket";
     public static final String VIEW_PROJECT_LIST = "/project_list";
     public static final String VIEW_PROJECT = "/project";
+    public static final String VIEW_PREFERENCES = "/preferences";
 
     private View() {
         // private constructor to prevent instantiation
