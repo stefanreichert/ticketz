@@ -14,20 +14,15 @@
             <p th:if="${url}" id='url'>
                 <b th:text="#{label.page}"></b>: <span th:text="${url}">Page URL</span>
             </p>
-            <p th:if="${exception}" id='exception'>
-                <b th:text="#{label.error}"></b>: <span th:text="${exception}">Message</span>
+            <p th:if="${message}" id='message'>
+                <b th:text="#{label.error}"></b>: <span th:text="${message}">Message</span>
             </p>
             <p th:if="${timestamp}" id='created'>
                 <b th:text="#{label.occurred}"></b>: <span th:text="${timestamp}">Timestamp</span>
             </p>
         </div>
-        <!-- Debug info in HTML comments -->
         <!--/*@thymesVar id="url" type="java.lang.String"*/-->
-        <!--/*@thymesVar id="exception" type="java.lang.String"*/-->
-        <th:block th:if="${false}">
-            <div th:text="${'Failed URL: ' + url}"></div>
-            <div th:text="${'Exception: ' + exception}"></div>
-        </th:block>
+        <!--/*@thymesVar id="message" type="java.lang.String"*/-->
         <div th:replace="~{/fragments/footer :: footer}"></div>
     </div>
 </body>

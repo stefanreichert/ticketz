@@ -22,7 +22,6 @@ public class ExceptionAdvice {
         modelAndView.addObject("url", request.getRequestURL().toString());
         modelAndView.addObject("timestamp", Instant.now());
         modelAndView.addObject("message", exception.getMessage());
-        modelAndView.addObject("exception", exception);
         return modelAndView;
     }
 }
