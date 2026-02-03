@@ -1,5 +1,6 @@
 package net.wickedshell.ticketz.service;
 
+import jakarta.validation.Valid;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.service.exception.AuthenticationException;
@@ -58,5 +59,13 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public List<User> findAll() {
         return userPersistence.findAll();
+    }
+
+    @Override
+    public User updateName(@Valid User user) {
+        User existingUser = userPersistence.loadByEmail(user.getEmail());
+        existingUser.setFirstname(user.getFirstname());
+        existingUser.setLastname(user.getLastname());
+        return userPersistence.update(existingUser);
     }
 }

@@ -1,5 +1,6 @@
 package net.wickedshell.ticketz.service.port.access;
 
+import jakarta.validation.Valid;
 import net.wickedshell.ticketz.service.model.Role;
 import net.wickedshell.ticketz.service.model.User;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,4 +19,7 @@ public interface UserService {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     List<User> findAll();
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    User updateName(@Valid User user);
 }
