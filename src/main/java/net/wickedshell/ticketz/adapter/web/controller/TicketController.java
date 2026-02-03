@@ -37,7 +37,7 @@ import static net.wickedshell.ticketz.service.model.TicketState.*;
 @RequiredArgsConstructor
 public class TicketController {
 
-    private static final String ATTRIBUTE_NAME_TICKET = "ticketWeb";
+    private static final String ATTRIBUTE_NAME_TICKET = "ticket";
     private static final String ATTRIBUTE_NAME_MESSAGE = "message";
     private static final String ATTRIBUTE_NAME_COMMENTS = "comments";
     private static final String ATTRIBUTE_NAME_PROJECTS = "projects";

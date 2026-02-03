@@ -10,12 +10,12 @@
 <body>
 <div class="container">
     <div th:replace="~{/fragments/header :: header(pageheader=#{pageheader.project}, activeNav='projects')}"></div>
-    <form th:action="@{/secure/projects/{code}(code=${projectWeb.newProject ? 'new' : projectWeb.code})}" th:method="post" th:object="${projectWeb}">
+    <form th:action="@{/secure/projects/{code}(code=${project.newProject ? 'new' : project.code})}" th:method="post" th:object="${project}">
         <div class="mb-3">
             <label for="code" class="form-label" th:text="#{label.project.code}"/>
-            <input type="text" id="code" name="code" class="form-control" th:field="*{code}" th:disabled="${!projectWeb.newProject}" th:classappend="${!projectWeb.newProject ? 'bg-light' : ''}"/>
+            <input type="text" id="code" name="code" class="form-control" th:field="*{code}" th:disabled="${!project.newProject}" th:classappend="${!project.newProject ? 'bg-light' : ''}"/>
             <div class="text-danger small" th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></div>
-            <div class="form-text" th:if="${projectWeb.newProject}" th:text="#{label.project.code_hint}"></div>
+            <div class="form-text" th:if="${project.newProject}" th:text="#{label.project.code_hint}"></div>
         </div>
         <div class="mb-3">
             <label for="name" class="form-label" th:text="#{label.project.name}"/>
@@ -35,7 +35,7 @@
             <button type="submit" class="btn btn-primary" th:text="#{button.save}"/>
             <a th:href="@{/secure/projects}" class="btn btn-outline-secondary" th:text="#{button.cancel}"/>
         </div>
-        <input type="hidden" th:if="${!projectWeb.newProject}" name="code" th:field="*{code}"/>
+        <input type="hidden" th:if="${!project.newProject}" name="code" th:field="*{code}"/>
         <input type="hidden" id="version" name="version" th:field="*{version}"/>
         <input type="hidden" id="newProject" name="newProject" th:field="*{newProject}"/>
     </form>

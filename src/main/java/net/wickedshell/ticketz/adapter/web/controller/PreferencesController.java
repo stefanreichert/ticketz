@@ -27,8 +27,8 @@ import static net.wickedshell.ticketz.adapter.web.View.VIEW_PREFERENCES;
 @RequiredArgsConstructor
 public class PreferencesController {
 
-    private static final String ATTRIBUTE_NAME_PREFERENCES = "preferencesWeb";
-    private static final String ATTRIBUTE_NAME_PASSWORD_CHANGE = "passwordChangeWeb";
+    private static final String ATTRIBUTE_NAME_PREFERENCES = "preferences";
+    private static final String ATTRIBUTE_NAME_PASSWORD_CHANGE = "passwordChange";
     private static final String ATTRIBUTE_NAME_MESSAGE = "message";
 
     @Qualifier("webModelMapper")

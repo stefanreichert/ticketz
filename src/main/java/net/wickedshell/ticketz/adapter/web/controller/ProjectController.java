@@ -26,7 +26,7 @@ import static net.wickedshell.ticketz.adapter.web.View.VIEW_PROJECT;
 @RequiredArgsConstructor
 public class ProjectController {
 
-    private static final String ATTRIBUTE_NAME_PROJECT = "projectWeb";
+    private static final String ATTRIBUTE_NAME_PROJECT = "project";
     private static final String ATTRIBUTE_NAME_MESSAGE = "message";
 
     @Qualifier("webModelMapper")

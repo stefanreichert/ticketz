@@ -15,7 +15,7 @@
             <div class="card mb-4">
                 <div class="card-header" th:text="#{label.preferences.name_section}"></div>
                 <div class="card-body">
-                    <form th:action="@{/secure/preferences/{email}/name(email=${preferencesWeb.email})}" th:method="post" th:object="${preferencesWeb}">
+                    <form th:action="@{/secure/preferences/{email}/name(email=${preferences.email})}" th:method="post" th:object="${preferences}">
                         <div class="mb-3">
                             <label for="email" class="form-label" th:text="#{label.email}"/>
                             <input type="email" id="email" class="form-control bg-light" th:field="*{email}" disabled="disabled"/>
@@ -40,7 +40,7 @@
             <div class="card mb-4">
                 <div class="card-header" th:text="#{label.preferences.password_section}"></div>
                 <div class="card-body">
-                    <form th:action="@{/secure/preferences/{email}/password(email=${preferencesWeb.email})}" th:method="post" th:object="${passwordChangeWeb}">
+                    <form th:action="@{/secure/preferences/{email}/password(email=${preferences.email})}" th:method="post" th:object="${passwordChange}">
                         <div class="mb-3">
                             <label for="currentPassword" class="form-label" th:text="#{label.preferences.current_password}"/>
                             <input type="password" id="currentPassword" name="currentPassword" class="form-control" th:field="*{currentPassword}"/>

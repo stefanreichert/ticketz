@@ -10,22 +10,22 @@
 <body>
 <div class="container">
     <div th:replace="~{/fragments/header :: header(pageheader=#{pageheader.ticket}, activeNav='tickets')}"></div>
-    <div th:if="${!ticketWeb.newTicket and !ticketWeb.projectActive}" class="alert alert-warning mb-3">
+    <div th:if="${!ticket.newTicket and !ticket.projectActive}" class="alert alert-warning mb-3">
         <span th:text="#{message.ticket.project_inactive}"></span>
     </div>
-    <form th:action="@{/secure/tickets/{ticketNumber}(ticketNumber=${ticketWeb.newTicket ? 'new' : ticketWeb.ticketNumber})}" th:method="post" th:object="${ticketWeb}">
+    <form th:action="@{/secure/tickets/{ticketNumber}(ticketNumber=${ticket.newTicket ? 'new' : ticket.ticketNumber})}" th:method="post" th:object="${ticket}">
         <div class="mb-3">
             <span class="form-label" th:text="#{label.ticketNumber}"></span>
             <span id="span-ticketNumber" class="form-control bg-light" th:text="*{ticketNumber}"></span>
         </div>
         <div class="mb-3">
             <label for="title" class="form-label" th:text="#{label.title}"/>
-            <input type="text" id="title" name="description" class="form-control" th:disabled="${!ticketWeb.canEdit}" th:field="*{title}" th:classappend="${!ticketWeb.canEdit ? 'bg-light' : ''}"/>
+            <input type="text" id="title" name="description" class="form-control" th:disabled="${!ticket.canEdit}" th:field="*{title}" th:classappend="${!ticket.canEdit ? 'bg-light' : ''}"/>
             <div class="text-danger small" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
         </div>
         <div class="mb-3">
             <label for="description" class="form-label" th:text="#{label.description}"/>
-            <textarea id="description" name="description" class="form-control" rows="3" th:disabled="${!ticketWeb.canEdit}" th:field="*{description}" th:classappend="${!ticketWeb.canEdit ? 'bg-light' : ''}"></textarea>
+            <textarea id="description" name="description" class="form-control" rows="3" th:disabled="${!ticket.canEdit}" th:field="*{description}" th:classappend="${!ticket.canEdit ? 'bg-light' : ''}"></textarea>
             <div class="text-danger small" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
         </div>
         <div class="mb-3">
@@ -34,12 +34,12 @@
         </div>
         <div class="mb-3">
             <span class="form-label" th:text="#{label.editor}"></span>
-            <span id="span-editor" class="form-control bg-light" th:text="${ticketWeb.editor != null ? ticketWeb.editor.email : '---'}"></span>
+            <span id="span-editor" class="form-control bg-light" th:text="${ticket.editor != null ? ticket.editor.email : '---'}"></span>
         </div>
         <div class="mb-3">
             <span class="form-label" th:text="#{label.state}"></span>
             <div id="span-state" class="form-control bg-light">
-                <span th:switch="${ticketWeb.state}">
+                <span th:switch="${ticket.state}">
                     <span th:case="'CREATED'" class="badge bg-info" th:text="#{CREATED}"></span>
                     <span th:case="'IN_PROGRESS'" class="badge bg-primary" th:text="#{IN_PROGRESS}"></span>
                     <span th:case="'FIXED'" class="badge bg-success" th:text="#{FIXED}"></span>
@@ -49,7 +49,7 @@
                 </span>
             </div>
         </div>
-        <div class="mb-3" th:if="${ticketWeb.newTicket}">
+        <div class="mb-3" th:if="${ticket.newTicket}">
             <label for="projectCode" class="form-label" th:text="#{label.project}"/>
             <select id="projectCode" name="projectCode" class="form-select" th:field="*{projectCode}">
                 <option value="">Select a project...</option>
@@ -57,16 +57,16 @@
             </select>
             <div class="text-danger small" th:if="${#fields.hasErrors('projectCode')}" th:errors="*{projectCode}"></div>
         </div>
-        <div class="mb-3" th:if="${!ticketWeb.newTicket}">
+        <div class="mb-3" th:if="${!ticket.newTicket}">
             <span class="form-label" th:text="#{label.project}"></span>
             <div class="form-control bg-light">
-                <span th:text="${ticketWeb.projectCode + ' - ' + ticketWeb.projectName}"></span>
-                <span th:unless="${ticketWeb.projectActive}" class="badge bg-secondary ms-1" th:text="#{label.project.inactive}"></span>
+                <span th:text="${ticket.projectCode + ' - ' + ticket.projectName}"></span>
+                <span th:unless="${ticket.projectActive}" class="badge bg-secondary ms-1" th:text="#{label.project.inactive}"></span>
             </div>
         </div>
-        <div class="mb-3" th:if="${!ticketWeb.newTicket}">
+        <div class="mb-3" th:if="${!ticket.newTicket}">
             <label for="comment" class="form-label" th:text="#{label.comment}"/>
-            <textarea id="comment" name="commentText" class="form-control" rows="3" th:disabled="${!ticketWeb.canEdit}" th:classappend="${!ticketWeb.canEdit ? 'bg-light' : ''}"></textarea>
+            <textarea id="comment" name="commentText" class="form-control" rows="3" th:disabled="${!ticket.canEdit}" th:classappend="${!ticket.canEdit ? 'bg-light' : ''}"></textarea>
         </div>
         <div class="mb-3" th:if="${!comments.isEmpty()}">
             <button class="btn btn-sm btn-outline-dark" type="button" data-bs-toggle="collapse" data-bs-target="#comments" aria-expanded="false" aria-controls="comments" th:text="#{button.show_comments}">Show Comments</button>
@@ -100,7 +100,7 @@
         <input type="hidden" id="canGoIntoReopened" name="canGoIntoReopened" th:field="*{canGoIntoReopened}"/>
         <input type="hidden" id="canGoIntoClosed" name="canGoIntoClosed" th:field="*{canGoIntoClosed}"/>
         <input type="hidden" id="newTicket" name="newTicket" th:field="*{newTicket}"/>
-        <input type="hidden" id="projectCode" name="projectCode" th:if="${!ticketWeb.newTicket}" th:field="*{projectCode}"/>
+        <input type="hidden" id="projectCode" name="projectCode" th:if="${!ticket.newTicket}" th:field="*{projectCode}"/>
     </form>
     <div th:replace="~{/fragments/footer :: footer}"></div>
 </div>
