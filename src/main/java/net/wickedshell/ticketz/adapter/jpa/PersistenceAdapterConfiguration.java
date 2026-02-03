@@ -25,15 +25,15 @@ public class PersistenceAdapterConfiguration {
         mapper.getConfiguration().setImplicitMappingEnabled(false);
 
         TypeMap<Ticket, TicketEntity> ticketTypeMap = mapper.createTypeMap(Ticket.class, TicketEntity.class);
-        ticketTypeMap.addMappings(m -> {
-            m.using(userConverter).map(Ticket::getAuthor, TicketEntity::setAuthor);
-            m.using(userConverter).map(Ticket::getEditor, TicketEntity::setEditor);
-            m.using(projectConverter).map(Ticket::getProject, TicketEntity::setProject);
+        ticketTypeMap.addMappings(mappings -> {
+            mappings.using(userConverter).map(Ticket::getAuthor, TicketEntity::setAuthor);
+            mappings.using(userConverter).map(Ticket::getEditor, TicketEntity::setEditor);
+            mappings.using(projectConverter).map(Ticket::getProject, TicketEntity::setProject);
         });
         ticketTypeMap.implicitMappings();
 
         TypeMap<Comment, CommentEntity> commentTypeMap = mapper.createTypeMap(Comment.class, CommentEntity.class);
-        commentTypeMap.addMappings(m -> m.using(userConverter).map(Comment::getAuthor, CommentEntity::setAuthor));
+        commentTypeMap.addMappings(mappings -> mappings.using(userConverter).map(Comment::getAuthor, CommentEntity::setAuthor));
         commentTypeMap.implicitMappings();
 
         mapper.getConfiguration().setImplicitMappingEnabled(true);
