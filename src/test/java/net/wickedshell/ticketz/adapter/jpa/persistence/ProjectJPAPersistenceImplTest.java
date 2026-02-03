@@ -6,6 +6,7 @@ import net.wickedshell.ticketz.service.model.Project;
 import net.wickedshell.ticketz.service.port.driven.persistence.exception.ObjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
@@ -22,7 +23,8 @@ class ProjectJPAPersistenceImplTest {
 
     @BeforeEach
     public void setupTest() {
-        unitUnderTest = new ProjectJPAPersistenceImpl(projectRepository);
+        ModelMapper mapper = new ModelMapper();
+        unitUnderTest = new ProjectJPAPersistenceImpl(projectRepository, mapper);
     }
 
     @Test

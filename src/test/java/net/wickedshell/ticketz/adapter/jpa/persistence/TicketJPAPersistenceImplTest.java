@@ -11,6 +11,7 @@ import net.wickedshell.ticketz.service.model.Ticket;
 import net.wickedshell.ticketz.service.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.test.context.ContextConfiguration;
@@ -39,7 +40,10 @@ class TicketJPAPersistenceImplTest {
         // setup unit under test
         UserToUserEntityConverter userConverter = new UserToUserEntityConverter(userRepository);
         ProjectToProjectEntityConverter projectConverter = new ProjectToProjectEntityConverter(projectRepository);
-        unitUnderTest = new TicketJPAPersistenceImpl(ticketRepository, userConverter, projectConverter);
+        ModelMapper mapper = new ModelMapper();
+        mapper.addConverter(userConverter);
+        mapper.addConverter(projectConverter);
+        unitUnderTest = new TicketJPAPersistenceImpl(mapper, ticketRepository);
     }
 
     @Test

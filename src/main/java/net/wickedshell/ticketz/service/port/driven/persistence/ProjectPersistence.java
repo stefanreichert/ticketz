@@ -1,4 +1,4 @@
-package net.wickedshell.ticketz.service.port.persistence;
+package net.wickedshell.ticketz.service.port.driven.persistence;
 
 import net.wickedshell.ticketz.service.model.Project;
 

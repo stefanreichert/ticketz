@@ -5,6 +5,7 @@ import net.wickedshell.ticketz.adapter.jpa.repository.UserRepository;
 import net.wickedshell.ticketz.service.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,7 +22,8 @@ class UserJPAPersistenceImplTest {
     @BeforeEach
     public void setupTest() {
         // setup unit under test
-        unitUnderTest = new UserJPAPersistenceImpl(userRepository);
+        ModelMapper mapper = new ModelMapper();
+        unitUnderTest = new UserJPAPersistenceImpl(mapper, userRepository);
     }
 
     @Test

@@ -20,7 +20,7 @@ import java.util.List;
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(RestRessource.RESOURCE_PROJECTS)
+@RequestMapping(RestRessource.RESSOURCE_PROJECTS)
 public class RestProjectController {
 
     private final ProjectService projectService;
@@ -66,7 +66,7 @@ public class RestProjectController {
     public ResponseEntity<ProjectRest> create(@Valid @RequestBody ProjectRest projectRest) {
         Project newProject = projectService.create(mapper.map(projectRest, Project.class));
         return ResponseEntity
-                .created(URI.create(RestRessource.RESOURCE_PROJECTS + "/" + newProject.getCode()))
+                .created(URI.create(RestRessource.RESSOURCE_PROJECTS + "/" + newProject.getCode()))
                 .build();
     }
 

@@ -10,6 +10,7 @@ import net.wickedshell.ticketz.service.model.Ticket;
 import net.wickedshell.ticketz.service.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
@@ -33,7 +34,9 @@ class CommentJPAPersistenceImplTest {
     @BeforeEach
     public void setupTest() {
         UserToUserEntityConverter userConverter = new UserToUserEntityConverter(userRepository);
-        unitUnderTest = new CommentJPAPersistenceImpl(commentRepository, ticketRepository, userConverter);
+        ModelMapper mapper = new ModelMapper();
+        mapper.addConverter(userConverter);
+        unitUnderTest = new CommentJPAPersistenceImpl(commentRepository, ticketRepository, mapper);
     }
 
     @Test
