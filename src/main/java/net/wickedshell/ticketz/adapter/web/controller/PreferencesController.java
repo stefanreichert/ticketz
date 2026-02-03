@@ -30,7 +30,6 @@ public class PreferencesController {
     private static final String ATTRIBUTE_NAME_PREFERENCES = "preferencesWeb";
     private static final String ATTRIBUTE_NAME_PASSWORD_CHANGE = "passwordChangeWeb";
     private static final String ATTRIBUTE_NAME_MESSAGE = "message";
-    private static final String ATTRIBUTE_NAME_ERROR = "error";
 
     @Qualifier("webModelMapper")
     private final ModelMapper mapper;
@@ -69,8 +68,7 @@ public class PreferencesController {
                                      @Valid @ModelAttribute(ATTRIBUTE_NAME_PASSWORD_CHANGE) PasswordChangeWeb passwordChangeWeb,
                                      BindingResult bindingResult,
                                      HttpServletRequest request,
-                                     RedirectAttributes redirectAttributes,
-                                     Model model) {
+                                     RedirectAttributes redirectAttributes) {
         if (!passwordChangeWeb.getNewPassword().equals(passwordChangeWeb.getConfirmPassword())) {
             bindingResult.rejectValue("confirmPassword", "message.password_mismatch");
         }
@@ -81,13 +79,9 @@ public class PreferencesController {
                     .addObject(ATTRIBUTE_NAME_PREFERENCES, preferencesWeb)
                     .addObject(ATTRIBUTE_NAME_PASSWORD_CHANGE, passwordChangeWeb);
         }
-        try {
-            userService.updatePassword(email, passwordChangeWeb.getCurrentPassword(), passwordChangeWeb.getNewPassword());
-            String message = messageSource.getMessage("message.preferences.password_saved", null, request.getLocale());
-            redirectAttributes.addFlashAttribute(ATTRIBUTE_NAME_MESSAGE, message);
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute(ATTRIBUTE_NAME_ERROR, e.getMessage());
-        }
+        userService.updatePassword(email, passwordChangeWeb.getCurrentPassword(), passwordChangeWeb.getNewPassword());
+        String message = messageSource.getMessage("message.preferences.password_saved", null, request.getLocale());
+        redirectAttributes.addFlashAttribute(ATTRIBUTE_NAME_MESSAGE, message);
         return new ModelAndView(redirectTo(ACTION_SHOW_PREFERENCES.replace("{email}", email)));
     }
 }
