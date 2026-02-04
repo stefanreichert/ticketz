@@ -15,7 +15,6 @@ public class Comment {
     @NotNull
     private User author;
 
-    @NotNull
     private LocalDateTime dateCreated;
 
 }

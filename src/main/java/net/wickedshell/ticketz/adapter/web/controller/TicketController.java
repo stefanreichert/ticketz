@@ -92,47 +92,64 @@ public class TicketController {
         return redirectTo(ACTION_SHOW_TICKET_LIST);
     }
 
-    @PostMapping(Action.ACTION_SAVE_TICKET)
-    public ModelAndView saveTicket(@PathVariable String ticketNumber, @RequestParam TicketState newState, @RequestParam(required = false) String commentText, @Valid @ModelAttribute TicketWeb ticket, BindingResult bindingResult, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    @PostMapping(ACTION_SAVE_TICKET)
+    public ModelAndView createTicket(@PathVariable String ticketNumber, @Valid @ModelAttribute TicketWeb ticket, BindingResult bindingResult, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
+            ModelAndView modelAndView = new ModelAndView(VIEW_TICKET)
+                    .addObject(ATTRIBUTE_NAME_TICKET, ticket)
+                    .addObject(ATTRIBUTE_NAME_COMMENTS, List.of());
+            modelAndView.addObject(ATTRIBUTE_NAME_PROJECTS, getActiveProjects());
+            return modelAndView;
+        }
+        Ticket newTicket = mapper.map(ticket, Ticket.class);
+        Project project = projectService.loadByCode(ticket.getProjectCode());
+        newTicket.setProject(project);
+        Ticket createdTicket = ticketService.create(newTicket);
+        redirectAttributes.addFlashAttribute(ATTRIBUTE_NAME_MESSAGE,
+                messageSource.getMessage("message.ticket.create_succeeded", new String[]{createdTicket.getTicketNumber()}, request.getLocale()));
+        return new ModelAndView(redirectTo(ACTION_SHOW_TICKET_LIST));
+    }
+
+    @PostMapping(ACTION_SAVE_TICKET_DETAILS)
+    public String saveTicketDetails(@PathVariable String ticketNumber, @Valid @ModelAttribute TicketWeb ticket, BindingResult bindingResult, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            ticket.setNewTicket(false);
             List<CommentWeb> comments = commentService.findByTicketNumber(ticketNumber).stream()
                     .map(comment -> mapper.map(comment, CommentWeb.class))
                     .toList();
-            ModelAndView modelAndView = new ModelAndView(VIEW_TICKET)
-                    .addObject(ATTRIBUTE_NAME_TICKET, ticket)
-                    .addObject(ATTRIBUTE_NAME_COMMENTS, comments);
-            if (ticket.isNewTicket()) {
-                modelAndView.addObject(ATTRIBUTE_NAME_PROJECTS, getActiveProjects());
-            }
-            return modelAndView;
+            model.addAttribute(ATTRIBUTE_NAME_TICKET, ticket);
+            model.addAttribute(ATTRIBUTE_NAME_COMMENTS, comments);
+            return VIEW_TICKET;
         }
-        String messageId;
-        String[] arguments;
-        if (ticket.isNewTicket()) {
-            Ticket newTicket = mapper.map(ticket, Ticket.class);
-            Project project = projectService.loadByCode(ticket.getProjectCode());
-            newTicket.setProject(project);
-            Ticket createdTicket = ticketService.create(newTicket);
-            messageId = "message.ticket.create_succeeded";
-            arguments = new String[]{createdTicket.getTicketNumber()};
-        } else {
-            Ticket existingTicket = ticketService.loadByTicketNumber(ticketNumber);
-            existingTicket.setState(newState);
-            existingTicket.setTitle(ticket.getTitle());
-            existingTicket.setDescription(ticket.getDescription());
-            if (!commentText.isBlank()) {
-                Comment comment = new Comment();
-                comment.setText(commentText);
-                ticketService.updateWithComment(existingTicket, comment);
-            } else {
-                ticketService.update(existingTicket);
-            }
-            messageId = "message.ticket.save_succeeded";
-            arguments = new String[]{existingTicket.getTicketNumber()};
-        }
+        Ticket existingTicket = ticketService.loadByTicketNumber(ticketNumber);
+        existingTicket.setTitle(ticket.getTitle());
+        existingTicket.setDescription(ticket.getDescription());
+        ticketService.update(existingTicket);
         redirectAttributes.addFlashAttribute(ATTRIBUTE_NAME_MESSAGE,
-                messageSource.getMessage(messageId, arguments, request.getLocale()));
-        return new ModelAndView(redirectTo(ACTION_SHOW_TICKET_LIST));
+                messageSource.getMessage("message.ticket.save_succeeded", new String[]{ticketNumber}, request.getLocale()));
+        return redirectTo(ACTION_SHOW_TICKET_LIST);
+    }
+
+    @PostMapping(ACTION_SAVE_TICKET_STATUS)
+    public String changeTicketStatus(@PathVariable String ticketNumber, @RequestParam TicketState newState, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        Ticket existingTicket = ticketService.loadByTicketNumber(ticketNumber);
+        existingTicket.setState(newState);
+        ticketService.update(existingTicket);
+        redirectAttributes.addFlashAttribute(ATTRIBUTE_NAME_MESSAGE,
+                messageSource.getMessage("message.ticket.status_changed", new String[]{ticketNumber}, request.getLocale()));
+        return redirectTo(ACTION_SHOW_TICKET_LIST);
+    }
+
+    @PostMapping(ACTION_SAVE_TICKET_COMMENT)
+    public String addTicketComment(@PathVariable String ticketNumber, @RequestParam String commentText, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        Ticket ticket = ticketService.loadByTicketNumber(ticketNumber);
+        Comment comment = new Comment();
+        comment.setText(commentText);
+        comment.setAuthor(userService.getCurrentUser());
+        commentService.create(comment, ticket);
+        redirectAttributes.addFlashAttribute(ATTRIBUTE_NAME_MESSAGE,
+                messageSource.getMessage("message.ticket.comment_added", new String[]{ticketNumber}, request.getLocale()));
+        return redirectTo(ACTION_SHOW_TICKET.replace("{ticketNumber}", ticketNumber));
     }
 
     private void updateWebTicketPossibleTransitions(TicketWeb ticketWeb, Set<TicketState> possibleNextStates) {

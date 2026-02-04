@@ -15,6 +15,9 @@ public class Action {
     public static final String ACTION_SHOW_TICKET = "/secure/tickets/{ticketNumber}";
     public static final String ACTION_DELETE_TICKET = "/secure/tickets/{ticketNumber}:delete";
     public static final String ACTION_SAVE_TICKET = "/secure/tickets/{ticketNumber}";
+    public static final String ACTION_SAVE_TICKET_DETAILS = "/secure/tickets/{ticketNumber}/details";
+    public static final String ACTION_SAVE_TICKET_STATUS = "/secure/tickets/{ticketNumber}/status";
+    public static final String ACTION_SAVE_TICKET_COMMENT = "/secure/tickets/{ticketNumber}/comment";
     public static final String ACTION_SHOW_PROJECT_LIST = "/secure/projects";
     public static final String ACTION_NEW_PROJECT = "/secure/projects/" + PROJECT_CODE_NEW;
     public static final String ACTION_SHOW_PROJECT = "/secure/projects/{code}";

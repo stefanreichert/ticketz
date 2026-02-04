@@ -13,95 +13,138 @@
     <div th:if="${!ticket.newTicket and !ticket.projectActive}" class="alert alert-warning mb-3">
         <span th:text="#{message.ticket.project_inactive}"></span>
     </div>
-    <form th:action="@{/secure/tickets/{ticketNumber}(ticketNumber=${ticket.newTicket ? 'new' : ticket.ticketNumber})}" th:method="post" th:object="${ticket}">
-        <div class="mb-3">
-            <span class="form-label" th:text="#{label.ticketNumber}"></span>
-            <span id="span-ticketNumber" class="form-control bg-light" th:text="*{ticketNumber}"></span>
+    <div class="row">
+        <div class="col-md-6">
+            <form th:action="@{${ticket.newTicket ? '/secure/tickets/new' : '/secure/tickets/' + ticket.ticketNumber + '/details'}}" th:method="post" th:object="${ticket}">
+                <div class="card mb-4">
+                    <div class="card-header" th:text="#{label.ticket.details_section}"></div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <span class="form-label" th:text="#{label.ticketNumber}"></span>
+                            <span id="span-ticketNumber" class="form-control bg-light" th:text="*{ticketNumber}"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label for="title" class="form-label" th:text="#{label.title}"/>
+                            <input type="text" id="title" name="description" class="form-control" th:disabled="${!ticket.canEdit}" th:field="*{title}" th:classappend="${!ticket.canEdit ? 'bg-light' : ''}"/>
+                            <div class="text-danger small" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label" th:text="#{label.description}"/>
+                            <textarea id="description" name="description" class="form-control" rows="3" th:disabled="${!ticket.canEdit}" th:field="*{description}" th:classappend="${!ticket.canEdit ? 'bg-light' : ''}"></textarea>
+                            <div class="text-danger small" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+                        </div>
+                        <div class="mb-3">
+                            <span class="form-label" th:text="#{label.author}"></span>
+                            <span id="span-author" class="form-control bg-light" th:text="*{author.email}"></span>
+                        </div>
+                        <div class="mb-3">
+                            <span class="form-label" th:text="#{label.editor}"></span>
+                            <span id="span-editor" class="form-control bg-light" th:text="${ticket.editor != null ? ticket.editor.email : '---'}"></span>
+                        </div>
+                        <div class="mb-3" th:if="${ticket.newTicket}">
+                            <label for="projectCode" class="form-label" th:text="#{label.project}"/>
+                            <select id="projectCode" name="projectCode" class="form-select" th:field="*{projectCode}">
+                                <option value="">Select a project...</option>
+                                <option th:each="proj : ${projects}" th:value="${proj.code}" th:text="${proj.code + ' - ' + proj.name}"></option>
+                            </select>
+                            <div class="text-danger small" th:if="${#fields.hasErrors('projectCode')}" th:errors="*{projectCode}"></div>
+                        </div>
+                        <div class="mb-3" th:if="${!ticket.newTicket}">
+                            <span class="form-label" th:text="#{label.project}"></span>
+                            <div class="form-control bg-light">
+                                <span th:text="${ticket.projectCode + ' - ' + ticket.projectName}"></span>
+                                <span th:unless="${ticket.projectActive}" class="badge bg-secondary ms-1" th:text="#{label.project.inactive}"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-primary" th:text="#{button.save}" th:if="*{canEdit}"/>
+                            <a th:href="@{/secure/tickets}" class="btn btn-outline-secondary" th:text="#{button.cancel}"/>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" id="ticketNumber" name="ticketNumber" th:field="*{ticketNumber}"/>
+                <input type="hidden" id="author" name="author" th:field="*{author.email}"/>
+                <input type="hidden" id="editor" name="editor" th:if="*{editor}" th:field="*{editor.email}"/>
+                <input type="hidden" id="state" name="state" th:field="*{state}"/>
+                <input type="hidden" id="canEdit" name="canEdit" th:field="*{canEdit}"/>
+                <input type="hidden" id="canGoIntoProgress" name="canGoIntoProgress" th:field="*{canGoIntoProgress}"/>
+                <input type="hidden" id="canGoIntoFixed" name="canGoIntoFixed" th:field="*{canGoIntoFixed}"/>
+                <input type="hidden" id="canGoIntoRejected" name="canGoIntoRejected" th:field="*{canGoIntoRejected}"/>
+                <input type="hidden" id="canGoIntoReopened" name="canGoIntoReopened" th:field="*{canGoIntoReopened}"/>
+                <input type="hidden" id="canGoIntoClosed" name="canGoIntoClosed" th:field="*{canGoIntoClosed}"/>
+                <input type="hidden" id="newTicket" name="newTicket" th:field="*{newTicket}"/>
+                <input type="hidden" id="projectCode" name="projectCode" th:if="${!ticket.newTicket}" th:field="*{projectCode}"/>
+            </form>
         </div>
-        <div class="mb-3">
-            <label for="title" class="form-label" th:text="#{label.title}"/>
-            <input type="text" id="title" name="description" class="form-control" th:disabled="${!ticket.canEdit}" th:field="*{title}" th:classappend="${!ticket.canEdit ? 'bg-light' : ''}"/>
-            <div class="text-danger small" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
-        </div>
-        <div class="mb-3">
-            <label for="description" class="form-label" th:text="#{label.description}"/>
-            <textarea id="description" name="description" class="form-control" rows="3" th:disabled="${!ticket.canEdit}" th:field="*{description}" th:classappend="${!ticket.canEdit ? 'bg-light' : ''}"></textarea>
-            <div class="text-danger small" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
-        </div>
-        <div class="mb-3">
-            <span class="form-label" th:text="#{label.author}"></span>
-            <span id="span-author" class="form-control bg-light" th:text="*{author.email}"></span>
-        </div>
-        <div class="mb-3">
-            <span class="form-label" th:text="#{label.editor}"></span>
-            <span id="span-editor" class="form-control bg-light" th:text="${ticket.editor != null ? ticket.editor.email : '---'}"></span>
-        </div>
-        <div class="mb-3">
-            <span class="form-label" th:text="#{label.state}"></span>
-            <div id="span-state" class="form-control bg-light">
-                <span th:switch="${ticket.state}">
-                    <span th:case="'CREATED'" class="badge bg-info" th:text="#{CREATED}"></span>
-                    <span th:case="'IN_PROGRESS'" class="badge bg-primary" th:text="#{IN_PROGRESS}"></span>
-                    <span th:case="'FIXED'" class="badge bg-success" th:text="#{FIXED}"></span>
-                    <span th:case="'REJECTED'" class="badge bg-warning text-dark" th:text="#{REJECTED}"></span>
-                    <span th:case="'REOPENED'" class="badge bg-info" th:text="#{REOPENED}"></span>
-                    <span th:case="'CLOSED'" class="badge bg-secondary" th:text="#{CLOSED}"></span>
-                </span>
-            </div>
-        </div>
-        <div class="mb-3" th:if="${ticket.newTicket}">
-            <label for="projectCode" class="form-label" th:text="#{label.project}"/>
-            <select id="projectCode" name="projectCode" class="form-select" th:field="*{projectCode}">
-                <option value="">Select a project...</option>
-                <option th:each="proj : ${projects}" th:value="${proj.code}" th:text="${proj.code + ' - ' + proj.name}"></option>
-            </select>
-            <div class="text-danger small" th:if="${#fields.hasErrors('projectCode')}" th:errors="*{projectCode}"></div>
-        </div>
-        <div class="mb-3" th:if="${!ticket.newTicket}">
-            <span class="form-label" th:text="#{label.project}"></span>
-            <div class="form-control bg-light">
-                <span th:text="${ticket.projectCode + ' - ' + ticket.projectName}"></span>
-                <span th:unless="${ticket.projectActive}" class="badge bg-secondary ms-1" th:text="#{label.project.inactive}"></span>
-            </div>
-        </div>
-        <div class="mb-3" th:if="${!ticket.newTicket}">
-            <label for="comment" class="form-label" th:text="#{label.comment}"/>
-            <textarea id="comment" name="commentText" class="form-control" rows="3" th:disabled="${!ticket.canEdit}" th:classappend="${!ticket.canEdit ? 'bg-light' : ''}"></textarea>
-        </div>
-        <div class="mb-3" th:if="${!comments.isEmpty()}">
-            <button class="btn btn-sm btn-outline-dark" type="button" data-bs-toggle="collapse" data-bs-target="#comments" aria-expanded="false" aria-controls="comments" th:text="#{button.show_comments}">Show Comments</button>
-            <div class="collapse" id="comments">
-                <div class="card card-body">
-                    <p th:each="comment : ${comments}">
-                        <span th:text="${#temporals.format(comment.dateCreated)}"></span>&nbsp;
-                        <span th:text="${comment.author.email}"></span>&nbsp;:&nbsp;
-                        <span th:text="${comment.text}"></span>
-                    </p>
+        <div class="col-md-6" th:if="${!ticket.newTicket}">
+            <form th:action="@{/secure/tickets/{ticketNumber}/status(ticketNumber=${ticket.ticketNumber})}" th:method="post">
+                <div class="card mb-4">
+                    <div class="card-header" th:text="#{label.ticket.status_section}"></div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <span class="form-label" th:text="#{label.state}"></span>
+                            <div id="span-state" class="form-control bg-light">
+                                <span th:switch="${ticket.state}">
+                                    <span th:case="'CREATED'" class="badge bg-info" th:text="#{CREATED}"></span>
+                                    <span th:case="'IN_PROGRESS'" class="badge bg-primary" th:text="#{IN_PROGRESS}"></span>
+                                    <span th:case="'FIXED'" class="badge bg-success" th:text="#{FIXED}"></span>
+                                    <span th:case="'REJECTED'" class="badge bg-warning text-dark" th:text="#{REJECTED}"></span>
+                                    <span th:case="'REOPENED'" class="badge bg-info" th:text="#{REOPENED}"></span>
+                                    <span th:case="'CLOSED'" class="badge bg-secondary" th:text="#{CLOSED}"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-primary" th:text="#{button.change_state.to_progress}" name="newState" th:if="${ticket.canGoIntoProgress}" value="IN_PROGRESS"/>
+                            <button type="submit" class="btn btn-success" th:text="#{button.change_state.to_fixed}" name="newState" th:if="${ticket.canGoIntoFixed}" value="FIXED"/>
+                            <button type="submit" class="btn btn-warning text-dark" th:text="#{button.change_state.to_rejected}" name="newState" th:if="${ticket.canGoIntoRejected}" value="REJECTED"/>
+                            <button type="submit" class="btn btn-info" th:text="#{button.change_state.to_reopened}" name="newState" th:if="${ticket.canGoIntoReopened}" value="REOPENED"/>
+                            <button type="submit" class="btn btn-secondary" th:text="#{button.change_state.to_closed}" name="newState" th:if="${ticket.canGoIntoClosed}" value="CLOSED"/>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="card mb-4">
+                <div class="card-header" th:text="#{label.ticket.comments_section}"></div>
+                <div class="card-body">
+                    <form th:action="@{/secure/tickets/{ticketNumber}/comment(ticketNumber=${ticket.ticketNumber})}" th:method="post">
+                        <div class="mb-3">
+                            <label for="comment" class="form-label" th:text="#{label.comment}"/>
+                            <textarea id="comment" name="commentText" class="form-control" rows="3" th:disabled="${!ticket.canEdit}" th:classappend="${!ticket.canEdit ? 'bg-light' : ''}"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-primary" th:text="#{button.add_comment}" th:if="${ticket.canEdit}"/>
+                        </div>
+                    </form>
+                    <div th:if="${!comments.isEmpty()}">
+                        <button id="toggleComments" class="btn btn-sm btn-outline-dark" type="button" data-bs-toggle="collapse" data-bs-target="#comments" aria-expanded="true" aria-controls="comments">
+                            <span id="showLabel" style="display:none" th:text="#{button.show_comments}"></span>
+                            <span id="hideLabel" th:text="#{button.hide_comments}"></span>
+                        </button>
+                        <div class="collapse show mt-2" id="comments">
+                            <div class="card card-body">
+                                <p th:each="comment : ${comments}">
+                                    <span th:text="${#temporals.format(comment.dateCreated)}"></span>&nbsp;
+                                    <span th:text="${comment.author.email}"></span>&nbsp;:&nbsp;
+                                    <span th:text="${comment.text}"></span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        document.getElementById('comments').addEventListener('hidden.bs.collapse', function () {
+                            document.getElementById('showLabel').style.display = '';
+                            document.getElementById('hideLabel').style.display = 'none';
+                        });
+                        document.getElementById('comments').addEventListener('shown.bs.collapse', function () {
+                            document.getElementById('showLabel').style.display = 'none';
+                            document.getElementById('hideLabel').style.display = '';
+                        });
+                    </script>
                 </div>
             </div>
         </div>
-        <div class="mb-5">
-            <button type="submit" class="btn btn-primary" th:text="#{button.save}" th:name="newState" th:if="*{canEdit}"  th:value="*{state}" />
-            <a th:href="@{/secure/tickets}" class="btn btn-outline-secondary" th:text="#{button.cancel}"/>
-            <button type="submit" class="btn btn-outline-primary" th:text="#{button.change_state.to_progress}" th:name="newState" th:if="*{canGoIntoProgress}"  th:value="IN_PROGRESS"/>
-            <button type="submit" class="btn btn-outline-primary" th:text="#{button.change_state.to_fixed}" th:name="newState" th:if="*{canGoIntoFixed}" th:value="FIXED"/>
-            <button type="submit" class="btn btn-outline-primary" th:text="#{button.change_state.to_rejected}" th:name="newState" th:if="*{canGoIntoRejected}"  th:value="REJECTED"/>
-            <button type="submit" class="btn btn-outline-primary" th:text="#{button.change_state.to_reopened}" th:name="newState" th:if="*{canGoIntoReopened}"  th:value="REOPENED"/>
-            <button type="submit" class="btn btn-outline-primary" th:text="#{button.change_state.to_closed}" th:name="newState" th:if="*{canGoIntoClosed}"  th:value="CLOSED"/>
-        </div>
-        <input type="hidden" id="ticketNumber" name="ticketNumber" th:field="*{ticketNumber}"/>
-        <input type="hidden" id="author" name="author" th:field="*{author.email}"/>
-        <input type="hidden" id="editor" name="editor" th:if="*{editor}" th:field="*{editor.email}"/>
-        <input type="hidden" id="state" name="state" th:field="*{state}"/>
-        <input type="hidden" id="canEdit" name="canEdit" th:field="*{canEdit}"/>
-        <input type="hidden" id="canGoIntoProgress" name="canGoIntoProgress" th:field="*{canGoIntoProgress}"/>
-        <input type="hidden" id="canGoIntoFixed" name="canGoIntoFixed" th:field="*{canGoIntoFixed}"/>
-        <input type="hidden" id="canGoIntoRejected" name="canGoIntoRejected" th:field="*{canGoIntoRejected}"/>
-        <input type="hidden" id="canGoIntoReopened" name="canGoIntoReopened" th:field="*{canGoIntoReopened}"/>
-        <input type="hidden" id="canGoIntoClosed" name="canGoIntoClosed" th:field="*{canGoIntoClosed}"/>
-        <input type="hidden" id="newTicket" name="newTicket" th:field="*{newTicket}"/>
-        <input type="hidden" id="projectCode" name="projectCode" th:if="${!ticket.newTicket}" th:field="*{projectCode}"/>
-    </form>
+    </div>
     <div th:replace="~{/fragments/footer :: footer}"></div>
 </div>
 </body>
