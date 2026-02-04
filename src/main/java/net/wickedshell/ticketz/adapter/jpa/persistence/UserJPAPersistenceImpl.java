@@ -26,7 +26,8 @@ public class UserJPAPersistenceImpl implements UserPersistence {
 
     @Override
     public User loadByEmail(String email) {
-        UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(ObjectNotFoundException::new);
+        UserEntity userEntity = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ObjectNotFoundException("User not found: " + email));
         return mapper.map(userEntity, User.class);
     }
 
@@ -48,7 +49,8 @@ public class UserJPAPersistenceImpl implements UserPersistence {
 
     @Override
     public User update(User user) {
-        UserEntity userEntityCurrent = userRepository.findByEmail(user.getEmail()).orElseThrow(ObjectNotFoundException::new);
+        UserEntity userEntityCurrent = userRepository.findByEmail(user.getEmail())
+                .orElseThrow(() -> new ObjectNotFoundException("User not found: " + user.getEmail()));
         mapper.map(user, userEntityCurrent);
         return mapper.map(userRepository.save(userEntityCurrent), User.class);
     }

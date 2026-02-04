@@ -19,7 +19,7 @@ public class UserToUserEntityConverter implements Converter<User, UserEntity> {
     public UserEntity convert(MappingContext<User, UserEntity> mappingContext) {
         User user = mappingContext.getSource();
         if (user != null) {
-            return this.userRepository.findByEmail(user.getEmail()).orElseThrow(ObjectNotFoundException::new);
+            return this.userRepository.findByEmail(user.getEmail()).orElseThrow(() -> new ObjectNotFoundException("User not found: " + user.getEmail()));
         }
         return null;
     }

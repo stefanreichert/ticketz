@@ -174,7 +174,7 @@ public class TicketServiceImpl implements TicketService {
                 }
             }
             case CREATED, REOPENED, CLOSED -> ticket.setPossibleNextStates(ticket.getState().getPermittedSuccessors());
-            default -> throw new IllegalStateException("Unexpected value: " + ticket.getState());
+            default -> throw new ValidationException("Unexpected ticket state: " + ticket.getState());
         }
     }
 

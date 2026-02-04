@@ -1,6 +1,7 @@
 package net.wickedshell.ticketz.adapter.rest.controller;
 
 import jakarta.persistence.OptimisticLockException;
+import net.wickedshell.ticketz.service.exception.AuthenticationException;
 import net.wickedshell.ticketz.service.exception.ValidationException;
 import net.wickedshell.ticketz.service.port.driven.persistence.exception.ObjectNotFoundException;
 
@@ -29,15 +30,21 @@ public class RestExceptionAdvice extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<Void> handleAuthenticationException(AuthenticationException exception) {
+        logger.error(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<Void> handleDataIntegrityViolationException() {
-        logger.error("Constraint Violation");
+    public ResponseEntity<Void> handleDataIntegrityViolationException(DataIntegrityViolationException exception) {
+        logger.error(exception.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 
     @ExceptionHandler(OptimisticLockException.class)
-    public ResponseEntity<Void> handleOptimisticLockException() {
-        logger.error("Optimistic Lock");
+    public ResponseEntity<Void> handleOptimisticLockException(OptimisticLockException exception) {
+        logger.error(exception.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 

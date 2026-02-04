@@ -19,7 +19,7 @@ public class WebUserToUserConverter implements Converter<UserWeb, User> {
     public User convert(MappingContext<UserWeb, User> mappingContext) {
         UserWeb user = mappingContext.getSource();
         if (user != null && user.getEmail() != null && !user.getEmail().isBlank()) {
-            return this.userService.findByEmail(user.getEmail()).orElseThrow(ObjectNotFoundException::new);
+            return this.userService.findByEmail(user.getEmail()).orElseThrow(() -> new ObjectNotFoundException("User not found: " + user.getEmail()));
         }
         return null;
     }

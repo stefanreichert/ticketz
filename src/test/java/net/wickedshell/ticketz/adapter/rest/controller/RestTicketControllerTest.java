@@ -120,7 +120,7 @@ class RestTicketControllerTest {
     @WithMockUser(roles = "API")
     void testOneTicket_notFound_returns404() throws Exception {
         // given
-        when(ticketService.loadByTicketNumber("UNKNOWN")).thenThrow(ObjectNotFoundException.class);
+        when(ticketService.loadByTicketNumber("UNKNOWN")).thenThrow(new ObjectNotFoundException("Ticket not found: UNKNOWN"));
 
         // when
         ResultActions perform = mvc.perform(get(TICKETS_ROUTE + "/UNKNOWN"));

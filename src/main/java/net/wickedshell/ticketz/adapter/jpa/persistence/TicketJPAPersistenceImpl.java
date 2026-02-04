@@ -26,13 +26,15 @@ public class TicketJPAPersistenceImpl implements TicketPersistence {
 
     @Override
     public Ticket loadByTicketNumber(String ticketNumber) {
-        TicketEntity ticketEntity = ticketRepository.findByTicketNumber(ticketNumber).orElseThrow(ObjectNotFoundException::new);
+        TicketEntity ticketEntity = ticketRepository.findByTicketNumber(ticketNumber)
+                .orElseThrow(() -> new ObjectNotFoundException("Ticket not found: " + ticketNumber));
         return mapper.map(ticketEntity, Ticket.class);
     }
 
     @Override
     public void deleteByTicketNumber(String ticketNumber) {
-        TicketEntity ticketEntity = ticketRepository.findByTicketNumber(ticketNumber).orElseThrow(ObjectNotFoundException::new);
+        TicketEntity ticketEntity = ticketRepository.findByTicketNumber(ticketNumber)
+                .orElseThrow(() -> new ObjectNotFoundException("Ticket not found: " + ticketNumber));
         ticketRepository.delete(ticketEntity);
     }
 
@@ -45,7 +47,8 @@ public class TicketJPAPersistenceImpl implements TicketPersistence {
 
     @Override
     public Ticket update(Ticket ticket) {
-        TicketEntity ticketEntity = ticketRepository.findByTicketNumber(ticket.getTicketNumber()).orElseThrow(ObjectNotFoundException::new);
+        TicketEntity ticketEntity = ticketRepository.findByTicketNumber(ticket.getTicketNumber())
+                .orElseThrow(() -> new ObjectNotFoundException("Ticket not found: " + ticket.getTicketNumber()));
         validateVersion(ticketEntity, ticket);
         mapper.map(ticket, ticketEntity);
         return mapper.map(ticketRepository.save(ticketEntity), Ticket.class);

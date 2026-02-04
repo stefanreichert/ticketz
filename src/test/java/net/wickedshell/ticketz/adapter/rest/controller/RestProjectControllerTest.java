@@ -111,7 +111,7 @@ class RestProjectControllerTest {
     @WithMockUser(roles = "API")
     void testOneProject_notFound_returns404() throws Exception {
         // given
-        when(projectService.loadByCode("UNKNOWN")).thenThrow(ObjectNotFoundException.class);
+        when(projectService.loadByCode("UNKNOWN")).thenThrow(new ObjectNotFoundException("Project not found: UNKNOWN"));
 
         // when
         ResultActions perform = mvc.perform(get(PROJECTS_ROUTE + "/UNKNOWN"));

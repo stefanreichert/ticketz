@@ -34,7 +34,7 @@ public class ProjectJPAPersistenceImpl implements ProjectPersistence {
     @Override
     public Project update(Project project) {
         ProjectEntity existingEntity = projectRepository.findByCode(project.getCode())
-                .orElseThrow(ObjectNotFoundException::new);
+                .orElseThrow(() -> new ObjectNotFoundException("Project not found: " + project.getCode()));
         mapper.map(project, existingEntity);
         ProjectEntity savedEntity = projectRepository.save(existingEntity);
         return mapper.map(savedEntity, Project.class);
@@ -42,7 +42,8 @@ public class ProjectJPAPersistenceImpl implements ProjectPersistence {
     
     @Override
     public Project loadByCode(String code) {
-        ProjectEntity entity = projectRepository.findByCode(code).orElseThrow(ObjectNotFoundException::new);
+        ProjectEntity entity = projectRepository.findByCode(code)
+                .orElseThrow(() -> new ObjectNotFoundException("Project not found: " + code));
         return mapper.map(entity, Project.class);
     }
     

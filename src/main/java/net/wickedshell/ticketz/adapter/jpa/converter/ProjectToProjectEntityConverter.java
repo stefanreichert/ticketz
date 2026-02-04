@@ -19,7 +19,7 @@ public class ProjectToProjectEntityConverter implements Converter<Project, Proje
     public ProjectEntity convert(MappingContext<Project, ProjectEntity> mappingContext) {
         Project project = mappingContext.getSource();
         if (project != null) {
-            return this.projectRepository.findByCode(project.getCode()).orElseThrow(ObjectNotFoundException::new);
+            return this.projectRepository.findByCode(project.getCode()).orElseThrow(() -> new ObjectNotFoundException("Project not found: " + project.getCode()));
         }
         return null;
     }
