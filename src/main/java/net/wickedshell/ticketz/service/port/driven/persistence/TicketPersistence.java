@@ -1,21 +1,61 @@
 package net.wickedshell.ticketz.service.port.driven.persistence;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import net.wickedshell.ticketz.service.model.Ticket;
 
 import java.util.List;
 
+/**
+ * Driven port for ticket persistence operations.
+ */
 public interface TicketPersistence {
-    Ticket loadByTicketNumber(String ticketNumber);
 
-    void deleteByTicketNumber(String ticketNumber);
+    /**
+     * Load a ticket by its ticket number.
+     *
+     * @param ticketNumber the ticket number
+     * @return the ticket
+     * @throws net.wickedshell.ticketz.service.port.driven.persistence.exception.ObjectNotFoundException if not found
+     */
+    Ticket loadByTicketNumber(@NotBlank String ticketNumber);
 
-    Ticket create(Ticket ticket);
+    /**
+     * Delete a ticket by its ticket number.
+     *
+     * @param ticketNumber the ticket number
+     * @throws net.wickedshell.ticketz.service.port.driven.persistence.exception.ObjectNotFoundException if not found
+     */
+    void deleteByTicketNumber(@NotBlank String ticketNumber);
 
-    @Valid Ticket update(@Valid Ticket ticket);
+    /**
+     * Persist a new ticket.
+     *
+     * @param ticket the ticket to create
+     * @return the created ticket
+     */
+    Ticket create(@Valid Ticket ticket);
 
+    /**
+     * Update an existing ticket.
+     *
+     * @param ticket the ticket with updated data
+     * @return the updated ticket
+     * @throws net.wickedshell.ticketz.service.port.driven.persistence.exception.ObjectNotFoundException if not found
+     */
+    Ticket update(@Valid Ticket ticket);
+
+    /**
+     * Find all tickets.
+     *
+     * @return list of all tickets
+     */
     List<Ticket> findAll();
 
+    /**
+     * Get the total number of tickets.
+     *
+     * @return the ticket count
+     */
     long getTicketCount();
-
 }

@@ -1,43 +1,45 @@
 package net.wickedshell.ticketz.service.port.driven.persistence;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import net.wickedshell.ticketz.service.model.Project;
 
 import java.util.List;
 
 /**
- * Port interface for project persistence operations.
- * Follows hexagonal architecture - this is a driven port (implemented by adapters).
+ * Driven port for project persistence operations.
  */
 public interface ProjectPersistence {
-    
+
     /**
-     * Create a new project.
-     * 
+     * Persist a new project.
+     *
      * @param project the project to create
      * @return the created project
      */
-    Project create(Project project);
-    
+    Project create(@Valid Project project);
+
     /**
      * Update an existing project.
-     * The project code is extracted from the project object.
-     * 
-     * @param project the updated project data
+     *
+     * @param project the project with updated data
      * @return the updated project
+     * @throws net.wickedshell.ticketz.service.port.driven.persistence.exception.ObjectNotFoundException if not found
      */
-    Project update(Project project);
-    
+    Project update(@Valid Project project);
+
     /**
-     * Load project by its unique code.
-     * 
+     * Load a project by its unique code.
+     *
      * @param code the project code
-     * @return Optional containing the project if found, empty otherwise
+     * @return the project
+     * @throws net.wickedshell.ticketz.service.port.driven.persistence.exception.ObjectNotFoundException if not found
      */
-    Project loadByCode(String code);
-    
+    Project loadByCode(@NotBlank String code);
+
     /**
      * Find all projects.
-     * 
+     *
      * @return list of all projects
      */
     List<Project> findAll();

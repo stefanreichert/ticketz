@@ -1,10 +1,5 @@
 package net.wickedshell.ticketz.service;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import lombok.RequiredArgsConstructor;
@@ -69,7 +64,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateName(@Valid User user) {
+    public User updateName(User user) {
         User existingUser = userPersistence.loadByEmail(user.getEmail());
         existingUser.setFirstname(user.getFirstname());
         existingUser.setLastname(user.getLastname());
@@ -77,9 +72,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updatePassword(@Email @NotNull @Size(max = 255) String email,
-                               @NotBlank String currentPassword,
-                               @NotBlank @Size(min = 8) String newPassword) {
+    public User updatePassword(String email, String currentPassword, String newPassword) {
         User existingUser = userPersistence.loadByEmail(email);
         if (!passwordEncoder.matches(currentPassword, existingUser.getPasswordHash())) {
             throw new ValidationException("Current password is incorrect");

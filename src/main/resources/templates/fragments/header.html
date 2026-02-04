@@ -17,10 +17,12 @@
       <li class="nav-item">
         <a class="nav-link" th:classappend="${activeNav == 'projects' ? 'text-primary fw-bold' : 'text-secondary'}" th:aria-current="${activeNav == 'projects' ? 'page' : ''}" th:href="@{/secure/projects}" th:text="#{button.projects}"></a>
       </li>
+      <li class="nav-item" th:if="${currentUser}">
+        <a class="nav-link" th:classappend="${activeNav == 'preferences' ? 'text-primary fw-bold' : 'text-secondary'}" th:aria-current="${activeNav == 'preferences' ? 'page' : ''}" th:href="@{/secure/preferences/{email}(email=${currentUser.email})}" th:text="#{button.preferences}"></a>
+      </li>
     </ul>
     <div class="d-flex align-items-center">
       <span class="text-muted me-3 small" th:if="${currentUser}" th:text="${currentUser.firstname + ' ' + currentUser.lastname + ' (' + currentUser.email + ')'}"></span>
-      <a th:if="${currentUser}" class="btn btn-outline-secondary btn-sm me-2" th:href="@{/secure/preferences/{email}(email=${currentUser.email})}" th:text="#{button.preferences}"></a>
       <form th:action="@{/secure/logout}" method="post">
         <button type="submit" class="btn btn-outline-secondary btn-sm" th:text="#{button.logout}"></button>
       </form>

@@ -1,14 +1,14 @@
 package net.wickedshell.ticketz.service.port.access;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import net.wickedshell.ticketz.service.exception.ValidationException;
 import net.wickedshell.ticketz.service.model.Project;
 
 import java.util.List;
 
 /**
- * Port interface for project management operations.
- * Follows hexagonal architecture - this is a driving port.
+ * Access port for project management operations.
  */
 public interface ProjectService {
     
@@ -39,7 +39,7 @@ public interface ProjectService {
      * @param code the project code
      * @return Optional containing the project if found, empty otherwise
      */
-    Project loadByCode(String code);
+    Project loadByCode(@NotBlank String code);
     
     /**
      * List all projects.
@@ -55,6 +55,6 @@ public interface ProjectService {
      * @param projectCode the project code to validate
      * @throws ValidationException if project code is null, not found, or inactive
      */
-    public void validateProjectCode(String projectCode);
+    void validateProjectCode(@NotBlank String projectCode);
     
 }

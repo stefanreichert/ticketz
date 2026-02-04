@@ -1,7 +1,6 @@
 package net.wickedshell.ticketz.service;
 
 import org.springframework.transaction.annotation.Transactional;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.service.exception.ValidationException;
 import net.wickedshell.ticketz.service.model.Project;
@@ -27,7 +26,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectPersistence projectPersistence;
     
     @Override
-    public Project create(@Valid Project project) {
+    public Project create(Project project) {
         // New projects are active by default
         project.setActive(true);
         
@@ -37,7 +36,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
     
     @Override
-    public Project update(@Valid Project project) {
+    public Project update(Project project) {
         if (project.getCode() == null || project.getCode().trim().isEmpty()) {
             throw new IllegalArgumentException("Project code is required for update");
         }

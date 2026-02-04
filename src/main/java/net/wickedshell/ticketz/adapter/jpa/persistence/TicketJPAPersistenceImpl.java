@@ -10,11 +10,13 @@ import net.wickedshell.ticketz.service.port.driven.persistence.exception.ObjectN
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.stream.StreamSupport;
 
 @Component
+@Validated
 @RequiredArgsConstructor
 public class TicketJPAPersistenceImpl implements TicketPersistence {
 

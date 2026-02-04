@@ -9,15 +9,13 @@ import net.wickedshell.ticketz.service.port.driven.persistence.exception.ObjectN
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * JPA implementation of ProjectPersistence port.
- * Handles persistence operations for projects using Spring Data JPA.
- */
 @Component
+@Validated
 @RequiredArgsConstructor
 public class ProjectJPAPersistenceImpl implements ProjectPersistence {
 

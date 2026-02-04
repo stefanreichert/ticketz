@@ -1,7 +1,6 @@
 package net.wickedshell.ticketz.service;
 
 import org.springframework.transaction.annotation.Transactional;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.service.exception.ValidationException;
 import net.wickedshell.ticketz.service.model.Comment;
@@ -55,7 +54,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     @PreAuthorize("hasRole('ROLE_USER')")
-    public Ticket create(@Valid Ticket ticket) {
+    public Ticket create(Ticket ticket) {
         validateProject(ticket.getProject());
         
         long nextTicketNumber = ticketPersistence.getTicketCount() + 1;
@@ -95,7 +94,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     @PreAuthorize("hasRole('ROLE_USER')")
-    public Ticket updateWithComment(@Valid Ticket ticket, @Valid Comment comment) {
+    public Ticket updateWithComment(Ticket ticket, Comment comment) {
         comment.setAuthor(userService.getCurrentUser());
         commentService.create(comment, ticket);
         return update(ticket);
@@ -112,7 +111,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     @PreAuthorize("hasRole('ROLE_USER')")
-    public boolean evaluateCanBeEdited(@Valid Ticket ticket) {
+    public boolean evaluateCanBeEdited(Ticket ticket) {
         if (!ticket.getProject().isActive()) {
             return false;
         }

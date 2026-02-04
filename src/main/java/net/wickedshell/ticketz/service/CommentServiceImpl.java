@@ -2,7 +2,6 @@ package net.wickedshell.ticketz.service;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.service.model.Comment;
 import net.wickedshell.ticketz.service.model.Ticket;
@@ -29,7 +28,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void create(@Valid Comment comment, @Valid Ticket ticket) {
+    public void create(Comment comment, Ticket ticket) {
         commentPersistence.create(comment, ticket);
     }
 
