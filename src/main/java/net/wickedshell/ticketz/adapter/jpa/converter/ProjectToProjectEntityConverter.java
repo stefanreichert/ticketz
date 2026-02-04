@@ -13,13 +13,15 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ProjectToProjectEntityConverter implements Converter<Project, ProjectEntity> {
 
+    private static final String PROJECT_NOT_FOUND = "Project not found: %s";
+
     private final ProjectRepository projectRepository;
 
     @Override
     public ProjectEntity convert(MappingContext<Project, ProjectEntity> mappingContext) {
         Project project = mappingContext.getSource();
         if (project != null) {
-            return this.projectRepository.findByCode(project.getCode()).orElseThrow(() -> new ObjectNotFoundException("Project not found: " + project.getCode()));
+            return this.projectRepository.findByCode(project.getCode()).orElseThrow(() -> new ObjectNotFoundException(String.format(PROJECT_NOT_FOUND, project.getCode())));
         }
         return null;
     }

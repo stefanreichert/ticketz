@@ -20,6 +20,8 @@ import java.util.stream.StreamSupport;
 @RequiredArgsConstructor
 public class TicketJPAPersistenceImpl implements TicketPersistence {
 
+    private static final String TICKET_NOT_FOUND = "Ticket not found: %s";
+
     @Qualifier("jpaModelMapper")
     private final ModelMapper mapper;
     private final TicketRepository ticketRepository;
@@ -27,14 +29,14 @@ public class TicketJPAPersistenceImpl implements TicketPersistence {
     @Override
     public Ticket loadByTicketNumber(String ticketNumber) {
         TicketEntity ticketEntity = ticketRepository.findByTicketNumber(ticketNumber)
-                .orElseThrow(() -> new ObjectNotFoundException("Ticket not found: " + ticketNumber));
+                .orElseThrow(() -> new ObjectNotFoundException(String.format(TICKET_NOT_FOUND, ticketNumber)));
         return mapper.map(ticketEntity, Ticket.class);
     }
 
     @Override
     public void deleteByTicketNumber(String ticketNumber) {
         TicketEntity ticketEntity = ticketRepository.findByTicketNumber(ticketNumber)
-                .orElseThrow(() -> new ObjectNotFoundException("Ticket not found: " + ticketNumber));
+                .orElseThrow(() -> new ObjectNotFoundException(String.format(TICKET_NOT_FOUND, ticketNumber)));
         ticketRepository.delete(ticketEntity);
     }
 
@@ -48,7 +50,7 @@ public class TicketJPAPersistenceImpl implements TicketPersistence {
     @Override
     public Ticket update(Ticket ticket) {
         TicketEntity ticketEntity = ticketRepository.findByTicketNumber(ticket.getTicketNumber())
-                .orElseThrow(() -> new ObjectNotFoundException("Ticket not found: " + ticket.getTicketNumber()));
+                .orElseThrow(() -> new ObjectNotFoundException(String.format(TICKET_NOT_FOUND, ticket.getTicketNumber())));
         validateVersion(ticketEntity, ticket);
         mapper.map(ticket, ticketEntity);
         return mapper.map(ticketRepository.save(ticketEntity), Ticket.class);

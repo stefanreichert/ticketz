@@ -20,6 +20,8 @@ import java.util.stream.StreamSupport;
 @RequiredArgsConstructor
 public class UserJPAPersistenceImpl implements UserPersistence {
 
+    private static final String USER_NOT_FOUND = "User not found: %s";
+
     @Qualifier("jpaModelMapper")
     private final ModelMapper mapper;
     private final UserRepository userRepository;
@@ -27,7 +29,7 @@ public class UserJPAPersistenceImpl implements UserPersistence {
     @Override
     public User loadByEmail(String email) {
         UserEntity userEntity = userRepository.findByEmail(email)
-                .orElseThrow(() -> new ObjectNotFoundException("User not found: " + email));
+                .orElseThrow(() -> new ObjectNotFoundException(String.format(USER_NOT_FOUND, email)));
         return mapper.map(userEntity, User.class);
     }
 
@@ -50,7 +52,7 @@ public class UserJPAPersistenceImpl implements UserPersistence {
     @Override
     public User update(User user) {
         UserEntity userEntityCurrent = userRepository.findByEmail(user.getEmail())
-                .orElseThrow(() -> new ObjectNotFoundException("User not found: " + user.getEmail()));
+                .orElseThrow(() -> new ObjectNotFoundException(String.format(USER_NOT_FOUND, user.getEmail())));
         mapper.map(user, userEntityCurrent);
         return mapper.map(userRepository.save(userEntityCurrent), User.class);
     }

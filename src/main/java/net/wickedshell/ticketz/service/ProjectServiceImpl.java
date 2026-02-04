@@ -38,7 +38,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Project update(Project project) {
         if (project.getCode() == null || project.getCode().trim().isEmpty()) {
-            throw new IllegalArgumentException("Project code is required for update");
+            throw new ValidationException("Project code is required for update");
         }
         
         // Verify project exists
@@ -55,7 +55,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional(readOnly = true)
     public Project loadByCode(String code) {
         if (code == null || code.trim().isEmpty()) {
-            throw new IllegalArgumentException("Project code cannot be null or empty");
+            throw new ValidationException("Project code cannot be null or empty");
         }
         return projectPersistence.loadByCode(code);
     }

@@ -20,6 +20,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentJPAPersistenceImpl implements CommentPersistence {
 
+    private static final String TICKET_NOT_FOUND = "Ticket not found: %s";
+
     private final CommentRepository commentRepository;
     private final TicketRepository ticketRepository;
     @Qualifier("jpaModelMapper")
@@ -36,7 +38,7 @@ public class CommentJPAPersistenceImpl implements CommentPersistence {
         CommentEntity commentEntity = new CommentEntity();
         mapper.map(comment, commentEntity);
         commentEntity.setTicket(ticketRepository.findByTicketNumber(ticket.getTicketNumber())
-                .orElseThrow(() -> new ObjectNotFoundException("Ticket not found: " + ticket.getTicketNumber())));
+                .orElseThrow(() -> new ObjectNotFoundException(String.format(TICKET_NOT_FOUND, ticket.getTicketNumber()))));
         return mapper.map(commentRepository.save(commentEntity), Comment.class);
     }
 }

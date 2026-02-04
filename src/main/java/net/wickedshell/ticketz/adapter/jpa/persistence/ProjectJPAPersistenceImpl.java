@@ -19,6 +19,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProjectJPAPersistenceImpl implements ProjectPersistence {
 
+    private static final String PROJECT_NOT_FOUND = "Project not found: %s";
+
     private final ProjectRepository projectRepository;
     @Qualifier("jpaModelMapper")
     private final ModelMapper mapper;
@@ -34,7 +36,7 @@ public class ProjectJPAPersistenceImpl implements ProjectPersistence {
     @Override
     public Project update(Project project) {
         ProjectEntity existingEntity = projectRepository.findByCode(project.getCode())
-                .orElseThrow(() -> new ObjectNotFoundException("Project not found: " + project.getCode()));
+                .orElseThrow(() -> new ObjectNotFoundException(String.format(PROJECT_NOT_FOUND, project.getCode())));
         mapper.map(project, existingEntity);
         ProjectEntity savedEntity = projectRepository.save(existingEntity);
         return mapper.map(savedEntity, Project.class);
@@ -43,7 +45,7 @@ public class ProjectJPAPersistenceImpl implements ProjectPersistence {
     @Override
     public Project loadByCode(String code) {
         ProjectEntity entity = projectRepository.findByCode(code)
-                .orElseThrow(() -> new ObjectNotFoundException("Project not found: " + code));
+                .orElseThrow(() -> new ObjectNotFoundException(String.format(PROJECT_NOT_FOUND, code)));
         return mapper.map(entity, Project.class);
     }
     

@@ -13,13 +13,15 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class UserToUserEntityConverter implements Converter<User, UserEntity> {
 
+    private static final String USER_NOT_FOUND = "User not found: %s";
+
     private final UserRepository userRepository;
 
     @Override
     public UserEntity convert(MappingContext<User, UserEntity> mappingContext) {
         User user = mappingContext.getSource();
         if (user != null) {
-            return this.userRepository.findByEmail(user.getEmail()).orElseThrow(() -> new ObjectNotFoundException("User not found: " + user.getEmail()));
+            return this.userRepository.findByEmail(user.getEmail()).orElseThrow(() -> new ObjectNotFoundException(String.format(USER_NOT_FOUND, user.getEmail())));
         }
         return null;
     }

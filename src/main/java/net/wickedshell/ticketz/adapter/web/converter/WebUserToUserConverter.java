@@ -13,13 +13,15 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class WebUserToUserConverter implements Converter<UserWeb, User> {
 
+    private static final String USER_NOT_FOUND = "User not found: %s";
+
     private final UserService userService;
 
     @Override
     public User convert(MappingContext<UserWeb, User> mappingContext) {
         UserWeb user = mappingContext.getSource();
         if (user != null && user.getEmail() != null && !user.getEmail().isBlank()) {
-            return this.userService.findByEmail(user.getEmail()).orElseThrow(() -> new ObjectNotFoundException("User not found: " + user.getEmail()));
+            return this.userService.findByEmail(user.getEmail()).orElseThrow(() -> new ObjectNotFoundException(String.format(USER_NOT_FOUND, user.getEmail())));
         }
         return null;
     }
