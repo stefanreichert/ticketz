@@ -10,8 +10,14 @@
 <body>
 <div class="container-lg">
     <div th:replace="~{/fragments/header :: header(pageheader=#{pageheader.ticket_list}, activeNav='tickets')}"></div>
-    <div class="mb-3">
+    <div class="mb-3 d-flex justify-content-between align-items-center">
         <a th:href="@{/secure/tickets/new}" class="btn btn-primary" th:text="#{button.new_ticket}"></a>
+        <form th:action="@{/secure/tickets}" method="get" class="d-flex gap-2">
+            <input type="text" name="search" class="form-control" style="width: 250px;"
+                   th:value="${search}" th:placeholder="#{label.search.placeholder}"/>
+            <button type="submit" class="btn btn-outline-primary" th:text="#{button.search}"/>
+            <a th:if="${search != null and !search.isEmpty()}" th:href="@{/secure/tickets}" class="btn btn-outline-secondary" th:text="#{button.clear}"/>
+        </form>
     </div>
     <div class="mb-3">
         <table class="table table-striped">

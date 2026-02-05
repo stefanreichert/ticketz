@@ -64,6 +64,13 @@ public class TicketJPAPersistenceImpl implements TicketPersistence {
     }
 
     @Override
+    public List<Ticket> search(String searchText) {
+        return ticketRepository.search(searchText).stream()
+                .map(ticketEntity -> mapper.map(ticketEntity, Ticket.class))
+                .toList();
+    }
+
+    @Override
     public long getTicketCount() {
         return ticketRepository.count();
     }

@@ -60,6 +60,15 @@ public interface TicketService {
     List<Ticket> findAll();
 
     /**
+     * Search tickets by text across multiple fields.
+     * Returns all tickets if searchText is null or blank.
+     *
+     * @param searchText the text to search for (case-insensitive, partial match)
+     * @return list of matching tickets with possible next states populated
+     */
+    List<Ticket> search(String searchText);
+
+    /**
      * Evaluate whether the current user can edit the given ticket based on state, project
      * status, and user role (author/editor).
      *

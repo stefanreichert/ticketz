@@ -111,6 +111,20 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     @PreAuthorize("hasRole('ROLE_USER')")
+    @Transactional(readOnly = true)
+    public List<Ticket> search(String searchText) {
+        List<Ticket> tickets;
+        if (searchText == null || searchText.isBlank()) {
+            tickets = ticketPersistence.findAll();
+        } else {
+            tickets = ticketPersistence.search(searchText.trim());
+        }
+        tickets.forEach(this::updatePossibleNextStates);
+        return tickets;
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     public boolean evaluateCanBeEdited(Ticket ticket) {
         if (!ticket.getProject().isActive()) {
             return false;

@@ -73,7 +73,7 @@ class RestTicketControllerTest {
         // given
         Ticket ticket1 = createTestTicket("TICKETZ-1", "First Ticket");
         Ticket ticket2 = createTestTicket("TICKETZ-2", "Second Ticket");
-        when(ticketService.findAll()).thenReturn(List.of(ticket1, ticket2));
+        when(ticketService.search(null)).thenReturn(List.of(ticket1, ticket2));
 
         // when
         ResultActions perform = mvc.perform(get(TICKETS_ROUTE));
@@ -87,9 +87,25 @@ class RestTicketControllerTest {
 
     @Test
     @WithMockUser(roles = "API")
+    void testAllTickets_withSearchParam_returnsFilteredList() throws Exception {
+        // given
+        Ticket ticket1 = createTestTicket("TICKETZ-1", "Bug in Login");
+        when(ticketService.search("bug")).thenReturn(List.of(ticket1));
+
+        // when
+        ResultActions perform = mvc.perform(get(TICKETS_ROUTE).param("search", "bug"));
+
+        // then
+        perform.andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].ticketNumber", is("TICKETZ-1")));
+    }
+
+    @Test
+    @WithMockUser(roles = "API")
     void testAllTickets_emptyList() throws Exception {
         // given
-        when(ticketService.findAll()).thenReturn(List.of());
+        when(ticketService.search(null)).thenReturn(List.of());
 
         // when
         ResultActions perform = mvc.perform(get(TICKETS_ROUTE));

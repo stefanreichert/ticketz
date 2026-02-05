@@ -25,8 +25,8 @@ public class RestTicketController {
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_API')")
-    public ResponseEntity<List<TicketRest>> allTickets() {
-        List<TicketRest> ticketRests = ticketService.findAll()
+    public ResponseEntity<List<TicketRest>> allTickets(@RequestParam(required = false) String search) {
+        List<TicketRest> ticketRests = ticketService.search(search)
                 .stream()
                 .map(ticket -> mapper.map(ticket, TicketRest.class))
                 .toList();

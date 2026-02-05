@@ -53,6 +53,15 @@ public interface TicketPersistence {
     List<Ticket> findAll();
 
     /**
+     * Search tickets by text across multiple fields.
+     * Searches: ticketNumber, title, description, author name, editor name, state, project code/name.
+     *
+     * @param searchText the text to search for (case-insensitive, partial match)
+     * @return list of matching tickets
+     */
+    List<Ticket> search(@NotBlank String searchText);
+
+    /**
      * Get the total number of tickets.
      *
      * @return the ticket count

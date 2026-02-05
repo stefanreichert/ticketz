@@ -113,9 +113,9 @@ public class TicketController {
 
     @PostMapping(ACTION_SAVE_TICKET_DETAILS)
     public String saveTicketDetails(@PathVariable String ticketNumber, @Valid @ModelAttribute(ATTRIBUTE_NAME_TICKET) TicketWeb ticket, BindingResult bindingResult, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+        Ticket existingTicket = ticketService.loadByTicketNumber(ticketNumber);
         if (bindingResult.hasErrors()) {
             ticket.setNewTicket(false);
-            Ticket existingTicket = ticketService.loadByTicketNumber(ticketNumber);
             ticket.setProjectActive(existingTicket.getProject().isActive());
             ticket.setCanEdit(ticketService.evaluateCanBeEdited(existingTicket));
             updateWebTicketPossibleTransitions(ticket, existingTicket.getPossibleNextStates());
@@ -126,7 +126,6 @@ public class TicketController {
             model.addAttribute(ATTRIBUTE_NAME_COMMENTS, comments);
             return VIEW_TICKET;
         }
-        Ticket existingTicket = ticketService.loadByTicketNumber(ticketNumber);
         existingTicket.setTitle(ticket.getTitle());
         existingTicket.setDescription(ticket.getDescription());
         ticketService.update(existingTicket);

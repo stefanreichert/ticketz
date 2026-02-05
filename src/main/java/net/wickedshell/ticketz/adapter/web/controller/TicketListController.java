@@ -7,8 +7,9 @@ import net.wickedshell.ticketz.service.port.access.TicketService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ import static net.wickedshell.ticketz.adapter.web.View.VIEW_TICKET_LIST;
 public class TicketListController {
 
     private static final String ATTRIBUTE_NAME_TICKETS = "tickets";
+    private static final String ATTRIBUTE_NAME_SEARCH = "search";
 
     private final TicketService ticketService;
 
@@ -27,15 +29,12 @@ public class TicketListController {
     private final ModelMapper mapper;
 
     @GetMapping(value = ACTION_SHOW_TICKET_LIST)
-    public String showTicketList() {
-        return VIEW_TICKET_LIST;
-    }
-
-    @ModelAttribute(ATTRIBUTE_NAME_TICKETS)
-    public List<TicketWeb
-    > populateTickets() {
-        return ticketService.findAll().stream()
+    public String showTicketList(@RequestParam(required = false) String search, Model model) {
+        List<TicketWeb> tickets = ticketService.search(search).stream()
                 .map(ticket -> mapper.map(ticket, TicketWeb.class))
                 .toList();
+        model.addAttribute(ATTRIBUTE_NAME_TICKETS, tickets);
+        model.addAttribute(ATTRIBUTE_NAME_SEARCH, search);
+        return VIEW_TICKET_LIST;
     }
 }
