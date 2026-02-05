@@ -13,13 +13,13 @@
     <div class="mb-3">
         <a th:href="@{/secure/projects/new}" class="btn btn-primary" th:text="#{button.new_project}"></a>
     </div>
-    <table class="table table-striped">
+    <table class="table table-striped" style="table-layout: fixed;">
         <thead>
         <tr>
-            <th th:text="#{table.header.project.code}"></th>
-            <th th:text="#{table.header.project.name}"></th>
-            <th th:text="#{table.header.project.status}"></th>
-            <th></th>
+            <th style="width: 20%;" th:text="#{table.header.project.code}"></th>
+            <th style="width: 50%;" th:text="#{table.header.project.name}"></th>
+            <th style="width: 15%;" th:text="#{table.header.project.status}"></th>
+            <th style="width: 15%;"></th>
         </tr>
         </thead>
         <tbody>
@@ -30,15 +30,13 @@
                 <span th:if="${project.active}" class="badge bg-success" th:text="#{label.project.active}"></span>
                 <span th:unless="${project.active}" class="badge bg-secondary" th:text="#{label.project.inactive}"></span>
             </td>
-            <td>
+            <td class="text-end">
                 <a th:href="@{/secure/projects/{code}(code=${project.code})}" class="btn btn-sm btn-outline-primary" th:text="#{button.edit}"></a>
             </td>
         </tr>
-        <tr th:if="${projects.isEmpty()}">
-            <td colspan="4" class="text-muted" th:text="#{label.project.no_projects}"></td>
-        </tr>
         </tbody>
     </table>
+    <div th:if="${projects.isEmpty()}" class="text-center text-muted py-4" th:text="#{label.project.no_projects}"></div>
     <div th:replace="~{/fragments/footer :: footer}"></div>
 </div>
 </body>
