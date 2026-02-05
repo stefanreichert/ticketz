@@ -53,6 +53,8 @@ public class UserJPAPersistenceImpl implements UserPersistence {
     public User update(User user) {
         UserEntity userEntityCurrent = userRepository.findByEmail(user.getEmail())
                 .orElseThrow(() -> new ObjectNotFoundException(String.format(USER_NOT_FOUND, user.getEmail())));
+        // Clear roles before mapping to prevent merge behavior (ModelMapper merges collections instead of replacing)
+        userEntityCurrent.getRoles().clear();
         mapper.map(user, userEntityCurrent);
         return mapper.map(userRepository.save(userEntityCurrent), User.class);
     }
