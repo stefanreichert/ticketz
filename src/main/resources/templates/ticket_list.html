@@ -20,7 +20,7 @@
         </form>
     </div>
     <div class="mb-3">
-        <table class="table table-striped">
+        <table class="table table-striped" style="table-layout: fixed;">
             <thead>
             <tr>
                 <th th:text="#{table.header.ticket_number}"/>
@@ -64,6 +64,10 @@
             </tr>
             </tbody>
         </table>
+        <div th:if="${tickets.isEmpty()}" class="text-center text-muted py-4">
+            <span th:if="${search != null and !search.isEmpty()}" th:text="#{label.ticket.no_search_results}"></span>
+            <span th:unless="${search != null and !search.isEmpty()}" th:text="#{label.ticket.no_tickets}"></span>
+        </div>
     </div>
     <div th:each="ticket : ${tickets}">
         <div th:replace="~{/fragments/confirm_dialog :: confirm(id=${'confirm_' + ticket.ticketNumber}, title=#{dialog.delete_ticket.title}, message=#{dialog.delete_ticket.message(${ticket.ticketNumber})}, confirm_url=@{/secure/tickets/{ticketNumber}:delete(ticketNumber=${ticket.ticketNumber})}, confirm_label=#{button.delete})}"></div>
