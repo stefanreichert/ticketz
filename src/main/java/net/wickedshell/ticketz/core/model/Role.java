@@ -1,4 +1,4 @@
-package net.wickedshell.ticketz.service.model;
+package net.wickedshell.ticketz.core.model;
 
 
 public enum Role {

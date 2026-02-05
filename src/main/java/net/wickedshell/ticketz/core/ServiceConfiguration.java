@@ -1,4 +1,4 @@
-package net.wickedshell.ticketz.service;
+package net.wickedshell.ticketz.core;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

@@ -1,8 +1,8 @@
-package net.wickedshell.ticketz.service.port.driven.persistence;
+package net.wickedshell.ticketz.core.port.driven.persistence;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import net.wickedshell.ticketz.service.model.Ticket;
+import net.wickedshell.ticketz.core.model.Ticket;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public interface TicketPersistence {
      *
      * @param ticketNumber the ticket number
      * @return the ticket
-     * @throws net.wickedshell.ticketz.service.port.driven.persistence.exception.ObjectNotFoundException if not found
+     * @throws net.wickedshell.ticketz.core.port.driven.persistence.exception.ObjectNotFoundException if not found
      */
     Ticket loadByTicketNumber(@NotBlank String ticketNumber);
 
@@ -24,7 +24,7 @@ public interface TicketPersistence {
      * Delete a ticket by its ticket number.
      *
      * @param ticketNumber the ticket number
-     * @throws net.wickedshell.ticketz.service.port.driven.persistence.exception.ObjectNotFoundException if not found
+     * @throws net.wickedshell.ticketz.core.port.driven.persistence.exception.ObjectNotFoundException if not found
      */
     void deleteByTicketNumber(@NotBlank String ticketNumber);
 
@@ -41,7 +41,7 @@ public interface TicketPersistence {
      *
      * @param ticket the ticket with updated data
      * @return the updated ticket
-     * @throws net.wickedshell.ticketz.service.port.driven.persistence.exception.ObjectNotFoundException if not found
+     * @throws net.wickedshell.ticketz.core.port.driven.persistence.exception.ObjectNotFoundException if not found
      */
     Ticket update(@Valid Ticket ticket);
 

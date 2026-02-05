@@ -1,27 +1,27 @@
-package net.wickedshell.ticketz.service;
+package net.wickedshell.ticketz.core;
 
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
-import net.wickedshell.ticketz.service.exception.ValidationException;
-import net.wickedshell.ticketz.service.model.Comment;
-import net.wickedshell.ticketz.service.model.Project;
-import net.wickedshell.ticketz.service.model.Ticket;
-import net.wickedshell.ticketz.service.model.TicketState;
-import net.wickedshell.ticketz.service.model.User;
-import net.wickedshell.ticketz.service.port.access.CommentService;
-import net.wickedshell.ticketz.service.port.access.ProjectService;
-import net.wickedshell.ticketz.service.port.access.TicketService;
-import net.wickedshell.ticketz.service.port.access.UserService;
-import net.wickedshell.ticketz.service.port.driven.persistence.TicketPersistence;
+import net.wickedshell.ticketz.core.exception.ValidationException;
+import net.wickedshell.ticketz.core.model.Comment;
+import net.wickedshell.ticketz.core.model.Project;
+import net.wickedshell.ticketz.core.model.Ticket;
+import net.wickedshell.ticketz.core.model.TicketState;
+import net.wickedshell.ticketz.core.model.User;
+import net.wickedshell.ticketz.core.port.access.CommentService;
+import net.wickedshell.ticketz.core.port.access.ProjectService;
+import net.wickedshell.ticketz.core.port.access.TicketService;
+import net.wickedshell.ticketz.core.port.access.UserService;
+import net.wickedshell.ticketz.core.port.driven.persistence.TicketPersistence;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import static net.wickedshell.ticketz.core.model.TicketState.*;
+
 import java.util.List;
 import java.util.Set;
-
-import static net.wickedshell.ticketz.service.model.TicketState.*;
 
 @Service
 @Validated

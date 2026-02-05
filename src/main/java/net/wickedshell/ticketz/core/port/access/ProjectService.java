@@ -1,9 +1,9 @@
-package net.wickedshell.ticketz.service.port.access;
+package net.wickedshell.ticketz.core.port.access;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import net.wickedshell.ticketz.service.exception.ValidationException;
-import net.wickedshell.ticketz.service.model.Project;
+import net.wickedshell.ticketz.core.exception.ValidationException;
+import net.wickedshell.ticketz.core.model.Project;
 
 import java.util.List;
 

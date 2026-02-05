@@ -1,4 +1,4 @@
-package net.wickedshell.ticketz.service.exception;
+package net.wickedshell.ticketz.core.exception;
 
 public class ValidationException extends ServiceException {
 

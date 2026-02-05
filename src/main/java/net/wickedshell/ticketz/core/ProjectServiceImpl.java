@@ -1,12 +1,12 @@
-package net.wickedshell.ticketz.service;
+package net.wickedshell.ticketz.core;
 
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
-import net.wickedshell.ticketz.service.exception.ValidationException;
-import net.wickedshell.ticketz.service.model.Project;
-import net.wickedshell.ticketz.service.port.access.ProjectService;
-import net.wickedshell.ticketz.service.port.driven.persistence.ProjectPersistence;
-import net.wickedshell.ticketz.service.port.driven.persistence.exception.ObjectNotFoundException;
+import net.wickedshell.ticketz.core.exception.ValidationException;
+import net.wickedshell.ticketz.core.model.Project;
+import net.wickedshell.ticketz.core.port.access.ProjectService;
+import net.wickedshell.ticketz.core.port.driven.persistence.ProjectPersistence;
+import net.wickedshell.ticketz.core.port.driven.persistence.exception.ObjectNotFoundException;
 
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;

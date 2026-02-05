@@ -1,4 +1,4 @@
-package net.wickedshell.ticketz.service.model;
+package net.wickedshell.ticketz.core.model;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

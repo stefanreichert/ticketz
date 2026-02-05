@@ -1,10 +1,10 @@
-package net.wickedshell.ticketz.service.port.driven.persistence;
+package net.wickedshell.ticketz.core.port.driven.persistence;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import net.wickedshell.ticketz.service.model.User;
+import net.wickedshell.ticketz.core.model.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +19,7 @@ public interface UserPersistence {
      *
      * @param email the email address
      * @return the user
-     * @throws net.wickedshell.ticketz.service.port.driven.persistence.exception.ObjectNotFoundException if not found
+     * @throws net.wickedshell.ticketz.core.port.driven.persistence.exception.ObjectNotFoundException if not found
      */
     User loadByEmail(@Email @NotNull @Size(max = 255) String email);
 
@@ -36,7 +36,7 @@ public interface UserPersistence {
      *
      * @param user the user with updated data
      * @return the updated user
-     * @throws net.wickedshell.ticketz.service.port.driven.persistence.exception.ObjectNotFoundException if not found
+     * @throws net.wickedshell.ticketz.core.port.driven.persistence.exception.ObjectNotFoundException if not found
      */
     User update(@Valid User user);
 

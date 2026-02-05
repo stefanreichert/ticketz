@@ -1,14 +1,15 @@
-package net.wickedshell.ticketz.service;
+package net.wickedshell.ticketz.core;
 
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import lombok.RequiredArgsConstructor;
-import net.wickedshell.ticketz.service.exception.AuthenticationException;
-import net.wickedshell.ticketz.service.exception.ValidationException;
-import net.wickedshell.ticketz.service.model.Role;
-import net.wickedshell.ticketz.service.model.User;
-import net.wickedshell.ticketz.service.port.driven.persistence.UserPersistence;
-import net.wickedshell.ticketz.service.port.access.UserService;
+import net.wickedshell.ticketz.core.exception.AuthenticationException;
+import net.wickedshell.ticketz.core.exception.ValidationException;
+import net.wickedshell.ticketz.core.model.Role;
+import net.wickedshell.ticketz.core.model.User;
+import net.wickedshell.ticketz.core.port.access.UserService;
+import net.wickedshell.ticketz.core.port.driven.persistence.UserPersistence;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;

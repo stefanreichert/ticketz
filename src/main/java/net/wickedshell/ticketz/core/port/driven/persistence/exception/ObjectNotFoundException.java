@@ -1,4 +1,4 @@
-package net.wickedshell.ticketz.service.port.driven.persistence.exception;
+package net.wickedshell.ticketz.core.port.driven.persistence.exception;
 
 public class ObjectNotFoundException extends RuntimeException {
 

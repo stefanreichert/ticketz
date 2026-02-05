@@ -1,12 +1,13 @@
-package net.wickedshell.ticketz.service.port.access;
+package net.wickedshell.ticketz.core.port.access;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import net.wickedshell.ticketz.service.model.Role;
-import net.wickedshell.ticketz.service.model.User;
+import net.wickedshell.ticketz.core.model.Role;
+import net.wickedshell.ticketz.core.model.User;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;

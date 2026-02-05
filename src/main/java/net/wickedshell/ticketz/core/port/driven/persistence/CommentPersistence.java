@@ -1,9 +1,9 @@
-package net.wickedshell.ticketz.service.port.driven.persistence;
+package net.wickedshell.ticketz.core.port.driven.persistence;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import net.wickedshell.ticketz.service.model.Comment;
-import net.wickedshell.ticketz.service.model.Ticket;
+import net.wickedshell.ticketz.core.model.Comment;
+import net.wickedshell.ticketz.core.model.Ticket;
 
 import java.util.List;
 

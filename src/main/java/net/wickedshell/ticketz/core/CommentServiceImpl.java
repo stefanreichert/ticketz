@@ -1,12 +1,12 @@
-package net.wickedshell.ticketz.service;
+package net.wickedshell.ticketz.core;
 
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import net.wickedshell.ticketz.service.model.Comment;
-import net.wickedshell.ticketz.service.model.Ticket;
-import net.wickedshell.ticketz.service.port.access.CommentService;
-import net.wickedshell.ticketz.service.port.driven.persistence.CommentPersistence;
+import net.wickedshell.ticketz.core.model.Comment;
+import net.wickedshell.ticketz.core.model.Ticket;
+import net.wickedshell.ticketz.core.port.access.CommentService;
+import net.wickedshell.ticketz.core.port.driven.persistence.CommentPersistence;
 
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;

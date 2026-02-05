@@ -1,8 +1,8 @@
-package net.wickedshell.ticketz.service.port.driven.persistence;
+package net.wickedshell.ticketz.core.port.driven.persistence;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import net.wickedshell.ticketz.service.model.Project;
+import net.wickedshell.ticketz.core.model.Project;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public interface ProjectPersistence {
      *
      * @param project the project with updated data
      * @return the updated project
-     * @throws net.wickedshell.ticketz.service.port.driven.persistence.exception.ObjectNotFoundException if not found
+     * @throws net.wickedshell.ticketz.core.port.driven.persistence.exception.ObjectNotFoundException if not found
      */
     Project update(@Valid Project project);
 
@@ -33,7 +33,7 @@ public interface ProjectPersistence {
      *
      * @param code the project code
      * @return the project
-     * @throws net.wickedshell.ticketz.service.port.driven.persistence.exception.ObjectNotFoundException if not found
+     * @throws net.wickedshell.ticketz.core.port.driven.persistence.exception.ObjectNotFoundException if not found
      */
     Project loadByCode(@NotBlank String code);
 
