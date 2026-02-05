@@ -5,8 +5,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.adapter.web.Action;
 import net.wickedshell.ticketz.adapter.web.model.Signup;
-import net.wickedshell.ticketz.service.model.User;
-import net.wickedshell.ticketz.service.port.access.UserService;
+import net.wickedshell.ticketz.core.model.User;
+import net.wickedshell.ticketz.core.port.access.UserService;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +21,7 @@ import java.util.Set;
 
 import static net.wickedshell.ticketz.adapter.web.Action.*;
 import static net.wickedshell.ticketz.adapter.web.View.VIEW_SIGNUP;
-import static net.wickedshell.ticketz.service.model.Role.ROLE_USER;
+import static net.wickedshell.ticketz.core.model.Role.ROLE_USER;
 
 @RequiredArgsConstructor
 @Controller

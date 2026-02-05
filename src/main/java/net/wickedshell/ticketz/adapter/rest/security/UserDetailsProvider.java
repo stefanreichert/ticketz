@@ -1,8 +1,8 @@
 package net.wickedshell.ticketz.adapter.rest.security;
 
 import lombok.RequiredArgsConstructor;
-import net.wickedshell.ticketz.service.model.Role;
-import net.wickedshell.ticketz.service.port.access.UserService;
+import net.wickedshell.ticketz.core.model.Role;
+import net.wickedshell.ticketz.core.port.access.UserService;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,11 +27,11 @@ public class UserDetailsProvider implements org.springframework.security.core.us
                     new AnonymousAuthenticationToken(ANONYMOUS_USER, ANONYMOUS_USER, List.of(new SimpleGrantedAuthority(Role.ROLE_ANONYMOUS.name())));
             anonymousAuthenticationToken.setAuthenticated(false);
             SecurityContextHolder.getContext().setAuthentication(anonymousAuthenticationToken);
-            Optional<net.wickedshell.ticketz.service.model.User> maybeUser = userService.findByEmail(username);
+            Optional<net.wickedshell.ticketz.core.model.User> maybeUser = userService.findByEmail(username);
             if (maybeUser.isEmpty()) {
                 throw new UsernameNotFoundException("unknown user");
             }
-            net.wickedshell.ticketz.service.model.User user = maybeUser.get();
+            net.wickedshell.ticketz.core.model.User user = maybeUser.get();
             List<SimpleGrantedAuthority> authorities =
                     user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.name())).toList();
             return new User(user.getEmail(), user.getPasswordHash(), authorities);

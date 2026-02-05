@@ -58,7 +58,7 @@ Currently, tickets in the TicketZ application exist independently without any or
 
 ```java
 // New domain model in service/model/
-package net.wickedshell.ticketz.service.model;
+package net.wickedshell.ticketz.core.model;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -109,9 +109,9 @@ public class Ticket {
 
 ```java
 // New port interface in service/port/access/
-package net.wickedshell.ticketz.service.port.access;
+package net.wickedshell.ticketz.core.port.access;
 
-import net.wickedshell.ticketz.service.model.Project;
+import net.wickedshell.ticketz.core.model.Project;
 import java.util.List;
 import java.util.Optional;
 
@@ -166,7 +166,7 @@ public interface ProjectService {
 
 ```java
 // New service in service/
-package net.wickedshell.ticketz.service;
+package net.wickedshell.ticketz.core;
 
 @RequiredArgsConstructor
 @Service

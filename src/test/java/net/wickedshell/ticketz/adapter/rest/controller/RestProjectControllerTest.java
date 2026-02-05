@@ -4,11 +4,11 @@ import jakarta.inject.Inject;
 import net.wickedshell.ticketz.TestConfig;
 import net.wickedshell.ticketz.adapter.AuthenticationConfiguration;
 import net.wickedshell.ticketz.adapter.rest.RestAdapterConfiguration;
-import net.wickedshell.ticketz.service.model.Project;
-import net.wickedshell.ticketz.service.port.access.ProjectService;
-import net.wickedshell.ticketz.service.port.access.TicketService;
-import net.wickedshell.ticketz.service.port.access.UserService;
-import net.wickedshell.ticketz.service.port.driven.persistence.exception.ObjectNotFoundException;
+import net.wickedshell.ticketz.core.model.Project;
+import net.wickedshell.ticketz.core.port.access.ProjectService;
+import net.wickedshell.ticketz.core.port.access.TicketService;
+import net.wickedshell.ticketz.core.port.access.UserService;
+import net.wickedshell.ticketz.core.port.driven.persistence.exception.ObjectNotFoundException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

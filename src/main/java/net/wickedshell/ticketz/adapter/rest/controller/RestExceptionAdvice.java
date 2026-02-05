@@ -1,9 +1,9 @@
 package net.wickedshell.ticketz.adapter.rest.controller;
 
 import jakarta.persistence.OptimisticLockException;
-import net.wickedshell.ticketz.service.exception.AuthenticationException;
-import net.wickedshell.ticketz.service.exception.ValidationException;
-import net.wickedshell.ticketz.service.port.driven.persistence.exception.ObjectNotFoundException;
+import net.wickedshell.ticketz.core.exception.AuthenticationException;
+import net.wickedshell.ticketz.core.exception.ValidationException;
+import net.wickedshell.ticketz.core.port.driven.persistence.exception.ObjectNotFoundException;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;

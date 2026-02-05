@@ -2,7 +2,7 @@ package net.wickedshell.ticketz.adapter.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.adapter.web.model.UserWeb;
-import net.wickedshell.ticketz.service.port.access.UserService;
+import net.wickedshell.ticketz.core.port.access.UserService;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;

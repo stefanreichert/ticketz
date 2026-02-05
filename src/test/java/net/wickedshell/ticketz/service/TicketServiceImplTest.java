@@ -1,14 +1,14 @@
-package net.wickedshell.ticketz.service;
+package net.wickedshell.ticketz.core;
 
-import net.wickedshell.ticketz.service.exception.ValidationException;
-import net.wickedshell.ticketz.service.model.Project;
-import net.wickedshell.ticketz.service.model.Ticket;
-import net.wickedshell.ticketz.service.model.TicketState;
-import net.wickedshell.ticketz.service.model.User;
-import net.wickedshell.ticketz.service.port.access.CommentService;
-import net.wickedshell.ticketz.service.port.access.ProjectService;
-import net.wickedshell.ticketz.service.port.access.UserService;
-import net.wickedshell.ticketz.service.port.driven.persistence.TicketPersistence;
+import net.wickedshell.ticketz.core.exception.ValidationException;
+import net.wickedshell.ticketz.core.model.Project;
+import net.wickedshell.ticketz.core.model.Ticket;
+import net.wickedshell.ticketz.core.model.TicketState;
+import net.wickedshell.ticketz.core.model.User;
+import net.wickedshell.ticketz.core.port.access.CommentService;
+import net.wickedshell.ticketz.core.port.access.ProjectService;
+import net.wickedshell.ticketz.core.port.access.UserService;
+import net.wickedshell.ticketz.core.port.driven.persistence.TicketPersistence;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static net.wickedshell.ticketz.service.model.TicketState.*;
+import static net.wickedshell.ticketz.core.model.TicketState.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 

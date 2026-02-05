@@ -2,9 +2,9 @@ package net.wickedshell.ticketz.adapter.web.converter;
 
 import lombok.RequiredArgsConstructor;
 import net.wickedshell.ticketz.adapter.web.model.UserWeb;
-import net.wickedshell.ticketz.service.model.User;
-import net.wickedshell.ticketz.service.port.driven.persistence.exception.ObjectNotFoundException;
-import net.wickedshell.ticketz.service.port.access.UserService;
+import net.wickedshell.ticketz.core.model.User;
+import net.wickedshell.ticketz.core.port.driven.persistence.exception.ObjectNotFoundException;
+import net.wickedshell.ticketz.core.port.access.UserService;
 import org.modelmapper.Converter;
 import org.modelmapper.spi.MappingContext;
 import org.springframework.stereotype.Component;

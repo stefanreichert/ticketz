@@ -8,14 +8,14 @@ import net.wickedshell.ticketz.adapter.web.model.CommentWeb;
 import net.wickedshell.ticketz.adapter.web.model.TicketWeb;
 import net.wickedshell.ticketz.adapter.web.model.UserWeb;
 import net.wickedshell.ticketz.adapter.web.model.ProjectWeb;
-import net.wickedshell.ticketz.service.model.Comment;
-import net.wickedshell.ticketz.service.model.Project;
-import net.wickedshell.ticketz.service.model.Ticket;
-import net.wickedshell.ticketz.service.model.TicketState;
-import net.wickedshell.ticketz.service.port.access.CommentService;
-import net.wickedshell.ticketz.service.port.access.ProjectService;
-import net.wickedshell.ticketz.service.port.access.TicketService;
-import net.wickedshell.ticketz.service.port.access.UserService;
+import net.wickedshell.ticketz.core.model.Comment;
+import net.wickedshell.ticketz.core.model.Project;
+import net.wickedshell.ticketz.core.model.Ticket;
+import net.wickedshell.ticketz.core.model.TicketState;
+import net.wickedshell.ticketz.core.port.access.CommentService;
+import net.wickedshell.ticketz.core.port.access.ProjectService;
+import net.wickedshell.ticketz.core.port.access.TicketService;
+import net.wickedshell.ticketz.core.port.access.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
@@ -31,7 +31,7 @@ import java.util.Set;
 
 import static net.wickedshell.ticketz.adapter.web.Action.*;
 import static net.wickedshell.ticketz.adapter.web.View.VIEW_TICKET;
-import static net.wickedshell.ticketz.service.model.TicketState.*;
+import static net.wickedshell.ticketz.core.model.TicketState.*;
 
 @Controller
 @RequiredArgsConstructor

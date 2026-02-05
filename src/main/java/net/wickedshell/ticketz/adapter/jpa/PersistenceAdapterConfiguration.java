@@ -4,8 +4,8 @@ import net.wickedshell.ticketz.adapter.jpa.converter.ProjectToProjectEntityConve
 import net.wickedshell.ticketz.adapter.jpa.converter.UserToUserEntityConverter;
 import net.wickedshell.ticketz.adapter.jpa.entity.CommentEntity;
 import net.wickedshell.ticketz.adapter.jpa.entity.TicketEntity;
-import net.wickedshell.ticketz.service.model.Comment;
-import net.wickedshell.ticketz.service.model.Ticket;
+import net.wickedshell.ticketz.core.model.Comment;
+import net.wickedshell.ticketz.core.model.Ticket;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.springframework.boot.autoconfigure.domain.EntityScan;

@@ -2,7 +2,7 @@ package net.wickedshell.ticketz.adapter.jpa.persistence;
 
 import jakarta.inject.Inject;
 import net.wickedshell.ticketz.adapter.jpa.repository.UserRepository;
-import net.wickedshell.ticketz.service.model.User;
+import net.wickedshell.ticketz.core.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;

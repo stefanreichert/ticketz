@@ -2,8 +2,8 @@ package net.wickedshell.ticketz.adapter.jpa.persistence;
 
 import jakarta.inject.Inject;
 import net.wickedshell.ticketz.adapter.jpa.repository.ProjectRepository;
-import net.wickedshell.ticketz.service.model.Project;
-import net.wickedshell.ticketz.service.port.driven.persistence.exception.ObjectNotFoundException;
+import net.wickedshell.ticketz.core.model.Project;
+import net.wickedshell.ticketz.core.port.driven.persistence.exception.ObjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;

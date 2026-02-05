@@ -6,9 +6,9 @@ import net.wickedshell.ticketz.adapter.jpa.converter.UserToUserEntityConverter;
 import net.wickedshell.ticketz.adapter.jpa.repository.ProjectRepository;
 import net.wickedshell.ticketz.adapter.jpa.repository.TicketRepository;
 import net.wickedshell.ticketz.adapter.jpa.repository.UserRepository;
-import net.wickedshell.ticketz.service.model.Project;
-import net.wickedshell.ticketz.service.model.Ticket;
-import net.wickedshell.ticketz.service.model.User;
+import net.wickedshell.ticketz.core.model.Project;
+import net.wickedshell.ticketz.core.model.Ticket;
+import net.wickedshell.ticketz.core.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
@@ -16,7 +16,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.test.context.ContextConfiguration;
 
-import static net.wickedshell.ticketz.service.model.TicketState.CREATED;
+import static net.wickedshell.ticketz.core.model.TicketState.CREATED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
