@@ -111,6 +111,7 @@
                         <div class="mb-3">
                             <label for="comment" class="form-label" th:text="#{label.comment}"/>
                             <textarea id="comment" name="commentText" class="form-control" rows="3" th:disabled="${!ticket.canEdit}" th:classappend="${!ticket.canEdit ? 'bg-light' : ''}"></textarea>
+                            <div class="text-danger small" th:if="${commentError}" th:text="${commentError}"></div>
                         </div>
                         <div class="mb-3">
                             <button type="submit" class="btn btn-primary" th:text="#{button.add_comment}" th:if="${ticket.canEdit}"/>

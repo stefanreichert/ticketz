@@ -39,6 +39,7 @@ public class TicketController {
 
     private static final String ATTRIBUTE_NAME_TICKET = "ticket";
     private static final String ATTRIBUTE_NAME_MESSAGE = "message";
+    private static final String ATTRIBUTE_NAME_COMMENT_ERROR = "commentError";
     private static final String ATTRIBUTE_NAME_COMMENTS = "comments";
     private static final String ATTRIBUTE_NAME_PROJECTS = "projects";
 
@@ -93,7 +94,7 @@ public class TicketController {
     }
 
     @PostMapping(ACTION_SAVE_TICKET)
-    public ModelAndView createTicket(@PathVariable String ticketNumber, @Valid @ModelAttribute TicketWeb ticket, BindingResult bindingResult, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    public ModelAndView createTicket(@PathVariable String ticketNumber, @Valid @ModelAttribute(ATTRIBUTE_NAME_TICKET) TicketWeb ticket, BindingResult bindingResult, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             ModelAndView modelAndView = new ModelAndView(VIEW_TICKET)
                     .addObject(ATTRIBUTE_NAME_TICKET, ticket)
@@ -111,9 +112,13 @@ public class TicketController {
     }
 
     @PostMapping(ACTION_SAVE_TICKET_DETAILS)
-    public String saveTicketDetails(@PathVariable String ticketNumber, @Valid @ModelAttribute TicketWeb ticket, BindingResult bindingResult, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+    public String saveTicketDetails(@PathVariable String ticketNumber, @Valid @ModelAttribute(ATTRIBUTE_NAME_TICKET) TicketWeb ticket, BindingResult bindingResult, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             ticket.setNewTicket(false);
+            Ticket existingTicket = ticketService.loadByTicketNumber(ticketNumber);
+            ticket.setProjectActive(existingTicket.getProject().isActive());
+            ticket.setCanEdit(ticketService.evaluateCanBeEdited(existingTicket));
+            updateWebTicketPossibleTransitions(ticket, existingTicket.getPossibleNextStates());
             List<CommentWeb> comments = commentService.findByTicketNumber(ticketNumber).stream()
                     .map(comment -> mapper.map(comment, CommentWeb.class))
                     .toList();
@@ -142,6 +147,11 @@ public class TicketController {
 
     @PostMapping(ACTION_SAVE_TICKET_COMMENT)
     public String addTicketComment(@PathVariable String ticketNumber, @RequestParam String commentText, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        if (commentText == null || commentText.isBlank()) {
+            redirectAttributes.addFlashAttribute(ATTRIBUTE_NAME_COMMENT_ERROR,
+                    messageSource.getMessage("message.ticket.comment_empty", null, request.getLocale()));
+            return redirectTo(ACTION_SHOW_TICKET.replace("{ticketNumber}", ticketNumber));
+        }
         Ticket ticket = ticketService.loadByTicketNumber(ticketNumber);
         Comment comment = new Comment();
         comment.setText(commentText);

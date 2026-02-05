@@ -54,26 +54,26 @@ public class ProjectController {
 
     @PostMapping(ACTION_SAVE_PROJECT)
     public ModelAndView saveProject(@PathVariable String code,
-                                    @Valid @ModelAttribute ProjectWeb projectWeb,
+                                    @Valid @ModelAttribute(ATTRIBUTE_NAME_PROJECT) ProjectWeb project,
                                     BindingResult bindingResult,
                                     HttpServletRequest request,
                                     RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            return new ModelAndView(VIEW_PROJECT).addObject(ATTRIBUTE_NAME_PROJECT, projectWeb);
+            return new ModelAndView(VIEW_PROJECT).addObject(ATTRIBUTE_NAME_PROJECT, project);
         }
 
         String messageId;
         String[] arguments;
 
-        if (projectWeb.isNewProject()) {
-            Project newProject = projectService.create(mapper.map(projectWeb, Project.class));
+        if (project.isNewProject()) {
+            Project newProject = projectService.create(mapper.map(project, Project.class));
             messageId = "message.project.create_succeeded";
             arguments = new String[]{newProject.getCode()};
         } else {
             Project existingProject = projectService.loadByCode(code);
-            existingProject.setName(projectWeb.getName());
-            existingProject.setDescription(projectWeb.getDescription());
-            existingProject.setActive(projectWeb.isActive());
+            existingProject.setName(project.getName());
+            existingProject.setDescription(project.getDescription());
+            existingProject.setActive(project.isActive());
             projectService.update(existingProject);
             messageId = "message.project.save_succeeded";
             arguments = new String[]{existingProject.getCode()};
