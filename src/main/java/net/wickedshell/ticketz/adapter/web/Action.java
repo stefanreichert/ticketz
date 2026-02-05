@@ -26,6 +26,9 @@ public class Action {
     public static final String ACTION_SAVE_PREFERENCES_NAME = "/secure/preferences/{email}/name";
     public static final String ACTION_SAVE_PREFERENCES_PASSWORD = "/secure/preferences/{email}/password";
     public static final String ACTION_LOGOUT = "/secure/logout";
+    public static final String ACTION_SHOW_USER_LIST = "/secure/users";
+    public static final String ACTION_SHOW_USER = "/secure/users/{email}";
+    public static final String ACTION_SAVE_USER_ROLES = "/secure/users/{email}/roles";
 
     private Action() {
         // private constructor to prevent instantiation

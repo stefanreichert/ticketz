@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Data
 public class UserWeb {
 
@@ -21,4 +24,7 @@ public class UserWeb {
     @Size(max = 255)
     private String email;
 
+    private Set<String> roles = new HashSet<>();
+
+    private Long version;
 }

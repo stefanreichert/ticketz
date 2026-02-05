@@ -75,4 +75,15 @@ public interface UserService {
     User updatePassword(@Email @NotNull @Size(max = 255) String email,
                         @NotBlank String currentPassword,
                         @NotBlank @Size(min = 8) String newPassword);
+
+    /**
+     * Update the roles of a user. Only accessible by admins.
+     * Validates that the admin cannot remove their own ROLE_ADMIN.
+     *
+     * @param email the user's email address
+     * @param roles the new set of roles
+     * @return the updated user
+     */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    User updateRoles(@Email @NotNull @Size(max = 255) String email, @NotNull Set<Role> roles);
 }

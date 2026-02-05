@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <link th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/styles.css}" rel="stylesheet"/>
+    <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}" defer></script>
+    <title th:text="#{header.ticketz}"/>
+</head>
+<body>
+<div class="container">
+    <div th:replace="~{/fragments/header :: header(pageheader=#{pageheader.user}, activeNav='users')}"></div>
+    <div class="row">
+        <div class="col-md-6">
+            <form th:action="@{/secure/users/{email}/roles(email=${user.email})}" method="post">
+                <div class="card">
+                    <div class="card-header" th:text="#{label.user.roles_section}"></div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <span class="form-label" th:text="#{label.email}"></span>
+                            <span class="form-control bg-light" th:text="${user.email}"></span>
+                        </div>
+                        <div class="mb-3">
+                            <span class="form-label" th:text="#{label.user.name}"></span>
+                            <span class="form-control bg-light" th:text="${user.firstname + ' ' + user.lastname}"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" th:text="#{label.user.roles}"></label>
+                            <div th:each="role : ${allRoles}" class="form-check">
+                                <input type="checkbox" class="form-check-input"
+                                       th:id="${role.name()}" name="roles" th:value="${role.name()}"
+                                       th:checked="${user.roles.contains(role.name())}"/>
+                                <label class="form-check-label" th:for="${role.name()}" th:text="#{${role.name()}}"></label>
+                            </div>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-primary" th:text="#{button.save}"/>
+                            <a th:href="@{/secure/users}" class="btn btn-outline-secondary" th:text="#{button.cancel}"/>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div th:replace="~{/fragments/footer :: footer}"></div>
+</div>
+</body>
+</html>

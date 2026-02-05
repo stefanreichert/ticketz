@@ -81,4 +81,18 @@ public class UserServiceImpl implements UserService {
         existingUser.setPasswordHash(passwordEncoder.encode(newPassword));
         return userPersistence.update(existingUser);
     }
+
+    @Override
+    public User updateRoles(String email, Set<Role> roles) {
+        User currentUser = getCurrentUser();
+        User targetUser = userPersistence.loadByEmail(email);
+
+        // Prevent admin from removing their own admin role
+        if (currentUser.getEmail().equals(email) && !roles.contains(Role.ROLE_ADMIN)) {
+            throw new ValidationException("Cannot remove your own admin role");
+        }
+
+        targetUser.setRoles(roles);
+        return userPersistence.update(targetUser);
+    }
 }

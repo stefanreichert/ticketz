@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <link th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/styles.css}" rel="stylesheet"/>
+    <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}" defer></script>
+    <title th:text="#{header.ticketz}"/>
+</head>
+<body>
+<div class="container">
+    <div th:replace="~{/fragments/header :: header(pageheader=#{pageheader.users}, activeNav='users')}"></div>
+    <div class="mb-3">
+        <table class="table table-striped w-100" style="table-layout: fixed;">
+            <thead>
+            <tr>
+                <th style="width: 25%;" th:text="#{table.header.email}"></th>
+                <th style="width: 25%;" th:text="#{table.header.name}"></th>
+                <th style="width: 35%;" th:text="#{table.header.roles}"></th>
+                <th style="width: 15%;"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.email}"></td>
+                <td th:text="${user.firstname + ' ' + user.lastname}"></td>
+                <td>
+                    <span th:each="role : ${user.roles}" class="badge bg-secondary me-1" th:text="#{${role}}"></span>
+                </td>
+                <td class="text-end">
+                    <a th:href="@{/secure/users/{email}(email=${user.email})}"
+                       class="btn btn-sm btn-outline-primary" th:text="#{button.edit}"></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div th:if="${users.isEmpty()}" class="text-center text-muted py-4" th:text="#{label.user.no_users}"></div>
+    </div>
+    <div th:replace="~{/fragments/footer :: footer}"></div>
+</div>
+</body>
+</html>
