@@ -4,9 +4,10 @@
 
 The following diagram shows the component-level architecture of the TicketZ application, illustrating the hexagonal architecture pattern with clear separation between adapters and business logic.
 
-### Strcuture Overview
+### Structure Overview
 
 ```mermaid
+
 graph TB
     A[Web Browser] --> B[Web Controller]
     C[REST Client] --> D[REST Controller]
@@ -114,7 +115,7 @@ TicketZ follows the **Hexagonal Architecture (Ports & Adapters)** pattern with t
 
 ## Business Domain Verticals
 
-While the component architecture abstracts from specific business concerns, the TicketZ application implements three main business verticals that represent the core domain concepts:
+While the component architecture abstracts from specific business concerns, the TicketZ application implements four main business verticals that represent the core domain concepts:
 
 ### Domain Model Dependencies
 
@@ -126,11 +127,14 @@ graph TB
         Role[Role]
         Authentication[Authentication]
     end
+
+    subgraph ProjectDomain ["Project Domain"]
+        Project[Project]
+    end
     
     subgraph TicketDomain ["Ticket Domain"]
         Ticket[Ticket]
         TicketState[Ticket State]
-        TicketLifecycle[Ticket Lifecycle]
     end
     
     subgraph CommentDomain ["Comment Domain"]
@@ -143,13 +147,12 @@ graph TB
     User --> Authentication
     
     Ticket --> TicketState
-    Ticket --> TicketLifecycle
-    TicketLifecycle --> TicketState
     
     Comment --> CommentAudit
     
     %% Inter-Domain Relationships
     Ticket -.-> User
+    Ticket -.-> Project
     Comment -.-> User
     Comment -.-> Ticket
 ```
@@ -164,7 +167,7 @@ graph TB
 - **Business Rules**:
   - Unique email addresses
   - Password complexity requirements
-  - Role assignment policies
+    - Role assignment and administration policies (admin-only updates, self-demotion protection)
 
 #### **Ticket Domain**
 
@@ -173,9 +176,20 @@ graph TB
 - **Lifecycle**: Creation → In Progress → Resolution (Fixed/Rejected)
 - **Business Rules**:
   - Ticket numbers are system-generated and immutable
+    - Each ticket belongs to exactly one `Project` (mandatory association)
+    - Tickets can only be created/updated/deleted when the associated project is active
   - State transitions follow defined workflows
   - Version control for optimistic locking
   - Author assignment is mandatory, editor is optional
+    - Ticket listing supports server-side text search across ticket, user, state, and project fields (Web UI + REST)
+
+#### **Project Domain**
+
+- **Core Entity**: `Project` identified by a unique code
+- **Lifecycle**: Active ↔ Inactive
+- **Business Rules**:
+    - Project codes are unique and validated
+    - Inactive projects are read-only in the sense that they block ticket creation and ticket modifications
 
 #### **Comment Domain**
 
@@ -192,7 +206,8 @@ graph TB
 1. **User ↔ Ticket**: Users create and edit tickets, establishing ownership and responsibility
 2. **User ↔ Comment**: Users author comments, providing attribution and accountability  
 3. **Ticket ↔ Comment**: Comments provide detailed history and communication trail for tickets
-4. **Security Integration**: All domains participate in authorization decisions based on user roles
+4. **Project ↔ Ticket**: Projects organize tickets and gate ticket mutability via active/inactive status
+5. **Security Integration**: All domains participate in authorization decisions based on user roles
 
 ## Testing Concept
 
