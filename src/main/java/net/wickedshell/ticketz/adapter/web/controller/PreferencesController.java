@@ -56,8 +56,7 @@ public class PreferencesController {
                     .addObject(ATTRIBUTE_NAME_PREFERENCES, preferencesWeb)
                     .addObject(ATTRIBUTE_NAME_PASSWORD_CHANGE, new PasswordChangeWeb());
         }
-        User user = mapper.map(preferencesWeb, User.class);
-        userService.updateName(user);
+        userService.updateName(email, preferencesWeb.getFirstname(), preferencesWeb.getLastname());
         String message = messageSource.getMessage("message.preferences.name_saved", null, request.getLocale());
         redirectAttributes.addFlashAttribute(ATTRIBUTE_NAME_MESSAGE, message);
         return new ModelAndView(redirectTo(ACTION_SHOW_PREFERENCES.replace("{email}", email)));

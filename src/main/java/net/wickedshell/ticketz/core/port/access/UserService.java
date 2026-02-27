@@ -57,11 +57,15 @@ public interface UserService {
      * Update the firstname and lastname of a user. Only name fields are modified;
      * email, password, and roles remain unchanged.
      *
-     * @param user the user with updated name fields
+     * @param email     the user's email address
+     * @param firstname the new firstname
+     * @param lastname  the new lastname
      * @return the updated user
      */
     @PreAuthorize("hasRole('ROLE_USER')")
-    User updateName(@Valid User user);
+    User updateName(@Email @NotNull @Size(max = 255) String email,
+                    @NotBlank @Size(max = 255) String firstname,
+                    @NotBlank @Size(max = 255) String lastname);
 
     /**
      * Change a user's password. Requires verification of the current password.

@@ -65,10 +65,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateName(User user) {
-        User existingUser = userPersistence.loadByEmail(user.getEmail());
-        existingUser.setFirstname(user.getFirstname());
-        existingUser.setLastname(user.getLastname());
+    public User updateName(String email, String firstname, String lastname) {
+        User existingUser = userPersistence.loadByEmail(email);
+        existingUser.setFirstname(firstname);
+        existingUser.setLastname(lastname);
         return userPersistence.update(existingUser);
     }
 
